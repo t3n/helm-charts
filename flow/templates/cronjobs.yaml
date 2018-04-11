@@ -1,0 +1,55 @@
+{{- if .Values.cronjobs -}}
+{{- $root := . -}}
+{{- range .Values.cronjobs }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "flow.fullname" $root }}-{{ .name }}
+  labels:
+    app: {{ template "flow.name" $root }}
+    component: cronjob
+    chart: {{ template "flow.chart" $root }}
+    release: {{ $root.Release.Name }}
+    heritage: {{ $root.Release.Service }}
+spec:
+  schedule: {{ .schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ template "flow.fullname" $root }}-{{ .name }}
+          labels:
+            app: {{ template "flow.name" $root }}
+            component: cronjob
+            release: {{ $root.Release.Name }}
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: {{ $root.Chart.Name }}
+              image: "{{ $root.Values.image.repository }}:{{ $root.Values.image.tag }}"
+              imagePullPolicy: {{ $root.Values.image.pullPolicy }}
+              command:
+              {{- range .command }}
+                - {{ . | quote }}
+              {{- end }}
+              env:
+                - name: FLOW_CONTEXT
+                  value: Production
+                - name: FLOW_REWRITEURLS
+                  value: "1"
+              envFrom:
+                - secretRef:
+                    name: {{ template "flow.fullname" . }}
+            {{- with .resources }}
+              resources:
+                {{ toYaml . | nindent 16 }}
+            {{- end }}
+              volumeMounts:
+                - name: config
+                  mountPath: /app/Configuration/Production
+          volumes:
+            - name: config
+              configMap:
+                name: {{ template "flow.fullname" . }}
+{{- end }}
+{{- end -}}

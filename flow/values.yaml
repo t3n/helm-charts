@@ -1,0 +1,119 @@
+# Default values for flow.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+revisionHistoryLimit: 0
+
+# A simple deployment to determine if it is a "blue/green" deployment.
+# This value is currently used to switch the redis db. This is necessary
+# because kubernetes will perform a rolling update and caches shouldn't be 
+# mixed between releases
+deployment: "blue"
+
+image:
+  repository: quay.io/yeebase/neos-demo
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - neos-demo.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+
+# Worker are pods that do not serve web traffic. They can be used for non-ending tasks
+# like `./flow job:work --queue foo-queue` for Flowpack's JobQueue packages
+workers: {}
+  # - name: test
+  #   command: ["cat"]
+  #   resources:
+  #     limits:
+  #       cpu: 0.2
+  #       memory: 1Gi
+
+
+#
+# Will create a kubernetes cronjob. 
+#
+#https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+cronjobs: {}
+#  - name: somecronjob
+#    schedule: "0 6 * * *"
+#    command: ["php", "-c", "/app/flow help"]
+
+
+#
+# Will create kubernetes job that will be executed as soon as your chart is
+# deployed.
+# 
+# https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
+#
+jobs: {}
+#  - name: somejob
+#    command: ["php", "-c", "/app/flow help"]
+
+
+#
+# All configured cache entries will be forced to a redis backend.
+# 
+# To configure a cache to redis bakend you have to pass the name of the cache that
+# should use redis. If persistent ist set to true the cache entry will be set 
+# to `persistent: TRUE` and database 2 is configured. It's also possible to set
+# the `defaultLifetime` as well.
+#
+caches: {}
+#  - name: Flow_Session_MetaData
+#    persistent: true
+#    defaultLifetime: 0
+#  - name: Neos_Fusion_Content
+#    persistent: false
+
+
+##
+## MariaDB chart configuration
+##
+mariadb:
+  enabled: true
+
+  mariadbDatabase: db-neos
+  mariadbUser: neos
+  mariadbPassword: strongPassword
+
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+##
+## Redis chart configuration
+##
+redis:
+  enabled: true
+
+  usePassword: false
+
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi

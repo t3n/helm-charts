@@ -1,0 +1,13 @@
+dependencies:
+- name: mariadb
+  version: ^2.1.1
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: mariadb.enabled
+  tags:
+    - neos-database
+- name: redis
+  version: ^1.2.2
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: redis.enabled
+  tags:
+    - neos-cache

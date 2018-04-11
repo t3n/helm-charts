@@ -1,0 +1,22 @@
+{{- $root := . -}}
+{{- range .Values.caches }}
+{{ .name }}:
+  backend: Neos\Cache\Backend\RedisBackend
+  backendOptions:
+    {{- if .defaultLifetime }}
+    defaultLifetime: {{ .defaultLifetime }}
+    {{- end }}
+    hostname: {{ template "flow.redis" $root }}
+    database: {{ if .persistent }}2{{ else }}{{ if eq .Values.deployment "blue"}}0{{ else }}1{{ end }}{{ end }}
+    {{ if .persistent }}persistent: true{{ end }}
+{{- end }}
+
+Yeebase_Readiness_Lock:
+  backend: Neos\Cache\Backend\RedisBackend
+  backendOptions:
+    hostname: '{{ template "flow.redis" . }}'
+    database: 2
+
+Yeebase_Readiness_LocalLock:
+  frontend: Neos\Cache\Frontend\StringFrontend
+  backend: Neos\Cache\Backend\FileBackend

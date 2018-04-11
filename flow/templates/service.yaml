@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "flow.fullname" . }}
+  labels:
+    app: {{ template "flow.name" . }}
+    component: app
+    chart: {{ template "flow.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "flow.name" . }}
+    component: app
+    release: {{ .Release.Name }}
