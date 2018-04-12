@@ -16,7 +16,7 @@ You can then run `helm search yeebase` to see the charts.
 
 ## How do I install these charts?
 
-Just `helm install yeebase/<chart>`.
+Just run `helm install yeebase/<chart>`.
 
 For more information on using Helm, refer to the [Helm's documentation](https://github.com/kubernetes/helm#docs).
 
@@ -29,3 +29,4 @@ To provide that support the API versions of objects should be those that work fo
 ## Status of the Project
 
 This project is still under active development, so you might run into [issues](https://github.com/yeebase/helm-charts/issues). If you do, please don't be shy about letting us know, or better yet, contribute a fix or feature.
+We will also add more charts over time, so keep an eye on this repository.
