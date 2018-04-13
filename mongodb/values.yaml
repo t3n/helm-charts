@@ -1,0 +1,32 @@
+revisionHistoryLimit: 0
+
+image:
+  repository: mongo
+  tag: 3.6.3
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  #requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+persistence:
+  enabled: true
+  annotations: {}
+  existingClaim: ""
+  path: /data/db
+  subPath: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
+securityContext:
+    enabled: true
+    fsGroup: 999
+    runAsUser: 999
