@@ -1,0 +1,9 @@
+dependencies:
+- name: elasticsearch
+  repository: https://storage.googleapis.com/yeebase-helm-charts/
+  version: 1.0.0
+- name: mongodb
+  repository: https://storage.googleapis.com/yeebase-helm-charts/
+  version: 1.0.0
+digest: sha256:0b815b01df08928b53cf6f3b1d004e2789447bb12f245fb0181637f23b26b66a
+generated: 2018-04-13T18:18:12.111390657+02:00
