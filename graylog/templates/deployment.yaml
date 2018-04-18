@@ -1,0 +1,88 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "graylog.fullname" . }}
+  labels:
+    app: {{ template "graylog.name" . }}
+    chart: {{ template "graylog.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ template "graylog.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "graylog.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+    {{- if .Values.securityContext.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: GRAYLOG_WEB_ENDPOINT_URI
+              value: "http://{{ if .Values.ingress.enabled }}{{ index .Values.ingress.hosts 0 }}{{ else }}127.0.0.1{{ end }}/api"
+            - name: GRAYLOG_MONGODB_URI
+              value: "mongodb://{{ .Release.Name }}-mongo/graylog"
+            - name: GRAYLOG_ELASTICSEARCH_HOSTS
+              value: "http://{{ .Release.Name }}-elasticsearch:9200"
+          {{- range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+          {{- if .Values.persistence.enabled }}
+            - name: GRAYLOG_MESSAGE_JOURNAL_DIR
+              value: "/usr/share/graylog/data/journal/journal"
+          {{- else }}
+            - name: GRAYLOG_MESSAGE_JOURNAL_DIR
+              value: "/usr/share/graylog/data/journal"
+          {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ template "graylog.fullname" . }}
+          ports:
+            - name: http
+              containerPort: 9000
+          {{- range $port := .Values.service.ports }}
+            - name: {{ $port.name }}
+              containerPort: {{ $port.port }}
+              protocol: {{ $port.protocol }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: 90
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /usr/share/graylog/data/journal
+      volumes:
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "graylog.fullname" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end -}}

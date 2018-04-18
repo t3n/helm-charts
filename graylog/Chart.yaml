@@ -1,0 +1,11 @@
+name: graylog
+version: 1.0.0
+appVersion: 2.4.3
+description: Graylog is a centralized logging solution that allows the user to aggregate and search through logs
+keywords:
+  - graylog
+  - logging
+home: https://www.graylog.org/
+icon: https://secure.gravatar.com/avatar/b90e696fb39107cf69c3b160ec46e543.jpg
+maintainers:
+  - name: helmecke
