@@ -1,0 +1,15 @@
+{{- if .Values.rbac.create -}}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: {{ include "cloudsql-proxy.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
+    helm.sh/chart: {{ include "cloudsql-proxy.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "watch", "list"]
+{{- end -}}

@@ -1,0 +1,13 @@
+name: cloudsql-proxy
+version: 0.1.0
+appVersion: 1.11
+description: Google Cloud SQL Proxy
+keywords:
+- google
+- cloud
+- postgresql
+- mysql
+- sql
+- sqlproxy
+home: https://cloud.google.com/sql/docs/postgres/sql-proxy
+engine: gotpl

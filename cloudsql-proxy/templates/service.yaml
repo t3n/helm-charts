@@ -1,0 +1,29 @@
+{{- if ne (index .Values.cloudsql.instances 0).instance "instance" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cloudsql-proxy.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
+    helm.sh/chart: {{ include "cloudsql-proxy.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- with .Values.service.annotations }}
+  annotations:
+    {{ toYaml . | nindent 4 }}
+{{- end }}
+spec:
+{{- if .Values.service.sessionAffinity }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+{{- end }}
+  ports:
+{{- range .Values.cloudsql.instances }}
+  - name: {{ .instance }}
+    protocol: TCP
+    port: {{ .port }}
+    targetPort: {{ .instanceShortName | default (.instance | trunc 15) }}
+{{- end }}
+  selector:
+    app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
