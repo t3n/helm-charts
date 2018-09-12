@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "stackdriver-prometheus.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-prometheus.name" . }}
+    helm.sh/chart: {{ include "stackdriver-prometheus.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- with .Values.service.annotations }}
+  annotations:
+    {{ toYaml . | nindent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: 9090
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: {{ include "stackdriver-prometheus.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

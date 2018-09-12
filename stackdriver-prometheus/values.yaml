@@ -1,0 +1,36 @@
+image:
+  repository: gcr.io/stackdriver-prometheus/stackdriver-prometheus
+  tag: release-0.4.3
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: ""
+
+projectId: "prometheus-to-sd"
+clusterName: "prom-test-cluster-2"
+clusterLocation: "us-central1-a"

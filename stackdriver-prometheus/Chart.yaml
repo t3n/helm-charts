@@ -1,0 +1,12 @@
+name: stackdriver-prometheus
+version: 0.1.0
+appVersion: "0.4.3"
+description: A variant of the Prometheus server that can send metrics to Stackdriver.
+keywords:
+- google
+- cloud
+- monitoring
+- stackdriver
+- prometheus
+home: https://github.com/Stackdriver/stackdriver-prometheus
+engine: gotpl
