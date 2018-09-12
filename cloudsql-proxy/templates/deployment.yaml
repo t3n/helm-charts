@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.replicasCount }}
-{{- if eq .Values.replicasCount 1.0 }}
+  replicas: {{ .Values.replicaCount }}
+{{- if eq .Values.replicaCount 1.0 }}
   strategy:
     rollingUpdate:
       maxUnavailable: 0
