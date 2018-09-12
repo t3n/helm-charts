@@ -1,4 +1,4 @@
-replicasCount: 1
+replicaCount: 1
 
 image:
   repository: gcr.io/cloudsql-docker/gce-proxy
