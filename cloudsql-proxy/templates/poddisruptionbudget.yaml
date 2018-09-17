@@ -13,5 +13,5 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-  maxUnavailable: 0
+  maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
 {{- end -}}
