@@ -86,7 +86,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 ```
 $ helm install --name my-release \
   --set service.type=LoadBalancer \
-    yeebase/snipeit
+    t3n/snipeit
 ```
 
 The above command sets the service type LoadBalancer.
