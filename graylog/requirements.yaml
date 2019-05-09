@@ -1,7 +1,7 @@
 dependencies:
 - name: elasticsearch
   version: ^1.0.0
-  repository: https://storage.googleapis.com/yeebase-helm-charts/
+  repository: https://storage.googleapis.com/t3n-helm-charts/
 - name: mongodb
   version: ^1.0.0
-  repository: https://storage.googleapis.com/yeebase-helm-charts/
+  repository: https://storage.googleapis.com/t3n-helm-charts/
