@@ -1,22 +1,22 @@
-# Yeebase Helm Charts
+# t3n Helm Charts
 
 This repository contains Charts to deploy Neos & Flow Applications for Kubernetes Helm. Charts are curated application definitions for Kubernetes Helm. For more information about installing and using Helm, see its
 [README.md](https://github.com/kubernetes/helm/tree/master/README.md). To get a quick introduction to Charts see this [chart document](https://github.com/kubernetes/helm/blob/master/docs/charts.md).
 
-## How do I enable the Yeebase repository?
+## How do I enable the t3n repository?
 
-To add the Yeebase charts for your local client, run `helm repo add`:
+To add the t3n charts for your local client, run `helm repo add`:
 
 ```
-$ helm repo add yeebase https://storage.googleapis.com/yeebase-helm-charts
-"yeebase" has been added to your repositories
+$ helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
+"t3n" has been added to your repositories
 ```
 
-You can then run `helm search yeebase` to see the charts.
+You can then run `helm search t3n` to see the charts.
 
 ## How do I install these charts?
 
-Just run `helm install yeebase/<chart>`.
+Just run `helm install t3n/<chart>`.
 
 For more information on using Helm, refer to the [Helm's documentation](https://github.com/kubernetes/helm#docs).
 

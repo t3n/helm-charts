@@ -11,9 +11,9 @@ jobs:
           export PATH=`pwd`/linux-amd64/:$PATH
           echo 'export PATH=`pwd`/linux-amd64/:$PATH' >> $BASH_ENV
           helm init --client-only
-          helm repo add yeebase https://storage.googleapis.com/yeebase-helm-charts
+          helm repo remove local
+          helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
       - run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/key.json
           ./helm_lint.sh
 
   release:
@@ -27,14 +27,11 @@ jobs:
           export PATH=`pwd`/linux-amd64/:$PATH
           echo 'export PATH=`pwd`/linux-amd64/:$PATH' >> $BASH_ENV
           helm init --client-only
-          helm plugin install https://github.com/nouney/helm-gcs
+          helm repo remove local
+          helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
           echo "$SERVICE_ACCOUNT_JSON" > key.json
           gcloud auth activate-service-account --key-file key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/key.json
-          helm repo remove local
-          helm repo add yeebase https://storage.googleapis.com/yeebase-helm-charts
       - run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/key.json
           ./repo_sync.sh
 
 workflows:
