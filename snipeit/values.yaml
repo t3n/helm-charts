@@ -27,7 +27,7 @@ config:
   snipeit:
     env: production
     debug: false
-    url: example.local
+    url: http://example.local
     key: ""
     timezone: Europe/Berlin
     locale: en
