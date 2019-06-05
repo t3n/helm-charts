@@ -7,7 +7,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: snipe/snipe-it
-  tag: v4.6.16
+  tag: v4.7.4
   pullPolicy: IfNotPresent
 
 service:
@@ -27,7 +27,7 @@ config:
   snipeit:
     env: production
     debug: false
-    url: http://example.local
+    url: http://snipeit.192.168.99.133.nip.io
     key: ""
     timezone: Europe/Berlin
     locale: en
@@ -83,7 +83,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - example.local
+    - snipeit.192.168.99.133.nip.io
   tls: []
   #  - secretName: example-local
   #    hosts:
