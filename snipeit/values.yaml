@@ -27,7 +27,7 @@ config:
   snipeit:
     env: production
     debug: false
-    url: http://snipeit.192.168.99.133.nip.io
+    url: example.local
     key: ""
     timezone: Europe/Berlin
     locale: en
@@ -83,7 +83,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - snipeit.192.168.99.133.nip.io
+    - example.local
   tls: []
   #  - secretName: example-local
   #    hosts:
