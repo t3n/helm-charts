@@ -2,11 +2,18 @@
 
 [Snipeit-IT](http://www.snipeitapp.com) is free open source IT asset/license management system
 
-## TL;DR;
+## Generate config.app.key
 
+In order for Snipe-IT to work correctly you need to set the yaml-key config.app.key in the values.yaml.
+This must be a Base64 Encoded key, which you have to set *before deploying* this Chart.
+```
+$ docker run -i -t snipe/snipe-it php artisan key:generate --show
+```
+Then set the generated key from the output with *--set config.app.key* when you're deploying.
+## TL;DR;
 ```
 $ helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
-$ helm install t3n/snipeit
+$ helm install t3n/snipeit --set config.app.key="base64:....."
 ```
 
 ## Introduction
@@ -20,7 +27,7 @@ deployment on a [Kubernetes](http://kubernetes.io) cluster using the
 To install the chart with the release name `my-release`:
 
 ```
-$ helm install --name my-release t3n/snipeit
+$ helm install --name my-release t3n/snipeit --set config.app.key="base64:....."
 ```
 
 The command deploys Snipe-IT on the Kubernetes cluster in the default
