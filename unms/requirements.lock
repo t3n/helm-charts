@@ -1,0 +1,18 @@
+dependencies:
+- name: redis
+  repository: gs://yeebase-private-helm-charts/
+  version: 0.1.0
+- name: helper
+  repository: gs://yeebase-private-helm-charts/
+  version: 0.1.0
+- name: postgresql
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 0.19.0
+- name: rabbitmq-ha
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.27.1
+- name: fluentd
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.10.0
+digest: sha256:ff26dedcb4a0f1f8e9579cbc19a0e4167ca19f4585726c7ccf5486c1998ad6d5
+generated: 2019-06-06T10:27:11.895364+02:00
