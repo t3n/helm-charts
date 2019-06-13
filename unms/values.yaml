@@ -1,0 +1,90 @@
+replicaCount: 1
+revisionHistoryLimit: 0
+
+## PodDisruptionBudget
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
+# maxUnavailable: 1
+
+image:
+  repository: ubnt/unms
+  tag: 0.13.3
+  pullPolicy: IfNotPresent
+
+  nginx:
+    repository: ubnt/unms-nginx
+    tag: 0.13.3
+    pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  annotations: {}
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - example.local
+  #tls:
+  #  - secretName: unms-tls
+  #    hosts:
+  #      - example.local
+
+rabbitmq-ha:
+  host: unms-rabbitmq-ha
+  port: "5672"
+  rabbitmqUsername: guest
+  rabbitmqPassword: guest
+  rabbitmqAuth:
+    enabled: true
+    config: |
+      auth_mechanisms.1 = PLAIN
+      auth_mechanisms.2 = AMQPLAIN
+  persistence:
+    enabled: true
+    persistence:
+      size: 5Gi
+
+redis:
+  host: unms-redis-master
+  port: "6379"
+  cluster:
+    enabled: false
+  usePassword: false
+
+postgresql:
+  host: unms-postgresql
+  port: "5432"
+  postgresPassword: changeme
+  postgresDatabase: unms
+  persistence:
+    resourcePolicy: nil
+
+persistence:
+  enabled: true
+  annotations: {}
+  accessMode: ReadWriteOnce
+  existingClaim: ""
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  size: 5Gi
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  #requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+mysql-backup:
+  enabled: false

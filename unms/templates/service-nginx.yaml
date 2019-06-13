@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "unms.fullname" . }}-nginx
+  labels:
+    app: {{ include "unms.name" . }}-nginx
+    chart: {{ include "unms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.service.annotations }}
+  annotations:
+    {{ toYaml . | nindent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+    - name: https
+      port: 443
+      protocol: TCP
+    - name: encrypt
+      port: 12345
+      protocol: TCP
+  selector:
+    app: {{ include "unms.name" . }}-nginx
+    release: {{ .Release.Name }}

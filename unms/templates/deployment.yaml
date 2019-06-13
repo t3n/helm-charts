@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "unms.fullname" . }}
+  labels:
+    app: {{ include "unms.name" . }}
+    chart: {{ include "unms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ include "unms.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "unms.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      imagePullSecrets:
+        - name: regsecret
+      containers:
+        - name: {{ include "unms.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: UNMS_RABBITMQ_HOST
+              value: {{ index .Values "rabbitmq-ha" "host" }}
+            - name: UNMS_RABBITMQ_PORT
+              value: {{ index .Values "rabbitmq-ha" "port" | quote }}
+            - name: UNMS_REDISDB_HOST
+              value: {{ .Values.redis.host }}
+            - name: UNMS_REDISDB_PORT
+              value: {{ .Values.redis.port | quote }}
+            - name: UNMS_PG_HOST
+              value: {{ .Values.postgresql.host }}
+            - name: UNMS_PG_PORT
+              value: {{ .Values.postgresql.port | quote }}
+            - name: UNMS_PG_PASSWORD
+              value: {{ .Values.postgresql.postgresPassword }}
+            - name: UNMS_PG_DATABASE
+              value: {{ .Values.postgresql.postgresDatabase }}
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+            - name: socket
+              containerPort: 8082
+              protocol: TCP
+            - name: shell
+              containerPort: 8083
+              protocol: TCP
+            - name: api
+              containerPort: 8084
+              protocol: TCP
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | nindent 12 }}
+        {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /home/app/unms/data/cert
+              subPath: cert
+            - name: data
+              mountPath: /home/app/unms/data/config-backups
+              subPath: config-backups
+            - name: data
+              mountPath: /home/app/unms/data/firmwares
+              subPath: firmwares
+            - name: data
+              mountPath: /home/app/unms/data/images
+              subPath: images
+            - name: data
+              mountPath: /home/app/unms/data/import
+              subPath: import
+            - name: data
+              mountPath: /home/app/unms/data/logs
+              subPath: logs
+            - name: data
+              mountPath: /home/app/unms/data/unms-backups
+              subPath: unms-backups
+            - name: data
+              mountPath: /home/app/unms/data/update
+              subPath: update
+      volumes:
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "unms.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}

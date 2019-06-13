@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "unms.fullname" . }}-nginx
+  labels:
+    app: {{ include "unms.name" . }}-nginx
+    chart: {{ include "unms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ include "unms.name" . }}-nginx
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "unms.name" . }}-nginx
+        release: {{ .Release.Name }}
+    spec:
+      imagePullSecrets:
+        - name: regsecret
+      containers:
+        - name: {{ include "unms.fullname" . }}-nginx
+          image: "{{ .Values.image.nginx.repository }}:{{ .Values.image.nginx.tag }}"
+          imagePullPolicy: {{ .Values.image.nginx.pullPolicy }}
+          env:
+            - name: UNMS_RABBITMQ_HOST
+              value: {{ index .Values "rabbitmq-ha" "host" }}
+            - name: UNMS_RABBITMQ_PORT
+              value: {{ index .Values "rabbitmq-ha" "port" | quote }}
+            - name: UNMS_REDISDB_HOST
+              value: {{ .Values.redis.host }}
+            - name: UNMS_REDISDB_PORT
+              value: {{ .Values.redis.port | quote }}
+            - name: UNMS_PG_HOST
+              value: {{ .Values.postgresql.host }}
+            - name: UNMS_PG_PORT
+              value: {{ .Values.postgresql.port | quote }}
+            - name: UNMS_PG_PASSWORD
+              value: {{ .Values.postgresql.postgresPassword }}
+            - name: UNMS_PG_DATABASE
+              value: {{ .Values.postgresql.postgresDatabase }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | nindent 12 }}
+        {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /cert/
+              subPath: cert
+      volumes:
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "unms.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}

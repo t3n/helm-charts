@@ -1,0 +1,17 @@
+{{- if (eq (.Values.replicaCount | toString) "0") }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "unms.fullname" . }}
+  labels:
+    app: {{ include "unms.name" . }}
+    chart: {{ include "unms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "unms.name" . }}
+      release: {{ .Release.Name }}
+  maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
+{{- end }}
