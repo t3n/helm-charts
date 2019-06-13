@@ -12,7 +12,6 @@ spec:
   selector:
     matchLabels:
       app: {{ include "unms.name" . }}
-      component: app
       release: {{ .Release.Name }}
   maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
 {{- end }}
