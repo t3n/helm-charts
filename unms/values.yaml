@@ -32,6 +32,7 @@ ingress:
   #  - secretName: unms-tls
   #    hosts:
   #      - example.local
+
 rabbitmq-ha:
   host: unms-rabbitmq-ha
   port: "5672"
@@ -45,11 +46,14 @@ rabbitmq-ha:
   persistence:
     enabled: true
     persistence:
-      size: 10Gi
+      size: 5Gi
 
 redis:
-  host: unms-redis
+  host: unms-redis-master
   port: "6379"
+  cluster:
+    enabled: false
+  usePassword: false
 
 postgresql:
   host: unms-postgresql
@@ -58,13 +62,6 @@ postgresql:
   postgresDatabase: unms
   persistence:
     resourcePolicy: nil
-
-fluentd:
-  image:
-    repository: ubnt/unms-fluentd
-    tag: 0.13.3
-  #host: unms-fluentd
-  #port: "24224"
 
 persistence:
   enabled: true
@@ -79,7 +76,7 @@ persistence:
   ##   GKE, AWS & OpenStack)
   ##
   # storageClass: "-"
-  size: 15Gi
+  size: 5Gi
 
 resources: {}
   # limits:

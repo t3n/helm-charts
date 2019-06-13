@@ -43,10 +43,6 @@ spec:
               value: {{ .Values.postgresql.postgresPassword }}
             - name: UNMS_PG_DATABASE
               value: {{ .Values.postgresql.postgresDatabase }}
-            - name: UNMS_FLUENTD_HOST
-              value: {{ .Values.fluentd.host }}
-            - name: UNMS_FLUENTD_PORT
-              value: {{ .Values.fluentd.port | quote }}
           ports:
             - name: http
               containerPort: 80
