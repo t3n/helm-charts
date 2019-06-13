@@ -28,5 +28,4 @@ spec:
       protocol: TCP
   selector:
     app: {{ include "unms.name" . }}
-    component: app
     release: {{ .Release.Name }}

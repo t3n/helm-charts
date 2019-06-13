@@ -25,5 +25,4 @@ spec:
       protocol: TCP
   selector:
     app: {{ include "unms.name" . }}-nginx
-    component: app
     release: {{ .Release.Name }}
