@@ -71,7 +71,7 @@ persistence:
 
   www:
     mountPath: /var/lib/snipeit
-    subpath: www
+    subPath: www
   sessions:
     mountPath: /var/www/html/storage/framework/sessions
     subPath: sessions
