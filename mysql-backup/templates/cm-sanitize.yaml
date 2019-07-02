@@ -1,0 +1,16 @@
+{{- if .Values.sanitize.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mysql-backup.fullname" . }}-sanitize
+  labels:
+    app: {{ include "mysql-backup.fullname" . }}
+    chart: {{ include "mysql-backup.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  sanitize.sql: |-
+    {{- range .Values.sanitize.sql }}
+    {{ . }}
+    {{- end }}
+{{- end -}}

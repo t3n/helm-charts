@@ -1,0 +1,42 @@
+image:
+  name: quay.io/yeebase/mysql-client
+  tag: gcloud-sdk
+  pullPolicy: Always
+
+tasks:
+  backup:
+    cron: false
+    manual: false
+  restore:
+    cron: false
+    manual: false
+
+schedule: "0 3 * * *"
+
+gcs:
+  serviceAccountKey: ""
+  bucket:
+    name: ""
+    # the following line prefixes the backups with the defined directory. it must be blank or end with a /
+    path: ""
+
+database:
+  host: mariadb
+  user: admin
+  pass: dummy
+  name: "--all-databases"
+  charset: utf8
+
+filename: ""
+
+resources:
+  # limits:
+    # cpu: 100m
+    # memory: 128Mi
+  # requests:
+    # cpu: 10m
+    # memory: 16Mi
+
+sanitize:
+  enabled: false
+  sql: []
