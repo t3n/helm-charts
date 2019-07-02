@@ -1,0 +1,74 @@
+{{- if .Values.tasks.restore.manual -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "mysql-backup.fullname" . }}-restore
+  labels:
+    app: {{ include "mysql-backup.fullname" . }}
+    chart: {{ include "mysql-backup.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
+      restartPolicy: Never
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["sh", "-c", "/scripts/mysql-restore.sh"]
+        env:
+        - name: DB_HOST
+          value: {{ .Values.database.host }}
+        - name: DB_NAME
+          value: {{ .Values.database.name }}
+        - name: GSBUCKET
+          value: {{ .Values.gcs.bucket.name }}
+        - name: GSPATH
+          value: {{ .Values.gcs.bucket.path }}
+        - name: FILENAME
+          value: {{ include "mysql-backup.filename" . }}
+        {{- if .Values.sanitize.enabled }}
+        - name: SANITIZE_ENABLED
+          value: "true"
+        {{- end }}
+        envFrom:
+        - secretRef:
+            name: {{ include "mysql-backup.fullname" . }}-mysql
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+          readOnly: true
+        - name: secret-key
+          mountPath: /etc/gcloud
+          readOnly: true
+        {{- if .Values.sanitize.enabled }}
+        - name: sanitize
+          mountPath: /tmp/sanitize.sql
+          subPath: sanitize.sql
+        {{- end}}
+      volumes:
+      - name: scripts
+        configMap:
+          name: {{ include "mysql-backup.fullname" . }}
+          defaultMode: 0555
+      {{- if .Values.sanitize.enabled }}
+      - name: sanitize
+        configMap:
+          name: {{ include "mysql-backup.fullname" . }}-sanitize
+      {{- end }}
+      - name: secret-key
+        secret:
+          secretName: {{ include "mysql-backup.fullname" . }}-gcs
+{{- end -}}
