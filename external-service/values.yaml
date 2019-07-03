@@ -1,0 +1,10 @@
+nameOverride: ""
+fullnameOverride: ""
+
+# Both addresses and ports are required to install a service with the
+# corresponding endpoint.
+addresses: []
+  # - ip: 10.92.96.3
+ports: []
+  # - port: 3306
+  #   name: mysql

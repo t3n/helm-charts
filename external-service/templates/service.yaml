@@ -1,0 +1,19 @@
+{{- if and .Values.addresses .Values.ports }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "external-service.fullname" . }}
+  labels:
+    {{ include "external-service.labels" . | indent 4 | trim }}
+spec:
+  type: ClusterIP
+{{- range .Values.ports }}
+  ports:
+    - port: {{ .port }}
+      targetPort: {{ .name }}
+      protocol: {{ default "TCP" .protocol }}
+      name: {{ .name }}
+{{- end }}
+  selector:
+    {{ include "external-service.selector" . | indent 4 | trim }}
+{{- end -}}

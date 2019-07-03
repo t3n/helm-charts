@@ -1,0 +1,19 @@
+{{- if and .Values.addresses .Values.ports }}
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: {{ include "external-service.fullname" . }}
+  labels:
+    {{ include "external-service.labels" . | indent 4 | trim }}
+subsets:
+  {{- range .Values.addresses }}
+  - addresses:
+      - ip: 10.92.96.3
+  {{- end }}
+  {{- range .Values.ports }}
+    ports:
+      - port: {{ .port }}
+        protocol: {{ default "TCP" .protocol }}
+        name: {{ .name }}
+  {{- end }}
+{{- end -}}
