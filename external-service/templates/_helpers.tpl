@@ -40,8 +40,3 @@ chart: {{ include "external-service.chart" . }}
 release: {{ .Release.Name }}
 heritage: {{ .Release.Service }}
 {{- end -}}
-
-{{- define "external-service.selector" -}}
-app: {{ include "external-service.name" . }}
-release: {{ .Release.Name }}
-{{- end -}}
