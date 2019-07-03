@@ -8,7 +8,7 @@ metadata:
 subsets:
   {{- range .Values.addresses }}
   - addresses:
-      - ip: 10.92.96.3
+      - ip: {{ .ip }}
   {{- end }}
   {{- range .Values.ports }}
     ports:
