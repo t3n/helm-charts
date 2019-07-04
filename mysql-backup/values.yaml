@@ -3,6 +3,7 @@ image:
   tag: gcloud-sdk
   pullPolicy: Always
 
+# Specify which type of job should be created
 tasks:
   backup:
     cron: false
@@ -13,6 +14,7 @@ tasks:
 
 schedule: "0 3 * * *"
 
+# Required: Specify your GCS Service Account Key and the Bucket where the Backup should be uploaded
 gcs:
   serviceAccountKey: ""
   bucket:
@@ -20,6 +22,7 @@ gcs:
     # the following line prefixes the backups with the defined directory. it must be blank or end with a /
     path: ""
 
+# Required: Credentials of the database to backup
 database:
   host: mariadb
   user: admin
@@ -27,6 +30,7 @@ database:
   name: "--all-databases"
   charset: utf8
 
+# Required: Name of the backupfile to be created
 filename: ""
 
 resources:
@@ -37,6 +41,7 @@ resources:
     # cpu: 10m
     # memory: 16Mi
 
+# Specify if any sanitize queries should be run
 sanitize:
   enabled: false
   sql: []
