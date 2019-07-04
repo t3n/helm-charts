@@ -33,11 +33,6 @@ database:
 # Required: Name of the backupfile to be created
 filename: ""
 
-# Specify if any sanitize queries should be run after restore
-sanitize:
-  enabled: false
-  sql: []
-
 resources:
   # limits:
     # cpu: 100m
@@ -45,3 +40,8 @@ resources:
   # requests:
     # cpu: 10m
     # memory: 16Mi
+
+# Specify if any sanitize queries should be run after restore
+sanitize:
+  enabled: false
+  sql: []
