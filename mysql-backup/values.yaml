@@ -4,7 +4,7 @@ image:
   pullPolicy: Always
 
 # Specify which type of job should be created
-jobs:
+tasks:
   backup:
     cron: false
     manual: false
@@ -12,7 +12,7 @@ jobs:
     cron: false
     manual: false
 
-# Specify if any sanitize queries should be run
+# Specify if any sanitize queries should be run after restore
 sanitize:
   enabled: false
   sql: []
