@@ -4,13 +4,18 @@ image:
   pullPolicy: Always
 
 # Specify which type of job should be created
-tasks:
+jobs:
   backup:
     cron: false
     manual: false
   restore:
     cron: false
     manual: false
+
+# Specify if any sanitize queries should be run
+sanitize:
+  enabled: false
+  sql: []
 
 schedule: "0 3 * * *"
 
@@ -40,8 +45,3 @@ resources:
   # requests:
     # cpu: 10m
     # memory: 16Mi
-
-# Specify if any sanitize queries should be run
-sanitize:
-  enabled: false
-  sql: []
