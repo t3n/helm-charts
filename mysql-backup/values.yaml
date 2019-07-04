@@ -12,11 +12,6 @@ tasks:
     cron: false
     manual: false
 
-# Specify if any sanitize queries should be run after restore
-sanitize:
-  enabled: false
-  sql: []
-
 schedule: "0 3 * * *"
 
 # Required: Specify your GCS Service Account Key and the Bucket where the Backup should be uploaded
@@ -37,6 +32,11 @@ database:
 
 # Required: Name of the backupfile to be created
 filename: ""
+
+# Specify if any sanitize queries should be run after restore
+sanitize:
+  enabled: false
+  sql: []
 
 resources:
   # limits:
