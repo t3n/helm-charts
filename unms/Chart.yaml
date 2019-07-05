@@ -1,4 +1,4 @@
 apiVersion: v1
 name: unms
-version: 0.0.3
+version: 1.0.0
 appVersion: 0.13.3
