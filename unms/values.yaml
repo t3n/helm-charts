@@ -7,12 +7,12 @@ revisionHistoryLimit: 0
 
 image:
   repository: ubnt/unms
-  tag: 0.13.3
+  tag: 0.14.0
   pullPolicy: IfNotPresent
 
   nginx:
     repository: ubnt/unms-nginx
-    tag: 0.13.3
+    tag: 0.14.0
     pullPolicy: IfNotPresent
 
 service:
@@ -33,6 +33,7 @@ ingress:
   #    hosts:
   #      - example.local
 
+# Leave default to use rabbitmq of this chart
 rabbitmq-ha:
   host: unms-rabbitmq-ha
   port: "5672"
@@ -48,6 +49,7 @@ rabbitmq-ha:
     persistence:
       size: 5Gi
 
+# Leave default to use redis of this chart
 redis:
   host: unms-redis-master
   port: "6379"
@@ -55,6 +57,7 @@ redis:
     enabled: false
   usePassword: false
 
+# Leave default to use postgresql of this chart
 postgresql:
   host: unms-postgresql
   port: "5432"
