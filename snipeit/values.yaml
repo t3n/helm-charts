@@ -88,3 +88,6 @@ ingress:
   #  - secretName: example-local
   #    hosts:
   #      - example.local
+
+mysql-backup:
+  enabled: false
