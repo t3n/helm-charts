@@ -3,3 +3,7 @@ dependencies:
   version: ^0.14.0
   repository: https://kubernetes-charts.storage.googleapis.com/
   condition: mysql.enabled
+- name: mysql-backup
+  version: ^1.0.1
+  condition: mysql-backup.enabled
+  repository: https://storage.googleapis.com/t3n-helm-charts
