@@ -2,18 +2,18 @@
 
 [Snipeit-IT](http://www.snipeitapp.com) is free open source IT asset/license management system
 
-## Generate config.app.key
+## Generate config.snipeit.key
 
-In order for Snipe-IT to work correctly you need to set the yaml-key config.app.key in the values.yaml.
+In order for Snipe-IT to work correctly you need to set the yaml-key config.snipeit.key in the values.yaml.
 This must be a Base64 Encoded key, which you have to set *before deploying* this Chart.
 ```
 $ docker run -i -t snipe/snipe-it php artisan key:generate --show
 ```
-Then set the generated key from the output with *--set config.app.key* when you're deploying.
+Then set the generated key from the output with *--set config.snipeit.key* when you're deploying.
 ## TL;DR;
 ```
 $ helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
-$ helm install t3n/snipeit --set config.app.key="base64:....."
+$ helm install t3n/snipeit --set config.snipeit.key="base64:....."
 ```
 
 ## Introduction
@@ -27,7 +27,7 @@ deployment on a [Kubernetes](http://kubernetes.io) cluster using the
 To install the chart with the release name `my-release`:
 
 ```
-$ helm install --name my-release t3n/snipeit --set config.app.key="base64:....."
+$ helm install --name my-release t3n/snipeit --set config.snipeit.key="base64:....."
 ```
 
 The command deploys Snipe-IT on the Kubernetes cluster in the default
@@ -82,7 +82,7 @@ and their default values.
 | `mysql.persistence.size`             | Size of the PV                                        | `8Gi`                          |
 | `persistence.enabled`                | Whether or not Snipe-IT Data should be persisted      | `true`                         |
 | `persistence.annotations`            | Annotations for the PVC                               | `{}`                           |
-| `persistence.size`                   | Size of the persistent Snipe-IT Volume                | `4Gi`                          |
+| `persistence.size`                   | Size of the persistent Snipe-IT Volume                | `2Gi`                          |
 | `replicaCount`                       | Number of Snipe-IT Pods to run                        | `1`                            |
 | `revisionHistoryLimit`               | The number of old Replicas to keep to allow rollback. | `0`                            |
 | `service.type`                       | Type of service to create                             | `ClusterIP`                    |
