@@ -7,12 +7,12 @@ revisionHistoryLimit: 0
 
 image:
   repository: ubnt/unms
-  tag: 0.14.0
+  tag: 0.13.3
   pullPolicy: IfNotPresent
 
   nginx:
     repository: ubnt/unms-nginx
-    tag: 0.14.0
+    tag: 0.13.3
     pullPolicy: IfNotPresent
 
 service:
