@@ -28,5 +28,5 @@ To provide that support the API versions of objects should be those that work fo
 
 ## Status of the Project
 
-This project is still under active development, so you might run into [issues](https://github.com/yeebase/helm-charts/issues). If you do, please don't be shy about letting us know, or better yet, contribute a fix or feature.
+This project is still under active development, so you might run into [issues](https://github.com/t3n/helm-charts/issues). If you do, please don't be shy about letting us know, or better yet, contribute a fix or feature.
 We will also add more charts over time, so keep an eye on this repository.
