@@ -13,6 +13,8 @@ service:
   sessionAffinity: ""
   annotations: {}
 
+## Configure resource requests and limits
+## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
 resources: {}
   # limits:
   #  cpu: 100m

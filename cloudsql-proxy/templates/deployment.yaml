@@ -44,6 +44,10 @@ spec:
             - name: {{ .instanceShortName | default (.instance | trunc 15) }}
               containerPort: {{ .port }}
           {{- end }}
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
           volumeMounts:
           {{- if .Values.serviceAccountKey }}
             - name: cloudsql-oauth-credentials
