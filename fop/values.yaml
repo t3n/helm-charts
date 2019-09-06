@@ -1,0 +1,15 @@
+replicaCount: 1
+revisionHistoryLimit: 0
+
+## PodDisruptionBudget
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
+# maxUnavailable: 1
+
+image:
+  repository: zilverline/fop
+  tag: 1.7
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  annotations: {}
