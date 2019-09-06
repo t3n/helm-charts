@@ -30,5 +30,5 @@ spec:
               protocol: TCP
         {{- with .Values.resources }}
           resources:
-            {{ toYaml . | nindent 12 }}
+            {{ toYaml . | indent 12 | trim }}
         {{- end }}
