@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "promtail.fullname" . }}
+  labels:
+    {{ include "promtail.labels" . | indent 4 | trim }}
+spec:
+  selector:
+    matchLabels:
+      {{ include "promtail.selector" . | indent 6 | trim }}
+  template:
+    metadata:
+      labels:
+        {{ include "promtail.selector" . | indent 8 | trim }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.metrics.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "http-metrics"
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "promtail.serviceAccountName" . }}
+      containers:
+        - name: promtail
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-config.file=/etc/promtail/promtail.yaml"
+            {{- if and .Values.loki.user .Values.loki.password }}
+            - "-client.url={{ .Values.loki.serviceScheme }}://{{ .Values.loki.user }}:{{ .Values.loki.password }}@{{ .Values.loki.serviceName }}:{{ .Values.loki.servicePort }}/api/prom/push"
+            {{- else }}
+            - "-client.url={{ .Values.loki.serviceScheme }}://{{ .Values.loki.serviceName }}:{{ .Values.loki.servicePort }}/api/prom/push"
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/promtail
+            - name: run
+              mountPath: /run/promtail
+          {{- with .Values.volumeMounts }}
+            {{ toYaml . | indent 12 | trim }}
+          {{- end }}
+          env:
+          - name: HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          ports:
+            - containerPort: {{ .Values.config.server.http_listen_port }}
+              name: http-metrics
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /ready
+              port: http-metrics
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+        {{- with .Values.securityContext }}
+          securityContext:
+            {{ toYaml . |nindent 12 | trim }}
+        {{- end }}
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "promtail.fullname" . }}
+        - name: run
+          hostPath:
+            path: /run/promtail
+      {{- with .Values.volumes }}
+        {{ toYaml . | indent 8 | trim }}
+      {{- end }}
+
