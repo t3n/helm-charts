@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "loki.fullname" . }}
+  labels:
+    {{ include "loki.labels" . | indent 4 | trim }}
+{{- with .Values.service.labels }}
+  {{- range $key, $value := .Values.service.labels }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+{{- with .Values.service.annotations }}
+  annotations:
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 3100
+      targetPort: http-metrics
+      name: http-metrics
+  selector:
+    {{ include "loki.selector" . | indent 4 | trim }}

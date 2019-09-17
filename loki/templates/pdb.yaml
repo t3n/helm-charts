@@ -1,0 +1,13 @@
+{{- if gt .Values.replicaCount 1.0 -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "loki.fullname" . }}
+  labels:
+    {{ include "loki.labels" . | indent 4 | trim }}
+spec:
+  selector:
+    matchLabels:
+      {{ include "loki.selector" . | indent 6 | trim }}
+  maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
+{{- end -}}
