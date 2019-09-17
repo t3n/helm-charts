@@ -1,0 +1,98 @@
+image:
+  repository: grafana/promtail
+  tag: v0.3.0
+  pullPolicy: IfNotPresent
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: ""
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations:
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+
+affinity: {}
+
+metrics:
+  enabled: false
+
+resources: {}
+#  limits:
+#    cpu: 200m
+#    memory: 128Mi
+#  requests:
+#    cpu: 100m
+#    memory: 128Mi
+
+securityContext:
+  readOnlyRootFilesystem: true
+  runAsGroup: 0
+  runAsUser: 0
+
+# Extra volumes to scrape logs from
+volumes:
+  - name: docker
+    hostPath:
+      path: /var/lib/docker/containers
+  - name: pods
+    hostPath:
+      path: /var/log/pods
+
+volumeMounts:
+  - name: docker
+    mountPath: /var/lib/docker/containers
+    readOnly: true
+  - name: pods
+    mountPath: /var/log/pods
+    readOnly: true
+
+loki:
+  serviceName: loki
+  servicePort: 3100
+  serviceScheme: http
+  # user: user
+  # password: pass
+
+pipelineStages:
+- docker: {}
+
+# Custom scrape_configs to override the default ones in the configmap
+scrapeConfigs: []
+
+config:
+  client:
+    # Maximum wait period before sending batch
+    batchwait: 1s
+    # Maximum batch size to accrue before sending, unit is byte
+    batchsize: 102400
+
+    # Maximum time to wait for server to respond to a request
+    timeout: 10s
+
+    backoff_config:
+      # Initial backoff time between retries
+      minbackoff: 100ms
+      # Maximum backoff time between retries
+      maxbackoff: 5s
+      # Maximum number of retries when sending batches, 0 means infinite retries
+      maxretries: 5
+
+    # The labels to add to any time series or alerts when communicating with loki
+    external_labels: {}
+
+  server:
+    http_listen_port: 3101
+  positions:
+    filename: /run/promtail/positions.yaml
+  target_config:
+    # Period to resync directories being watched and files being tailed
+    sync_period: 10s
