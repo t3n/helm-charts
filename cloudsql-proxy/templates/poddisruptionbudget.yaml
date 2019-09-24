@@ -4,14 +4,10 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "cloudsql-proxy.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
-    helm.sh/chart: {{ include "cloudsql-proxy.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{ include "cloudsql-proxy.labels" . | indent 4 | trim }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{ include "cloudsql-proxy.selector" . | indent 6 | trim }}
   maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
 {{- end -}}
