@@ -3,9 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ include "mysql-backup.fullname" . }}
   labels:
-    app: {{ include "mysql-backup.fullname" . }}
-    chart: {{ include "mysql-backup.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "mysql-backup.labels" . | indent 4 | trim }}
 data:
 {{ tpl (.Files.Glob "scripts/*").AsConfig . | indent 2 }}

@@ -43,3 +43,21 @@ Create filename
 {{- .Values.database.name -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "mysql-backup.labels" -}}
+app: {{ include "mysql-backup.name" . }}
+chart: {{ include "mysql-backup.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "mysql-backup.selector" -}}
+app: {{ include "mysql-backup.name" . }}
+release: {{ .Release.Name }}
+{{- end -}}

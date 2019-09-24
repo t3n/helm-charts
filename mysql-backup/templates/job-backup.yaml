@@ -4,10 +4,7 @@ kind: Job
 metadata:
   name: {{ include "mysql-backup.fullname" . }}
   labels:
-    app: {{ include "mysql-backup.fullname" . }}
-    chart: {{ include "mysql-backup.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "mysql-backup.labels" . | indent 4 | trim }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
