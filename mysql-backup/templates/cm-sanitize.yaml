@@ -4,10 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "mysql-backup.fullname" . }}-sanitize
   labels:
-    app: {{ include "mysql-backup.fullname" . }}
-    chart: {{ include "mysql-backup.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "mysql-backup.labels" . | indent 4 | trim }}
 data:
   sanitize.sql: |-
     {{- range .Values.sanitize.sql }}
