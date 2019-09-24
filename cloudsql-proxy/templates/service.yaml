@@ -4,10 +4,7 @@ kind: Service
 metadata:
   name: {{ include "cloudsql-proxy.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
-    helm.sh/chart: {{ include "cloudsql-proxy.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{ include "cloudsql-proxy.labels" . | indent 4 | trim }}
 {{- with .Values.service.annotations }}
   annotations:
     {{ toYaml . | nindent 4 }}
@@ -24,6 +21,5 @@ spec:
     targetPort: {{ .instanceShortName | default (.instance | trunc 15) }}
 {{- end }}
   selector:
-    app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{ include "cloudsql-proxy.selector" . | indent 4 | trim }}
 {{- end -}}

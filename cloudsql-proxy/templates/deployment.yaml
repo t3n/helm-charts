@@ -4,10 +4,7 @@ kind: Deployment
 metadata:
   name: {{ include "cloudsql-proxy.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
-    helm.sh/chart: {{ include "cloudsql-proxy.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{ include "cloudsql-proxy.labels" . | indent 4 | trim }}
 spec:
   replicas: {{ .Values.replicaCount }}
 {{- if eq .Values.replicaCount 1.0 }}
@@ -17,13 +14,11 @@ spec:
 {{- end }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{ include "cloudsql-proxy.selector" . | indent 6 | trim }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "cloudsql-proxy.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{ include "cloudsql-proxy.selector" . | indent 8 | trim }}
     spec:
       serviceAccountName: {{ include "cloudsql-proxy.serviceAccountName" . }}
       containers:

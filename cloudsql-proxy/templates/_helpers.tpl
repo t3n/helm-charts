@@ -41,3 +41,21 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "cloudsql-proxy.labels" -}}
+app: {{ include "cloudsql-proxy.name" . }}
+chart: {{ include "cloudsql-proxy.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "cloudsql-proxy.selector" -}}
+app: {{ include "cloudsql-proxy.name" . }}
+release: {{ .Release.Name }}
+{{- end -}}
