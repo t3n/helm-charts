@@ -6,10 +6,7 @@ kind: Ingress
 metadata:
   name: {{ include "unms.fullname" . }}
   labels:
-    app: {{ include "unms.name" . }}
-    chart: {{ include "unms.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "unms.labels" . | indent 4 | trim }}
 {{- with .Values.ingress.annotations }}
   annotations:
   {{ toYaml . | nindent 4 }}
@@ -36,4 +33,3 @@ spec:
               servicePort: http
   {{- end }}
 {{- end }}
-

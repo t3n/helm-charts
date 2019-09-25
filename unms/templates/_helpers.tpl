@@ -38,3 +38,39 @@ Create a default fully qualified app name for the mysql requirement.
 {{- $mysqlContext := dict "Values" .Values.mysql "Release" .Release "Chart" (dict "Name" "mysql") -}}
 {{ template "mysql.fullname" $mysqlContext }}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "unms.labels" -}}
+app: {{ include "unms.name" . }}
+chart: {{ include "unms.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "unms.selector" -}}
+app: {{ include "unms.name" . }}
+release: {{ .Release.Name }}
+{{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "unms-nginx.labels" -}}
+app: {{ include "unms.name" . }}-nginx
+chart: {{ include "unms.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "unms-nginx.selector" -}}
+app: {{ include "unms.name" . }}-nginx
+release: {{ .Release.Name }}
+{{- end -}}

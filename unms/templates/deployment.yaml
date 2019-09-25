@@ -3,10 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "unms.fullname" . }}
   labels:
-    app: {{ include "unms.name" . }}
-    chart: {{ include "unms.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "unms.labels" . | indent 4 | trim }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
@@ -17,8 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ include "unms.name" . }}
-        release: {{ .Release.Name }}
+        {{ include "unms.selector" . | indent 8 | trim }}
     spec:
       imagePullSecrets:
         - name: regsecret

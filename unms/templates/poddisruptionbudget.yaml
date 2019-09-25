@@ -4,14 +4,10 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "unms.fullname" . }}
   labels:
-    app: {{ include "unms.name" . }}
-    chart: {{ include "unms.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "unms.labels" . | indent 4 | trim }}
 spec:
   selector:
     matchLabels:
-      app: {{ include "unms.name" . }}
-      release: {{ .Release.Name }}
+      {{ include "unms.selector" . | indent 8 | trim }}
   maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
 {{- end }}
