@@ -34,9 +34,9 @@ Create chart name and version as used by the chart label.
 {{/*
 Common labels
 */}}
-{{- define "mysql-backup.labels" -}}
-app: {{ include "mysql-backup.name" . }}
-chart: {{ include "mysql-backup.chart" . }}
+{{- define "fop.labels" -}}
+app: {{ include "fop.name" . }}
+chart: {{ include "fop.chart" . }}
 release: {{ .Release.Name }}
 heritage: {{ .Release.Service }}
 {{- end -}}
@@ -44,7 +44,7 @@ heritage: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "mysql-backup.selector" -}}
-app: {{ include "mysql-backup.name" . }}
+{{- define "fop.selector" -}}
+app: {{ include "fop.name" . }}
 release: {{ .Release.Name }}
 {{- end -}}
