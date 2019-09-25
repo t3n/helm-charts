@@ -3,11 +3,7 @@ kind: Service
 metadata:
   name: {{ include "snipeit.fullname" . }}
   labels:
-    app: {{ include "snipeit.name" . }}
-    chart: {{ include "snipeit.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-{{- with .Values.service.annotations }}
+    {{ include "snipeit.labels" . | indent 4 | trim }}
   annotations:
     {{ toYaml . | nindent 4 }}
 {{- end }}
@@ -18,5 +14,4 @@ spec:
       port: 80
       protocol: TCP
   selector:
-    app: {{ include "snipeit.name" . }}
-    release: {{ .Release.Name }}
+    {{ include "snipeit.selector" . | indent 4 | trim }}
