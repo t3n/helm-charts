@@ -4,7 +4,7 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "snipeit.fullname" . }}
   labels:
-    {{ include "cloudsql-proxy.labels" . | indent 4 | trim }}
+    {{ include "snipeit.labels" . | indent 4 | trim }}
 spec:
   selector:
     matchLabels:

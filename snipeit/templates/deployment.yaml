@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-    {{ include "fop.selector" . | indent 8 | trim }}
+    {{ include "snipeit.selector" . | indent 8 | trim }}
       annotations:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
