@@ -30,3 +30,21 @@ Create chart name and version as used by the chart label.
 {{- define "fop.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "fop.labels" -}}
+app: {{ include "fop.name" . }}
+chart: {{ include "fop.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "fop.selector" -}}
+app: {{ include "fop.name" . }}
+release: {{ .Release.Name }}
+{{- end -}}

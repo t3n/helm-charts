@@ -3,10 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "fop.fullname" . }}
   labels:
-    app: {{ include "fop.name" . }}
-    chart: {{ include "fop.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "fop.labels" . | indent 4 | trim }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
@@ -17,8 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ include "fop.name" . }}
-        release: {{ .Release.Name }}
+        {{ include "fop.selector" . | indent 8 | trim }}
     spec:
       containers:
         - name: {{ include "fop.fullname" . }}
