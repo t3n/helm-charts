@@ -30,3 +30,21 @@ Create chart name and version as used by the chart label.
 {{- define "fop.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "mysql-backup.labels" -}}
+app: {{ include "mysql-backup.name" . }}
+chart: {{ include "mysql-backup.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "mysql-backup.selector" -}}
+app: {{ include "mysql-backup.name" . }}
+release: {{ .Release.Name }}
+{{- end -}}

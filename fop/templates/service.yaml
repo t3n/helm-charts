@@ -3,10 +3,7 @@ kind: Service
 metadata:
   name: {{ include "fop.fullname" . }}
   labels:
-    app: {{ include "fop.name" . }}
-    chart: {{ include "fop.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "fop.labels" . | indent 4 | trim }}
 {{- with .Values.service.annotations }}
   annotations:
     {{ toYaml . | indent 4 | trim }}
@@ -18,5 +15,4 @@ spec:
       port: 9999
       protocol: TCP
   selector:
-    app: {{ include "fop.name" . }}
-    release: {{ .Release.Name }}
+    {{ include "fop.selector" . | indent 4 | trim }}
