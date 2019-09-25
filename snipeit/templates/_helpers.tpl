@@ -38,3 +38,21 @@ Create a default fully qualified app name for the mysql requirement.
 {{- $mysqlContext := dict "Values" .Values.mysql "Release" .Release "Chart" (dict "Name" "mysql") -}}
 {{ template "mysql.fullname" $mysqlContext }}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "snipeit.labels" -}}
+app: {{ include "snipeit.name" . }}
+chart: {{ include "snipeit.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "snipeit.selector" -}}
+app: {{ include "snipeit.name" . }}
+release: {{ .Release.Name }}
+{{- end -}}

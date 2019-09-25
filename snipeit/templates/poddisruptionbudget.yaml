@@ -4,10 +4,7 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "snipeit.fullname" . }}
   labels:
-    app: {{ include "snipeit.name" . }}
-    chart: {{ include "snipeit.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "snipeit.labels" . | indent 4 | trim }}
 spec:
   selector:
     matchLabels:
