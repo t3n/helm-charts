@@ -60,7 +60,7 @@ release: {{ .Release.Name }}
 {{/*
 Common labels
 */}}
-{{- define "unms-nginx.labels" -}}
+{{- define "unms.labels-nginx" -}}
 app: {{ include "unms.name" . }}-nginx
 chart: {{ include "unms.chart" . }}
 release: {{ .Release.Name }}
@@ -70,7 +70,7 @@ heritage: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "unms-nginx.selector" -}}
+{{- define "unms.selector-nginx" -}}
 app: {{ include "unms.name" . }}-nginx
 release: {{ .Release.Name }}
 {{- end -}}

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "unms.fullname" . }}-nginx
   labels:
-    {{ include "unms-nginx.labels" . | indent 4 | trim }}
+    {{ include "unms.labels-nginx" . | indent 4 | trim }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        {{ include "unms-nginx.selector" . | indent 8 | trim }}
+        {{ include "unms.selector-nginx" . | indent 8 | trim }}
     spec:
       imagePullSecrets:
         - name: regsecret
