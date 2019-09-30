@@ -9,8 +9,7 @@ spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
-      app: {{ include "unms.name" . }}-nginx
-      release: {{ .Release.Name }}
+      {{ include "unms.selector-nginx" . | indent 6 | trim }}
   template:
     metadata:
       labels:
