@@ -9,8 +9,7 @@ spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
-      app: {{ include "fop.name" . }}
-      release: {{ .Release.Name }}
+      {{ include "fop.selector" . | indent 6 | trim }}
   template:
     metadata:
       labels:

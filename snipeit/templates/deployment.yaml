@@ -9,8 +9,7 @@ spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
-      app: {{ include "snipeit.name" . }}
-      release: {{ .Release.Name }}
+      {{ include "snipeit.selector" . | indent 6 | trim }}
   template:
     metadata:
       labels:
