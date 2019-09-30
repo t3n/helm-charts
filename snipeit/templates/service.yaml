@@ -4,6 +4,7 @@ metadata:
   name: {{ include "snipeit.fullname" . }}
   labels:
     {{ include "snipeit.labels" . | indent 4 | trim }}
+{{- with .Values.service.annotations }}
   annotations:
     {{ toYaml . | nindent 4 }}
 {{- end }}

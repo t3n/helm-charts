@@ -14,18 +14,18 @@ spec:
   template:
     metadata:
       labels:
-    {{ include "snipeit.selector" . | indent 8 | trim }}
+        {{ include "snipeit.selector" . | indent 8 | trim }}
       annotations:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
       initContainers:
-      - name: config-data
-        image: busybox
-        command: ["chown","-R","1000", "/var/www/html/storage/framework/sessions"]
-        volumeMounts:
-        - name: data
-          mountPath: /var/www/html/storage/framework/sessions
-          subPath: sessions
+        - name: config-data
+          image: busybox
+          command: ["chown","-R","1000", "/var/www/html/storage/framework/sessions"]
+          volumeMounts:
+            - name: data
+              mountPath: /var/www/html/storage/framework/sessions
+              subPath: sessions
       containers:
         - name: {{ include "snipeit.fullname" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
