@@ -6,7 +6,7 @@ metadata:
     {{ include "dashkiosk.labels" . | indent 4 | trim }}
 {{- with .Values.service.annotations }}
   annotations:
-    {{ toYaml . | nindent 4 }}
+    {{ toYaml . | indent 4 | trim }}
 {{- end }}
 spec:
   type: {{ .Values.service.type }}
