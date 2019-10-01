@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dashkiosk.fullname" . }}
+  labels:
+    {{ include "dashkiosk.labels" . | indent 4 | trim }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{ include "dashkiosk.selector" . | indent 6 | trim }}
+  template:
+    metadata:
+      labels:
+        {{ include "dashkiosk.selector" . | indent 8 | trim }}
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: db__database
+              value: {{ .Values.db.name }}
+            - name: db__username
+              value: {{ .Values.db.user }}
+            - name: db__options__dialect
+              value: {{ .Values.db.type }}
+            - name: db__options__host
+              value: {{ .Values.db.host }}
+          envFrom:
+            - secretRef:
+                name: {{ .Chart.Name }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+{{ toYaml .Values.resources | indent 12 }}

@@ -1,0 +1,43 @@
+replicaCount: 1
+revisionHistoryLimit: 0
+
+## PodDisruptionBudget
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
+# maxUnavailable: 1
+
+image:
+  name: quay.io/t3n/dashkiosk
+  tag: v2.7.8
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+ingress:
+  enabled: true
+  hosts:
+    - example.local
+  annotations: {}
+  #tls:
+  #  - secretName: example-local
+  #    hosts:
+  #      - example-local
+
+db:
+  type: mysql
+  host: mariadb.services
+  name: db-dashkiosk
+  user: dashkiosk
+  pass: changeme
+
+resources: {}
+#limits:
+#   cpu: 200m
+#   memory: 1Gi
+# requests:
+#   cpu: 200m
+#   memory: 800Mi
+
+mysql-backup:
+  enabled: false
