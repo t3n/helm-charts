@@ -1,0 +1,4 @@
+name: dashkiosk
+description: Managing dashboards on various displays (especially those running on Android)
+version: 1.0.0
+appVersion: 2.7.8
