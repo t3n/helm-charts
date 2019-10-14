@@ -15,6 +15,12 @@ spec:
       labels:
         {{ include "fop.selector" . | indent 8 | trim }}
     spec:
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
       containers:
         - name: {{ include "fop.fullname" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

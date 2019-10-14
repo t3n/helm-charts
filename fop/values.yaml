@@ -6,9 +6,11 @@ revisionHistoryLimit: 0
 # maxUnavailable: 1
 
 image:
-  repository: zilverline/fop
-  tag: 1.7
-  pullPolicy: IfNotPresent
+  repository: docker.pkg.github.com/t3n/apache-fop-server/apache-fop-server
+  tag: latest
+  pullPolicy: Always
+  pullSecrets:
+    - regsecret
 
 service:
   type: ClusterIP
