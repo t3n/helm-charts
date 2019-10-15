@@ -1,0 +1,37 @@
+image:
+  name: quay.io/t3n/tideways
+  tag: 1.5.60
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+## Configure resource requests and limits
+## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+resources:
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 20m
+    memory: 50Mi
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+## Additional command line arguments to pass to tideways-daemon
+## E.g. to specify the environment to use
+# extraArgs:
+#   env: staging
+extraArgs: {}
+
+apiKey: dummy
+sampleRate: 60
+serviceName: default
+framework: ""

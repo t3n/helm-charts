@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "tideways.fullname" . }}
+  labels:
+    {{ include "tideways.labels" . | indent 4 | trim }}
+data:
+  tideways.ini: |-
+    tideways.api_key={{ .Values.apiKey }}
+    tideways.connection=tcp://{{ include "tideways.fullname" . }}:9135
+    tideways.udp_connection="{{ include "tideways.fullname" . }}:8135"
+    tideways.sample_rate={{ .Values.sampleRate }}
+    tideways.distributed_tracing_hosts={{ include "tideways.fullname" . }}
+    tideways.service={{ .Values.serviceName }}
+    tideways.framework={{ .Values.framework }}

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tideways.fullname" . }}
+  labels:
+    {{ include "tideways.labels" . | indent 4 | trim }}
+{{- with .Values.service.annotations }}
+  annotations:
+    {{ toYaml . | nindent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: tideways
+      port: 9135
+    - name: tideways-udp
+      port: 8135
+      protocol: UDP
+  selector:
+    {{ include "tideways.selector" . | indent 4 | trim }}
