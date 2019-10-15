@@ -58,7 +58,7 @@ spec:
               port: tideways
         {{- with .Values.resources }}
           resources:
-            {{ toYaml . | nindent 12 }}
+            {{ toYaml . | indent 12 | trim }}
         {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
