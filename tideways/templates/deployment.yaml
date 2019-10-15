@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tideways.fullname" . }}
+  labels:
+    app: {{ include "tideways.name" . }}
+    chart: {{ include "tideways.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 0 }}
+  selector:
+    matchLabels:
+      {{ include "tideways.selector" . | indent 6 | trim }}
+  template:
+    metadata:
+      labels:
+        {{ include "tideways.selector" . | indent 8 | trim }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{ toYaml . | indent 8 | trim }}
+      {{- end }}
+    spec:
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - tideways-daemon
+          args:
+            - --address=0.0.0.0:9135
+            - --udp=0.0.0.0:8135
+            - --hostname={{- if .Values.extraArgs.env }}{{ .Values.extraArgs.env }}{{- else }}production{{- end }}
+          {{- range $key, $value := .Values.extraArgs }}
+            {{- if $value }}
+            - --{{ $key }}={{ $value }}
+            {{- else }}
+            - --{{ $key }}
+            {{- end }}
+          {{- end }}
+          ports:
+            - name: tideways
+              containerPort: 9135
+            - name: tideways-udp
+              containerPort: 8135
+              protocol: UDP
+          livenessProbe:
+            tcpSocket:
+              port: tideways
+          readinessProbe:
+            tcpSocket:
+              port: tideways
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
