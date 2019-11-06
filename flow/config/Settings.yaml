@@ -1,9 +1,0 @@
-Neos:
-  Flow:
-    persistence:
-      backendOptions:
-        driver: "pdo_mysql"
-        host: {{ template "flow.mariadb" . }}
-        user: "%env:DB_USER%"
-        password: "%env:DB_PASS%"
-        dbname: {{ .Values.mariadb.mariadbDatabase | quote }}
