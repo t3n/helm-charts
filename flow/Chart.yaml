@@ -1,4 +1,0 @@
-apiVersion: v1
-description: Flow is a free PHP framework licensed under the MIT license, developed to power the enterprise Neos CMS.
-name: flow
-version: 0.1.0

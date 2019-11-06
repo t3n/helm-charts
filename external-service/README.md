@@ -1,6 +1,6 @@
 # External-Service
 
-This Chart bootstraps a external-service Deployment, which allows you to easily use external services inside your cluster
+This Chart allows you to use external services inside your Kubernetes Cluster
 
 ## Configuration
 
