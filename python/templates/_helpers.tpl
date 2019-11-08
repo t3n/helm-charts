@@ -53,8 +53,5 @@ Create a default fully qualified app name for the redis requirement.
 {{- if .Values.redis.enabled -}}
 {{- $redisContext := dict "Values" .Values.redis "Release" .Release "Chart" (dict "Name" "redis") -}}
 {{ template "redis.fullname" $redisContext }}
-{{- else -}}
-{{- $redishaContext := dict "Values" (index .Values "redis-ha") "Release" .Release "Chart" (dict "Name" "redis-ha") -}}
-{{ template "redis-ha.fullname" $redishaContext }}
 {{- end -}}
 {{- end -}}
