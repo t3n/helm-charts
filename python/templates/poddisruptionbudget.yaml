@@ -1,0 +1,17 @@
+{{- if gt (int .Values.replicaCount) 1 -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "python.fullname" . }}
+  labels:
+    app: {{ include "python.name" . }}
+    chart: {{ include "python.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "python.name" . }}
+      release: {{ .Release.Name }}
+  maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
+{{- end -}}
