@@ -1,0 +1,123 @@
+{{- $fullName := include "python.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "python.fullname" . }}
+  labels:
+    app: {{ include "python.name" . }}
+    chart: {{ include "python.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ include "python.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "python.name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        deployment: {{ .Values.global.deployment | quote }}
+        pipeline: {{ .Values.global.pipeline | quote }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+    spec:
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . | quote }}
+      {{- end }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if .Values.command }}
+          command:
+          {{- range .Values.command }}
+            - {{ . | quote }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.extraArgs }}
+          args:
+          {{- range $key, $value := .Values.extraArgs }}
+            {{- if $value }}
+            - --{{ $key }}={{ $value }}
+            {{- else }}
+            - --{{ $key }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.extraEnvs }}
+          env:
+          {{- range $key, $value := .Values.extraEnvs }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+        {{- end }}
+          ports:
+            - name: {{ .Values.service.name }}
+              containerPort: {{ .Values.service.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ default .Values.service.name .Values.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ default .Values.service.name .Values.livenessProbe.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+        {{- if or .Values.secretFiles .Values.extraVolumeMounts }}
+          volumeMounts:
+          {{- range $name, $files := .Values.secretFiles }}
+            - name: {{ $name }}
+              mountPath: {{ $files.mountPath }}
+            {{- if $files.subPath }}
+              subPath: {{ $files.subPath }}
+            {{- end }}
+          {{- end }}
+          {{- with .Values.extraVolumeMounts }}
+            {{ toYaml . | indent 12 | trim }}
+          {{- end }}
+        {{- end }}
+    {{- if or .Values.secretFiles .Values.extraVolumes }}
+      volumes:
+      {{- range $name, $files := .Values.secretFiles }}
+        - name: {{ $name }}
+          secret:
+            secretName: {{ $fullName }}-{{ $name }}
+      {{- end }}
+      {{- with .Values.extraVolumes }}
+        {{ toYaml . | indent 8 | trim }}
+      {{- end }}
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
