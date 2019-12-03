@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "unifi-video.fullname" . }}
+  labels:
+    {{ include "unifi-video.labels" . | indent 4 | trim }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{ include "unifi-video.selector" . | indent 6 | trim }}
+  template:
+    metadata:
+      labels:
+        {{ include "unifi-video.selector" . | indent 8 | trim }}
+    spec:
+      initContainers:
+      - name: {{ include "unifi-video.name" . }}-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 99:100 /var/lib/unifi-video"]
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/unifi-video
+          subPath: storage
+        - name: data
+          mountPath: /var/lib/unifi-video/videos
+          subPath: videos
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+      containers:
+        - name: {{ include "unifi-video.name" . }}
+        {{- with .Values.securityContext }}
+          securityContext:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: rtmp
+              containerPort: 1935
+              protocol: TCP
+            - name: rtmps
+              containerPort: 7444
+              protocol: TCP
+            - name: rtsp
+              containerPort: 7447
+              protocol: TCP
+            - name: inbound
+              containerPort: 6666
+              protocol: TCP
+            - name: management
+              containerPort: 7442
+              protocol: TCP
+            - name: talkback
+              containerPort: 7004
+              protocol: UDP
+            - name: http
+              containerPort: 7080
+              protocol: TCP
+            - name: https
+              containerPort: 7443
+              protocol: TCP
+            - name: httpvideo
+              containerPort: 7445
+              protocol: TCP
+            - name: httpsvideo
+              containerPort: 7446
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/unifi-video
+              subPath: storage
+            - name: data
+              mountPath: /var/lib/unifi-video/videos
+              subPath: videos
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | indent 12 | trim }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | indent 8 | trim }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | indent 8 | trim }}
+    {{- end }}
+      volumes:
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "unifi-video.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}

@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "unifi-video.fullname" . }}-tcp
+  labels:
+    {{ include "unifi-video.labels" . | indent 4 | trim }}
+{{- with .Values.service.annotations }}
+  annotations:
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+{{ if (.Values.service.loadBalancerIP) and eq .Values.service.type "LoadBalancer" }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+{{ end }}
+  ports:
+    - name: rtmp
+      port: 1935
+      protocol: TCP
+    - name: rtmps
+      port: 7444
+      protocol: TCP
+    - name: rtsp
+      port: 7447
+      protocol: TCP
+    - name: inbound
+      port: 6666
+      protocol: TCP
+    - name: management
+      port: 7442
+      protocol: TCP
+    - name: http
+      port: 7080
+      protocol: TCP
+    - name: https
+      port: 7443
+      protocol: TCP
+    - name: httpvideo
+      port: 7445
+      protocol: TCP
+    - name: httpsvideo
+      port: 7446
+      protocol: TCP
+  selector:
+    {{ include "unifi-video.selector" . | indent 4 | trim }}
