@@ -45,4 +45,3 @@ spec:
       protocol: TCP
   selector:
     {{ include "unifi-video.selector" . | indent 4 | trim }}
-

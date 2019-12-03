@@ -21,4 +21,3 @@ spec:
       protocol: UDP
   selector:
     {{ include "unifi-video.selector" . | indent 4 | trim }}
-
