@@ -29,12 +29,16 @@ spec:
       imagePullSecrets:
         {{- toYaml . | indent 8 | trim }}
     {{- end }}
+    {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | indent 8 | trim }}
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
       containers:
         - name: {{ include "unifi-video.name" . }}
+        {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | indent 12 | trim }}
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

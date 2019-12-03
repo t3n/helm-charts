@@ -20,8 +20,7 @@ securityContext:
   allowPrivilegeEscalation: true
   privileged: true
   capabilities:
-    add: ["SYS_ADMIN"]
-    add: ["DAC_READ_SEARCH"]
+    add: ["SYS_ADMIN", "DAC_READ_SEARCH"]
 
 service:
   type: LoadBalancer
