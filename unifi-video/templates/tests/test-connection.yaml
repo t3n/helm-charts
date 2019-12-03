@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: "{{ include "unifi-video.fullname" . }}-test-connection"
   labels:
-{{ include "unifi-video.labels" . | indent 4 }}
+{{ include "unifi-video.labels" . | indent 4 | trim }}
   annotations:
     "helm.sh/hook": test-success
 spec:

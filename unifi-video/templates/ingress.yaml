@@ -9,7 +9,9 @@ metadata:
     {{ include "unifi-video.labels" . | indent 4 | trim }}
 {{- with .Values.ingress.annotations }}
   annotations:
-  {{ toYaml . | nindent 4 }}
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 {{- end }}
 spec:
 {{- if .Values.ingress.tls }}

@@ -5,9 +5,11 @@ metadata:
   name: {{ include "unifi-video.fullname" . }}
   labels:
     {{ include "unifi-video.labels" . | indent 4 | trim }}
-{{- with .Values.persistence.annotations }}
+{{- with .Values.ingress.annotations }}
   annotations:
-    {{ toYaml . | nindent 4 }}
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 {{- end }}
 spec:
   accessModes:
