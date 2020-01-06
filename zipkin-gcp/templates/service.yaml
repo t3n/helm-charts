@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "zipkin-gcp.fullname" . }}
+  labels:
+    {{ include "zipkin-gcp.labels" . | indent 4 | trim }}
+  {{- range $key, $value := .Values.service.labels }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- with .Values.service.annotations }}
+  annotations:
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 9411
+      targetPort: http
+      name: http
+  selector:
+    {{ include "zipkin-gcp.selector" . | indent 4 | trim }}

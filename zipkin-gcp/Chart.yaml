@@ -1,0 +1,4 @@
+apiVersion: v1
+appVersion: "0.15.2"
+name: zipkin-gcp
+version: 0.1.0
