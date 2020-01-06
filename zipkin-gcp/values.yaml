@@ -1,0 +1,28 @@
+image:
+  repository: openzipkin/zipkin-gcp
+  tag: 0.15.2
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  annotations: {}
+  labels: {}
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+gcpProjectID: ""

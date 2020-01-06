@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zipkin-gcp.fullname" . }}
+  labels:
+    {{ include "zipkin-gcp.labels" . | indent 4 | trim }}
+spec:
+  selector:
+    matchLabels:
+      {{ include "zipkin-gcp.selector" . | indent 6 | trim }}
+  template:
+    metadata:
+      labels:
+        {{ include "zipkin-gcp.selector" . | indent 8 | trim }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: STORAGE_TYPE
+              value: stackdriver
+            - name: STACKDRIVER_PROJECT_ID
+              value: {{ .Values.gcpProjectID | quote }}
+          ports:
+            - name: http
+              containerPort: 9411
+              protocol: TCP
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
