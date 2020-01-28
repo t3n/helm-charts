@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: gcr.io/cloudsql-docker/gce-proxy
-  tag: 1.15
+  tag: 1.16
   pullPolicy: IfNotPresent
 
 nameOverride: ""
