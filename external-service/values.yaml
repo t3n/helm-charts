@@ -1,6 +1,9 @@
 nameOverride: ""
 fullnameOverride: ""
 
+ingress:
+  enabled: false
+
 # Both addresses and ports are required to install a service with the
 # corresponding endpoint.
 addresses: []
@@ -8,3 +11,8 @@ addresses: []
 ports: []
   # - port: 3306
   #   name: mysql
+  #   ingress:
+  #     hosts:
+  #       - host: localhost
+  #         paths:
+  #           - '/'
