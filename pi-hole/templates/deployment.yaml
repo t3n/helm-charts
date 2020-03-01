@@ -14,7 +14,7 @@ spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets: {{ toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ template "pi-hole.serviceAccountName" . }}
+      serviceAccountName: {{ include "pi-hole.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
