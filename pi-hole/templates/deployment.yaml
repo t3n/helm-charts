@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pi-hole.fullname" . }}
+  labels: {{ include "pi-hole.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels: {{ include "pi-hole.selector" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "pi-hole.selector" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{ toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "pi-hole.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- with .Values.extraEnvs }}
+          env:
+          {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+        {{- end }}
+        {{- if or .Values.secretEnvs .Values.existingEnvsSecret }}
+          envFrom:
+            - secretRef:
+                name: {{ if .Values.existingEnvsSecret }}{{ .Values.existingEnvsSecret }}{{ else }}{{ include "pi-hole.fullname" . }}{{ end }}
+        {{- end }}
+        {{- with .Values.ports }}
+          ports:
+          {{- range $key, $value := . }}
+            - name: {{ $key }}
+              containerPort: {{ $value.port }}
+              protocol: {{ default "TCP" $value.protocol }}
+          {{- end }}
+        {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+        {{- with .Values.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+        {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.pihole.mountPath }}
+              subPath: {{ .Values.persistence.pihole.subPath }}
+            - name: data
+              mountPath: {{ .Values.persistence.dnsmasq.mountPath }}
+              subPath: {{ .Values.persistence.dnsmasq.subPath }}
+      volumes:
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "pi-hole.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+    {{- end }}
