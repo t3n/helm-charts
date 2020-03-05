@@ -1,4 +1,4 @@
 apiVersion: v1
-name: test
+name: loki
 version: 0.1.0
 desciption: simplefied upstream chart
