@@ -1,9 +1,0 @@
-dependencies:
-- name: mysql
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  version: 1.6.2
-- name: mysql-backup
-  repository: https://storage.googleapis.com/t3n-helm-charts
-  version: 1.0.1
-digest: sha256:c34b5c72303d07189c19d52acb5d79c5634299c1555c39db149080d3a558016f
-generated: "2020-03-04T16:52:15.832715369-08:00"
