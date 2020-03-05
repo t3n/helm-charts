@@ -1,3 +1,4 @@
+apiVersion: v1
 name: snipeit
 version: 1.2.5
 appVersion: 4.9.0
