@@ -38,7 +38,7 @@ mysql:
   ## Create a database and a database user
   ##
   mysqlUser: snipeit
-  mysqlPassword: ""
+  mysqlPassword: "snipeit"
   mysqlDatabase: db-snipeit
 
   persistence:
