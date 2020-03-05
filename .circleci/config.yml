@@ -1,6 +1,13 @@
 version: 2
+
+helm_environment: &helm_environment
+  HELM_URL: "https://get.helm.sh"
+  HELM_TARBALL: "helm-v2.16.3-linux-amd64.tar.gz"
+
 jobs:
   test:
+    environment:
+      *helm_environment
     docker:
       - image: google/cloud-sdk:alpine
     steps:
@@ -17,6 +24,8 @@ jobs:
           ./helm_lint.sh
 
   release:
+    environment:
+      *helm_environment
     docker:
       - image: google/cloud-sdk:alpine
     steps:
