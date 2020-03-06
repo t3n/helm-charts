@@ -111,3 +111,6 @@ autoscaling:
 
 redis:
   enabled: false
+
+postgresql:
+  enabled: false
