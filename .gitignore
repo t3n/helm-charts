@@ -1,3 +1,4 @@
 *.tgz
 charts/*
 index.yaml
+test.yaml
