@@ -32,12 +32,7 @@ successfulJobsHistoryLimit: 1
 failedJobsHistoryLimit: 1
 
 existingConfigMap: ""
-config:
-  bq:
-    dataset: 'gtmetrix'
-    table: 't3nde'
-  urls:
-    - https://t3n.de/
+config: {}
 
 existingSecret: ""
 credentials: ""
