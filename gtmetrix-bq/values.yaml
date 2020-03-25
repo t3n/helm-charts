@@ -1,6 +1,6 @@
 image:
   repository: t3nde/gtmetrix-bq
-  tag: 0.1.0
+  tag: 0.1.2
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -37,3 +37,5 @@ config: {}
 existingSecret: ""
 credentials: ""
 extraEnvs: {}
+secretEnvs: {}
+existingEnvsSecret: ""
