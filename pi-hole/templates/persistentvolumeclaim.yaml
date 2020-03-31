@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "pi-hole.fullname" . }}
-  labels: {{ include "pi-hole.labels" . | nindent 4 }}
+  labels: {{- include "pi-hole.labels" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode }}

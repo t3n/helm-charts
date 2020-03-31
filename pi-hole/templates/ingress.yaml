@@ -9,7 +9,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
-  labels: {{ include "pi-hole.labels" . | nindent 4 }}
+  labels: {{- include "pi-hole.labels" . | nindent 4 }}
 {{- with .Values.ingress.annotations }}
   annotations:
   {{- range $key, $value := . }}

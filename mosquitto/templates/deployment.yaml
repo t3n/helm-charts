@@ -2,17 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "mosquitto.fullname" . }}
-  labels: {{ include "mosquitto.labels" . | nindent 4 }}
+  labels: {{- include "mosquitto.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
-    matchLabels: {{ include "mosquitto.selector" . | nindent 6 }}
+    matchLabels: {{- include "mosquitto.selector" . | nindent 6 }}
   template:
     metadata:
-      labels: {{ include "mosquitto.selector" . | nindent 8 }}
+      labels: {{- include "mosquitto.selector" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
-      imagePullSecrets: {{ toYaml . | nindent 8 }}
+      imagePullSecrets:
+        {{ toYaml . | indent 8 | trim }}
     {{- end }}
       serviceAccountName: {{ include "mosquitto.serviceAccountName" . }}
       containers:
@@ -38,7 +39,8 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 3
         {{- with .Values.resources }}
-          resources: {{ toYaml . | nindent 12 }}
+          resources:
+            {{ toYaml . | indent 12 | trim }}
         {{- end }}
           volumeMounts:
             - name: config
@@ -59,11 +61,14 @@ spec:
           emptyDir: {}
         {{- end }}
     {{- with .Values.nodeSelector }}
-      nodeSelector: {{ toYaml . | nindent 8 }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
     {{- end }}
     {{- with .Values.affinity }}
-      affinity: {{ toYaml . | nindent 8 }}
+      affinity:
+        {{ toYaml . | indent 8 | trim }}
     {{- end }}
     {{- with .Values.tolerations }}
-      tolerations: {{ toYaml . | nindent 8 }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
     {{- end }}
