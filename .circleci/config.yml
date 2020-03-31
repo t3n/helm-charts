@@ -2,7 +2,7 @@ version: 2
 
 helm_environment: &helm_environment
   HELM_URL: "https://get.helm.sh"
-  HELM_TARBALL: "helm-v2.16.3-linux-amd64.tar.gz"
+  HELM_TARBALL: "helm-v3.1.2-linux-amd64.tar.gz"
 
 jobs:
   test:
@@ -17,8 +17,7 @@ jobs:
           tar xzfv ${HELM_TARBALL}
           export PATH=`pwd`/linux-amd64/:$PATH
           echo 'export PATH=`pwd`/linux-amd64/:$PATH' >> $BASH_ENV
-          helm init --client-only
-          helm repo remove local
+          helm repo add stable https://kubernetes-charts.storage.googleapis.com
           helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
       - run: |
           ./helm_lint.sh
@@ -35,8 +34,7 @@ jobs:
           tar xzfv ${HELM_TARBALL}
           export PATH=`pwd`/linux-amd64/:$PATH
           echo 'export PATH=`pwd`/linux-amd64/:$PATH' >> $BASH_ENV
-          helm init --client-only
-          helm repo remove local
+          helm repo add stable https://kubernetes-charts.storage.googleapis.com
           helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
           echo "$SERVICE_ACCOUNT_JSON" > key.json
           gcloud auth activate-service-account --key-file key.json
