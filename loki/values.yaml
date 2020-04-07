@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: grafana/loki
-  tag: v0.3.0
+  tag: 1.4.0
   pullPolicy: IfNotPresent
 
 ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
