@@ -46,7 +46,7 @@ extraEnvs:
   SFTP_PORT: 2022
   SFTP_SERVER_KEY_PATH: /var/id_rsa
   GCS_CREDENTIALS_FILE: /var/credentials.json
-  GCS_BUCKET: t3n-pressmatrix
+  GCS_BUCKET: default-bucket
 secretEnvs:
   SFTP_USERNAME: user123
   SFTP_PASSWORD: kl5dfqpw3NXCZX0
