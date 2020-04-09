@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sftp-gcs.fullname" . }}
+  labels: {{- include "sftp-gcs.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels: {{- include "sftp-gcs.selector" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "sftp-gcs.selector" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if or .Values.secretEnvs .Values.existingEnvsSecret }}
+          envFrom:
+          - secretRef:
+              name: {{ if .Values.existingEnvsSecret }}{{ .Values.existingEnvsSecret }}{{ else }}{{ include "sftp-gcs.fullname" . }}-envs{{ end }}
+        {{- end }}
+          env:
+            {{- with .Values.extraEnvs }}
+              {{- range $key, $value := . }}
+                - name: {{ $key }}
+                  value: {{ $value | quote }}
+              {{- end }}
+            {{- end }}
+        {{- with .Values.ports }}
+          ports:
+          {{- range $key, $value := . }}
+            - name: {{ $key }}
+              containerPort: {{ $value.port }}
+              protocol: {{ default "TCP" $value.protocol }}
+          {{- end }}
+        {{- end }}
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /var/credentials.json
+              subPath: credentials.json
+            - name: config
+              mountPath: /var/id_rsa
+              subPath: id_rsa
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ if .Values.existingSecret }}{{ .Values.existingSecret }}{{ else }}{{ include "sftp-gcs.fullname" . }}{{ end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}

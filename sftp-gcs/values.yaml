@@ -1,0 +1,53 @@
+image:
+  repository: t3nde/gcs-sftp
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+existingSecret: ""
+
+# Base64 Encoded Value of Google Cloud Credentials.json
+credentials: ""
+
+# Base64 Encoded Value of Generated SSH-Private key (id_rsa) used for the SFTP Server
+privateKey: ""
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+ports:
+  sftp:
+    port: 2022
+    protocol: TCP
+
+extraEnvs:
+  SFTP_PORT: 2022
+  SFTP_SERVER_KEY_PATH: /var/id_rsa
+  GCS_CREDENTIALS_FILE: /var/credentials.json
+  GCS_BUCKET: t3n-pressmatrix
+secretEnvs:
+  SFTP_USERNAME: user123
+  SFTP_PASSWORD: kl5dfqpw3NXCZX0
+existingEnvsSecret: ""
