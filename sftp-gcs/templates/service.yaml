@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sftp-gcs.fullname" . }}
+  labels: {{- include "sftp-gcs.labels" . | nindent 4 }}
+{{- with .Values.service.annotations }}
+  annotations:
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+{{- if .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+{{- end }}
+{{- with .Values.ports }}
+  ports:
+  {{- range $key, $value := . }}
+    - name: {{ $key }}
+      port: {{ $value.port }}
+      targetPort: {{ $key }}
+      protocol: {{ default "TCP" $value.protocol }}
+  {{- end }}
+{{- end }}
+  selector: {{- include "sftp-gcs.selector" . | nindent 4 }}
