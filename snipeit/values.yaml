@@ -7,7 +7,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: snipe/snipe-it
-  tag: v4.9.0
+  tag: v4.9.2
   pullPolicy: IfNotPresent
 
 service:
