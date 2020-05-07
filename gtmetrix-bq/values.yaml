@@ -1,6 +1,6 @@
 image:
   repository: t3nde/gtmetrix-bq
-  tag: 0.1.2
+  tag: 0.2.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
