@@ -7,8 +7,8 @@ metadata:
     {{ include "external-service.labels" . | indent 4 | trim }}
 spec:
   type: ClusterIP
-{{- range .Values.ports }}
   ports:
+{{- range .Values.ports }}
     - port: {{ .port }}
       targetPort: {{ .name }}
       protocol: {{ default "TCP" .protocol }}
