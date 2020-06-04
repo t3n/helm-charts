@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: grafana/loki
-  tag: 1.4.0
+  tag: 1.5.0
   pullPolicy: IfNotPresent
 
 ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
@@ -103,7 +103,7 @@ config:
     filesystem:
       directory: /data/loki/chunks
   chunk_store_config:
-    max_look_back_period: 0
+    max_look_back_period: 0s
   table_manager:
     retention_deletes_enabled: false
-    retention_period: 0
+    retention_period: 0s
