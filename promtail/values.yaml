@@ -1,6 +1,6 @@
 image:
   repository: grafana/promtail
-  tag: v0.3.0
+  tag: 1.5.0
   pullPolicy: IfNotPresent
 
 rbac:
@@ -68,6 +68,9 @@ pipelineStages:
 # Custom scrape_configs to override the default ones in the configmap
 scrapeConfigs: []
 
+# Custom scrape_configs together with the default ones in the configmap
+extraScrapeConfigs: []
+
 config:
   client:
     # Maximum wait period before sending batch
@@ -80,17 +83,18 @@ config:
 
     backoff_config:
       # Initial backoff time between retries
-      minbackoff: 100ms
+      min_period: 100ms
       # Maximum backoff time between retries
-      maxbackoff: 5s
+      max_period: 5s
       # Maximum number of retries when sending batches, 0 means infinite retries
-      maxretries: 5
+      max_retries: 20
 
     # The labels to add to any time series or alerts when communicating with loki
     external_labels: {}
 
   server:
     http_listen_port: 3101
+
   positions:
     filename: /run/promtail/positions.yaml
   target_config:
