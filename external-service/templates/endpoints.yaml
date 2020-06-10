@@ -10,8 +10,8 @@ subsets:
   - addresses:
       - ip: {{ .ip }}
   {{- end }}
-  {{- range .Values.ports }}
     ports:
+  {{- range .Values.ports }}
       - port: {{ .port }}
         protocol: {{ default "TCP" .protocol }}
         name: {{ .name }}
