@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "loki.labels" -}}
-app: {{ include "loki.name" . }}
-chart: {{ include "loki.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "loki.name" . }}
+helm.sh/chart: {{ include "loki.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "loki.selector" -}}
-app: {{ include "loki.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "loki.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

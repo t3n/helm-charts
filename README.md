@@ -43,6 +43,19 @@ PRs accepted. Pipeline is using Helm v3.
 
 Small note: If editing the Readme, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
+## Upgrading to Helm v3
+
+Since [PR #75](https://github.com/t3n/helm-charts/pull/75) we changed the chart labels to helm's recommended common labels. To Upgrade with minimal downtime follow these steps:
+```
+kubectl delete deploy *chart-name* --cascade=false
+kubectl delete rs *chart-name* -l release=*chart-name* --cascade=false
+kubectl label pods -l release=*chart-name* app.kubernetes.io/instance=*chartname* helm.sh/chart=*chartname* app.kubernetes.io/managed-by=Helm app.kubernetes.io/name=*chartname* helm.sh/chart=*chartname-version*
+```
+After you labeled the old pods with the new labels, deploy the new chart version with helm, delete the old pods
+```
+kubectl delete pods -l release=*chartname*
+```
+
 ## License
 
 [MIT](LICENSE)

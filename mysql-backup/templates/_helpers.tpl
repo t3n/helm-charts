@@ -48,16 +48,16 @@ Create filename
 Common labels
 */}}
 {{- define "mysql-backup.labels" -}}
-app: {{ include "mysql-backup.name" . }}
-chart: {{ include "mysql-backup.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "mysql-backup.name" . }}
+helm.sh/chart: {{ include "mysql-backup.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "mysql-backup.selector" -}}
-app: {{ include "mysql-backup.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "mysql-backup.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

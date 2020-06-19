@@ -35,18 +35,18 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "mosquitto.labels" -}}
-app: {{ include "mosquitto.name" . }}
-chart: {{ include "mosquitto.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "mosquitto.name" . }}
+helm.sh/chart: {{ include "mosquitto.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "mosquitto.selector" -}}
-app: {{ include "mosquitto.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "mosquitto.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*

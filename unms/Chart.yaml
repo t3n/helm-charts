@@ -1,4 +1,19 @@
-apiVersion: v1
+apiVersion: v2
 name: unms
-version: 1.1.1
+version: 2.0.0
 appVersion: 0.13.3
+
+dependencies:
+- name: redis
+  version: ^8.0.8
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: postgresql
+  version: ^0.8.3
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: rabbitmq-ha
+  version: ^1.6.2
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: mysql-backup
+  version: ~1.0.1
+  condition: mysql-backup.enabled
+  repository: https://storage.googleapis.com/t3n-helm-charts

@@ -43,16 +43,16 @@ Create a default fully qualified app name for the mysql requirement.
 Common labels
 */}}
 {{- define "unifi-video.labels" -}}
-app: {{ include "unifi-video.name" . }}
-chart: {{ include "unifi-video.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "unifi-video.name" . }}
+helm.sh/chart: {{ include "unifi-video.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "unifi-video.selector" -}}
-app: {{ include "unifi-video.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "unifi-video.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

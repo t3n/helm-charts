@@ -1,6 +1,6 @@
-apiVersion: v1
+apiVersion: v2
 name: snipeit
-version: 1.2.6
+version: 2.0.0
 appVersion: 4.9.2
 description: A free open source IT asset/license management system
 keywords:
@@ -14,3 +14,13 @@ sources:
 maintainers:
 - name: mschmidt291
   email: max.schmidt@t3n.de
+
+dependencies:
+- name: mysql
+  version: ^1.4.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: mysql.enabled
+- name: mysql-backup
+  version: ~1.0.1
+  condition: mysql-backup.enabled
+  repository: https://storage.googleapis.com/t3n-helm-charts

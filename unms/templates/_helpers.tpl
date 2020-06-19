@@ -43,34 +43,16 @@ Create a default fully qualified app name for the mysql requirement.
 Common labels
 */}}
 {{- define "unms.labels" -}}
-app: {{ include "unms.name" . }}
-chart: {{ include "unms.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "unms.name" . }}
+helm.sh/chart: {{ include "unms.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "unms.selector" -}}
-app: {{ include "unms.name" . }}
-release: {{ .Release.Name }}
-{{- end -}}
-
-{{/*
-Common labels
-*/}}
-{{- define "unms.labels-nginx" -}}
-app: {{ include "unms.name" . }}-nginx
-chart: {{ include "unms.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
-{{- end -}}
-
-{{/*
-Selector labels
-*/}}
-{{- define "unms.selector-nginx" -}}
-app: {{ include "unms.name" . }}-nginx
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "unms.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

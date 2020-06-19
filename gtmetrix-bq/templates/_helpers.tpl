@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "gtmetrix-bq.labels" -}}
-app: {{ include "gtmetrix-bq.name" . }}
-chart: {{ include "gtmetrix-bq.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "gtmetrix-bq.name" . }}
+helm.sh/chart: {{ include "gtmetrix-bq.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "gtmetrix-bq.selector" -}}
-app: {{ include "gtmetrix-bq.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "gtmetrix-bq.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

@@ -35,18 +35,18 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "pi-hole.labels" -}}
-app: {{ include "pi-hole.name" . }}
-chart: {{ include "pi-hole.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "pi-hole.name" . }}
+helm.sh/chart: {{ include "pi-hole.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "pi-hole.selector" -}}
-app: {{ include "pi-hole.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "pi-hole.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
