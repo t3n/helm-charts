@@ -1,6 +1,0 @@
-dependencies:
-- name: mysql-backup
-  repository: https://storage.googleapis.com/t3n-helm-charts
-  version: 1.0.1
-digest: sha256:573253265941c108c8d212f8953c201593e10fc8d749c1c4cda459047a70cff8
-generated: "2020-06-18T13:16:47.360229577+02:00"
