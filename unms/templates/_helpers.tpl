@@ -43,40 +43,38 @@ Create a default fully qualified app name for the mysql requirement.
 Common labels
 */}}
 {{- define "unms.labels" -}}
-app.kubernetes.io/name: {{ include "unms.name" . }}
-helm.sh/chart: {{ include "unms.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: unms
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/component: unms
-app.kubernetes.io/part-of: {{ include "unms.name" . }}
+app.kubernetes.io/component: app
+app.kubernetes.io/part-of: {{ .Chart.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "unms.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "unms.selector" -}}
-app.kubernetes.io/name: {{ include "unms.name" . }}
+app.kubernetes.io/name: unms
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/component: unms
 {{- end -}}
 
 {{/*
 Common labels
 */}}
 {{- define "unms.labels-nginx" -}}
-app.kubernetes.io/name: {{ include "unms.name" . }}-nginx
-helm.sh/chart: {{ include "unms.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: nginx
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/component: nginx
-app.kubernetes.io/part-of: {{ include "unms.name" . }}
+app.kubernetes.io/component: proxy
+app.kubernetes.io/part-of: {{ .Chart.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "unms.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "unms.selector-nginx" -}}
-app.kubernetes.io/name: {{ include "unms.name" . }}-nginx
+app.kubernetes.io/name: nginx
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/component: nginx
 {{- end -}}
