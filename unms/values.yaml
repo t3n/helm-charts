@@ -48,6 +48,9 @@ rabbitmq-ha:
     enabled: true
     persistence:
       size: 5Gi
+  prometheus:
+    operator:
+      enabled: false
 
 # Leave default to use redis of this chart
 redis:

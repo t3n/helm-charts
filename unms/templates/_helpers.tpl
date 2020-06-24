@@ -47,6 +47,8 @@ app.kubernetes.io/name: {{ include "unms.name" . }}
 helm.sh/chart: {{ include "unms.chart" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: unms
+app.kubernetes.io/part-of: {{ include "unms.name" . }}
 {{- end -}}
 
 {{/*
@@ -55,4 +57,26 @@ Selector labels
 {{- define "unms.selector" -}}
 app.kubernetes.io/name: {{ include "unms.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: unms
+{{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "unms.labels-nginx" -}}
+app.kubernetes.io/name: {{ include "unms.name" . }}-nginx
+helm.sh/chart: {{ include "unms.chart" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: nginx
+app.kubernetes.io/part-of: {{ include "unms.name" . }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "unms.selector-nginx" -}}
+app.kubernetes.io/name: {{ include "unms.name" . }}-nginx
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: nginx
 {{- end -}}
