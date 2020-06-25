@@ -8,9 +8,9 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ include "dashkiosk.fullname" . }}
+  name: {{ include "unifi-video.fullname" . }}
   labels:
-    {{ include "dashkiosk.labels" . | indent 4 | trim }}
+    {{ include "unifi-video.labels" . | indent 4 | trim }}
 {{- with .Values.ingress.annotations }}
   annotations:
   {{ toYaml . | nindent 4 }}

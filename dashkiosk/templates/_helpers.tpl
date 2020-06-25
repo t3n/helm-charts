@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "dashkiosk.labels" -}}
-app.kubernetes.io/name: {{ include "dashkiosk.name" . }}
-helm.sh/chart: {{ include "dashkiosk.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: dashkiosk
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "dashkiosk.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "dashkiosk.selector" -}}
-app.kubernetes.io/name: {{ include "dashkiosk.name" . }}
+app.kubernetes.io/name: dashkiosk
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

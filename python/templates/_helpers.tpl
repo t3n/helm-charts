@@ -35,17 +35,17 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "python.labels" -}}
-app.kubernetes.io/name: {{ include "python.name" . }}
-helm.sh/chart: {{ include "python.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: python
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "python.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "python.selector" -}}
-app.kubernetes.io/name: {{ include "python.name" . }}
+app.kubernetes.io/name: python
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 

@@ -43,16 +43,16 @@ Create a default fully qualified app name for the mysql requirement.
 Common labels
 */}}
 {{- define "snipeit.labels" -}}
-app.kubernetes.io/name: {{ include "snipeit.name" . }}
-helm.sh/chart: {{ include "snipeit.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: snipeit
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "snipeit.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "snipeit.selector" -}}
-app.kubernetes.io/name: {{ include "snipeit.name" . }}
+app.kubernetes.io/name: snipeit
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

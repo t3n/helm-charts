@@ -46,16 +46,16 @@ Create the name of the service account
 Common labels
 */}}
 {{- define "promtail.labels" -}}
-app.kubernetes.io/name: {{ include "promtail.name" . }}
-helm.sh/chart: {{ include "promtail.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: promtail
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "promtail.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "promtail.selector" -}}
-app.kubernetes.io/name: {{ include "promtail.name" . }}
+app.kubernetes.io/name: promtail
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

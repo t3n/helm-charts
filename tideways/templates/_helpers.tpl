@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "tideways.labels" -}}
-app.kubernetes.io/name: {{ include "tideways.name" . }}
-helm.sh/chart: {{ include "tideways.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: tideways
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "tideways.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "tideways.selector" -}}
-app.kubernetes.io/name: {{ include "tideways.name" . }}
+app.kubernetes.io/name: tideways
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

@@ -35,8 +35,8 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "external-service.labels" -}}
-app.kubernetes.io/name: {{ include "external-service.name" . }}
-helm.sh/chart: {{ include "external-service.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/name: external-service
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "external-service.chart" . }}
 {{- end -}}
