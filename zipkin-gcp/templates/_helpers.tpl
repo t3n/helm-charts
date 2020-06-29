@@ -36,9 +36,9 @@ Common labels
 */}}
 {{- define "zipkin-gcp.labels" -}}
 app.kubernetes.io/name: zipkin-gcp
-helm.sh/chart: {{ include "zipkin-gcp.chart" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "zipkin-gcp.chart" . }}
 {{- end -}}
 
 {{/*
