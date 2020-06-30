@@ -46,16 +46,16 @@ Create the name of the service account to use
 Common labels
 */}}
 {{- define "cloudsql-proxy.labels" -}}
-app: {{ include "cloudsql-proxy.name" . }}
-chart: {{ include "cloudsql-proxy.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: cloudsql-proxy
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "cloudsql-proxy.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "cloudsql-proxy.selector" -}}
-app: {{ include "cloudsql-proxy.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: cloudsql-proxy
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

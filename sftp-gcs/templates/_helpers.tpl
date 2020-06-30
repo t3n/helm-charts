@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "sftp-gcs.labels" -}}
-app: {{ include "sftp-gcs.name" . }}
-chart: {{ include "sftp-gcs.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: sftp-gcs
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "sftp-gcs.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "sftp-gcs.selector" -}}
-app: {{ include "sftp-gcs.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: sftp-gcs
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

@@ -7,6 +7,8 @@
 
 ## Project Status
 
+As of [PR #75](https://github.com/t3n/helm-charts/pull/75) we dropped support for Helm v2 and switched to Helm Chart apiVersion v2. We also switched labels to [Recommended Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/). A detailed introduction on how to migrate without downtime can be found [here](LABEL.md)
+
 This project is still under active development, so you might run into [issues](https://github.com/t3n/helm-charts/issues). If you do, please don't be shy about letting us know, or better yet, contribute a fix or feature.
 We will also add more charts over time, so keep an eye on this repository.
 

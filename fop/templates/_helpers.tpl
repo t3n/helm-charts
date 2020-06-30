@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "fop.labels" -}}
-app: {{ include "fop.name" . }}
-chart: {{ include "fop.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: fop
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "fop.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "fop.selector" -}}
-app: {{ include "fop.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: fop
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "zipkin-gcp.labels" -}}
-app: {{ include "zipkin-gcp.name" . }}
-chart: {{ include "zipkin-gcp.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: zipkin-gcp
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ include "zipkin-gcp.chart" . }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
 {{- define "zipkin-gcp.selector" -}}
-app: {{ include "zipkin-gcp.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: zipkin-gcp
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

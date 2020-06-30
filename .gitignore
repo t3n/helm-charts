@@ -2,3 +2,4 @@
 charts/*
 index.yaml
 test.yaml
+*.lock
