@@ -10,6 +10,7 @@ jobs:
       *helm_environment
     docker:
       - image: google/cloud-sdk:alpine
+    resource_class: small
     steps:
       - checkout
       - run: |
@@ -27,6 +28,7 @@ jobs:
       *helm_environment
     docker:
       - image: google/cloud-sdk:alpine
+    resource_class: small
     steps:
       - checkout
       - run: |
