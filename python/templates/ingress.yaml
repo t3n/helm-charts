@@ -9,12 +9,8 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ template "python.fullname" . }}
-  labels:
-    app: {{ template "python.name" . }}
-    chart: {{ template "python.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ include "python.fullname" . }}
+  labels: {{- include "python.labels" . | nindent 4 }}
 {{- with .Values.ingress.annotations }}
   annotations:
   {{- range $key, $value := . }}
