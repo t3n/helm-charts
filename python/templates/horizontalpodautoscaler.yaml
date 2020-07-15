@@ -3,11 +3,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "python.fullname" . }}
-  labels:
-    app: {{ include "python.name" . }}
-    chart: {{ include "python.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  labels: {{- include "python.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
