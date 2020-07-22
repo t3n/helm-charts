@@ -1,0 +1,28 @@
+{{- if and .Values.configFiles (not .Values.existingConfigMap) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cronjob.fullname" . }}
+  labels: {{- include "cronjob.labels" . | nindent 4 }}
+data:
+{{- range $key, $value := .Values.configFiles }}
+  {{ $key }}:
+    {{ toYaml $value | indent 4 | trim }}
+{{- end }}
+{{- end }}
+{{- if .Values.extraConfigMaps }}
+{{- $root := . }}
+{{- range $key, $configMap := .Values.extraConfigMaps }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cronjob.fullname" $root }}-{{ $key }}
+  labels: {{- include "cronjob.labels" $root | nindent 4 }}
+data:
+{{- range $key, $value := $configMap }}
+  {{ $key }}:
+    {{ toYaml $value | indent 4 | trim }}
+{{- end }}
+{{- end }}
+{{- end }}

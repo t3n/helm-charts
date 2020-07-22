@@ -1,0 +1,94 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "cronjob.fullname" . }}
+  labels: {{- include "cronjob.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+{{- if .Values.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
+{{- end }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ include "cronjob.fullname" . }}
+          labels: {{- include "cronjob.labels" . | nindent 12 }}
+        spec:
+          restartPolicy: Never
+        {{- with .Values.image.pullSecrets }}
+          imagePullSecrets:
+          {{- range . }}
+            - name: {{ . }}
+          {{- end }}
+        {{- end }}
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- with .Values.command }}
+              command:
+              {{- range . }}
+                - {{ . | quote }}
+              {{- end }}
+            {{- end }}
+            {{- with .Values.extraEnvs }}
+              env:
+              {{- range $key, $value := . }}
+                - name: {{ $key }}
+                  value: {{ $value | quote }}
+              {{- end }}
+            {{- end }}
+            {{- if or .Values.secretEnvs .Values.existingEnvsSecret }}
+              envFrom:
+                - secretRef:
+                    name: {{ if .Values.existingEnvsSecret }}{{ .Values.existingEnvsSecret }}{{ else }}{{ include "cronjob.fullname" . }}-envs{{ end }}
+            {{- end }}
+            {{- with .Values.resources }}
+              resources:
+                {{ toYaml . | indent 16 | trim }}
+            {{- end }}
+            {{- if .Values.extraVolumeMounts }}
+              volumeMounts:
+              {{- range $key, $value := .Values.extraVolumeMounts }}
+                - name: {{ $key }}
+                  {{ toYaml $value | indent 14 | trim }}
+              {{- end }}
+            {{- end }}
+        {{- if or .Values.configFiles .Values.existingConfigMap .Values.secretFiles .Values.existingSecret .Values.secretEnvs .Values.existingEnvsSecret }}
+          volumes:
+          {{- if or .Values.configFiles .Values.existingConfigMap }}
+            - name: configFiles
+              configMap:
+                name: {{ if .Values.existingConfigMap }}{{ .Values.existingConfigMap }}{{ else }}{{ include "cronjob.fullname" . }}{{ end }}
+          {{- end }}
+          {{- if or .Values.secretFiles .Values.existingSecret }}
+            - name: secretFiles
+              secret:
+                secretName: {{ if .Values.existingSecret }}{{ .Values.existingSecret }}{{ else }}{{ include "cronjob.fullname" . }}{{ end }}
+          {{- end }}
+          {{- if or .Values.secretEnvs .Values.existingEnvsSecret }}
+            - name: secretEnvs
+              secret:
+                secretName: {{ if .Values.existingEnvsSecret }}{{ .Values.existingEnvsSecret }}{{ else }}{{ include "cronjob.fullname" . }}-envs{{ end }}
+          {{- end }}
+          {{- range $key, $value := .Values.extraVolumes }}
+            - name: {{ $key }}
+              {{ toYaml $value | indent 10 | trim }}
+          {{- end }}
+        {{- end }}
+        {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
