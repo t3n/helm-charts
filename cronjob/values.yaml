@@ -1,0 +1,48 @@
+image:
+  repository: python
+  tag: 3.8
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+schedule: "0 0 * * *"
+concurrencyPolicy: Allow
+startingDeadlineSeconds: ""
+successfulJobsHistoryLimit: 1
+failedJobsHistoryLimit: 1
+
+# Add config files
+configFiles: {}
+  # server.conf: |
+  #   server {
+  #     server_name example.com;
+  #   }
+existingConfigMap: ""
+
+# Add secret files - file content needs to be base64 encoded
+secretFiles: {}
+  # credentials.json: Y3JlZGVudGlhbHMK%
+existingSecret: ""
+
+extraEnvs: {}
+  # PATH_TO_CONFIG: /app/server.conf
+secretEnvs: {}
+  # DB_PASS: secretPassword
+existingEnvsSecret: ""
+
+# Override docker image entrypoint
+command: []

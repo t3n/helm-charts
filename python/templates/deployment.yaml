@@ -3,23 +3,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "python.fullname" . }}
-  labels:
-    app: {{ include "python.name" . }}
-    chart: {{ include "python.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  labels: {{- include "python.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
-    matchLabels:
-      app: {{ include "python.name" . }}
-      release: {{ .Release.Name }}
+    matchLabels: {{- include "python.selector" . | nindent 6 }}
   template:
     metadata:
-      labels:
-        app: {{ include "python.name" . }}
-        release: {{ .Release.Name }}
+      labels: {{- include "python.selector" . | nindent 8 }}
       annotations:
         deployment: {{ .Values.global.deployment | quote }}
         pipeline: {{ .Values.global.pipeline | quote }}
