@@ -1,0 +1,71 @@
+{{- if .Values.tasks.restore.cron -}}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "postgresql-backup.fullname" . }}
+  labels: {{- include "postgresql-backup.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+        {{- if .Values.image.pullSecrets }}
+          imagePullSecrets:
+          {{- range .Values.image.pullSecrets }}
+            - name: {{ . }}
+          {{- end }}
+        {{- end }}
+          restartPolicy: Never
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ["sh", "-c", "/scripts/postgresql-restore.sh"]
+            env:
+            - name: DB_HOST
+              value: {{ .Values.database.host }}
+            - name: DB_NAME
+              value: {{ .Values.database.name }}
+            - name: GSBUCKET
+              value: {{ .Values.gcs.bucket.name }}
+            - name: GSPATH
+              value: {{ .Values.gcs.bucket.path }}
+            - name: FILENAME
+              value: {{ include "postgresql-backup.filename" . }}
+            {{- if .Values.sanitize.enabled }}
+            - name: SANITIZE_ENABLED
+              value: "true"
+            {{- end }}
+            envFrom:
+            - secretRef:
+                name: {{ include "postgresql-backup.fullname" . }}-postgresql
+            resources:
+{{ toYaml .Values.resources | indent 14 }}
+            volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+            - name: secret-key
+              mountPath: /etc/gcloud
+              readOnly: true
+            {{- if .Values.sanitize.enabled }}
+            - name: sanitize
+              mountPath: /tmp/sanitize.sql
+              subPath: sanitize.sql
+            {{- end}}
+          volumes:
+          - name: scripts
+            configMap:
+              name: {{ include "postgresql-backup.fullname" . }}
+              defaultMode: 0555
+          {{- if .Values.sanitize.enabled }}
+          - name: sanitize
+            configMap:
+              name: {{ include "postgresql-backup.fullname" . }}-sanitize
+          {{- end }}
+          - name: secret-key
+            secret:
+              secretName: {{ include "postgresql-backup.fullname" . }}-gcs
+{{- end -}}
