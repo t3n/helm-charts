@@ -1,0 +1,58 @@
+{{- if .Values.tasks.backup.manual -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "postgresql-backup.fullname" . }}
+  labels: {{- include "postgresql-backup.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
+      restartPolicy: Never
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["sh", "-c", "/scripts/postgresql-backup.sh"]
+        env:
+        - name: DB_HOST
+          value: {{ .Values.database.host }}
+        - name: DB_NAME
+          value: {{ .Values.database.name }}
+        - name: DB_CHARSET
+          value: {{ .Values.database.charset }}
+        - name: GSBUCKET
+          value: {{ .Values.gcs.bucket.name }}
+        - name: GSPATH
+          value: {{ .Values.gcs.bucket.path }}
+        - name: FILENAME
+          value: {{ include "postgresql-backup.filename" . }}
+        envFrom:
+        - secretRef:
+            name: {{ include "postgresql-backup.fullname" . }}-postgresql
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+          readOnly: true
+        - name: secret-key
+          mountPath: /etc/gcloud
+          readOnly: true
+      volumes:
+      - name: scripts
+        configMap:
+          name: {{ include "postgresql-backup.fullname" . }}
+          defaultMode: 0555
+      - name: secret-key
+        secret:
+          secretName: {{ include "postgresql-backup.fullname" . }}-gcs
+{{- end -}}

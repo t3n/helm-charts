@@ -1,0 +1,46 @@
+image:
+  name: t3nde/gcs-postgresql-client
+  tag: latest
+  pullPolicy: Always
+
+# Specify which type of job should be created
+tasks:
+  backup:
+    cron: false
+    manual: false
+  restore:
+    cron: false
+    manual: false
+
+schedule: "0 3 * * *"
+
+# Required: Specify your GCS Service Account Key and the Bucket where the Backup should be uploaded
+gcs:
+  serviceAccountKey: ""
+  bucket:
+    name: ""
+    # the following line prefixes the backups with the defined directory. it must be blank or end with a /
+    path: ""
+
+# Required: Credentials of the database to backup
+database:
+  host: ""
+  user: ""
+  pass: ""
+  name: ""
+
+# Required: Name of the backupfile to be created
+filename: ""
+
+resources:
+  # limits:
+    # cpu: 100m
+    # memory: 128Mi
+  # requests:
+    # cpu: 10m
+    # memory: 16Mi
+
+# Specify if any sanitize queries should be run after restore
+sanitize:
+  enabled: false
+  sql: []

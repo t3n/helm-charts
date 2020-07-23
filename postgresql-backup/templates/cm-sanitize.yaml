@@ -1,0 +1,12 @@
+{{- if .Values.sanitize.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "postgresql-backup.fullname" . }}-sanitize
+  labels: {{- include "postgresql-backup.labels" . | nindent 4 }}
+data:
+  sanitize.sql: |-
+    {{- range .Values.sanitize.sql }}
+    {{ . }}
+    {{- end }}
+{{- end -}}
