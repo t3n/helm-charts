@@ -11,3 +11,7 @@ dependencies:
   version: ~8.6.0
   repository: https://kubernetes-charts.storage.googleapis.com/
   condition: postgresql.enabled
+- name: postgresql-backup
+  version: ~0.0.1
+  repository: https://storage.googleapis.com/t3n-helm-charts
+  condition: postgresql-backup.enabled

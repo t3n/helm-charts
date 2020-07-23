@@ -114,3 +114,7 @@ redis:
 
 postgresql:
   enabled: false
+
+postgresql-backup:
+  enabled: false
+  
