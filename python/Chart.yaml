@@ -1,6 +1,6 @@
 apiVersion: v2
 name: python
-version: 2.0.1
+version: 2.0.2
 
 dependencies:
 - name: redis-ha
