@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "ssh-bastion.fullname" . }}-private
+  labels:
+    {{ include "ssh-bastion.labels" . | indent 4 | trim }}
+data:
+  ssh-bastion_host_rsa_key: |-
+    {{ .Values.host.keys | b64enc }}

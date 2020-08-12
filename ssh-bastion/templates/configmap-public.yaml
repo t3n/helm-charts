@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "ssh-bastion.fullname" . }}-authorized
+  labels:
+    {{ include "ssh-bastion.labels" . | indent 4 | trim }}
+data:
+{{- with .Values.users }}
+  {{- range $key, $value := . }}
+  {{ $key }}: |-
+    {{ $value | b64enc}}
+  {{- end }}
+{{- end }}

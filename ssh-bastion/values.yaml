@@ -1,0 +1,39 @@
+image:
+  name: t3nde/ssh-jump
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  annotations: {}
+
+# Add usernames to create users
+extraEnvs:
+  USER: dummy
+
+# Add username as key and public key as value
+users:
+  dummy: dummy
+
+# Reqiured: Add your Openssh-bastion Private Key
+host:
+  keys: ""
+
+
+## Configure resource requests and limits
+## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+resources:
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 20m
+    memory: 50Mi
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
