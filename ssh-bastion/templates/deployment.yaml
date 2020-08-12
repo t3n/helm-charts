@@ -3,10 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "ssh-bastion.fullname" . }}
   labels:
-    app: {{ include "ssh-bastion.name" . }}
-    chart: {{ include "ssh-bastion.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{ include "ssh-bastion.labels" . | indent 4 | trim }}
 spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 0 }}
   selector:
@@ -39,7 +36,7 @@ spec:
           {{- end }}
         {{- end }}
           ports:
-            - name: ssh-bastion
+            - name: ssh
               containerPort: 22
         {{- with .Values.resources }}
           resources:
