@@ -1,0 +1,4 @@
+apiVersion: v2
+name: ssh
+description: ssh server
+version: 1.0.0

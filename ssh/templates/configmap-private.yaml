@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "ssh.fullname" . }}-private
+  labels:
+    {{ include "ssh.labels" . | indent 4 | trim }}
+data:
+  ssh_host_rsa_key: |-
+    {{ .Values.host.keys | b64enc }}
