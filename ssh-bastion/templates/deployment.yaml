@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ssh.fullname" . }}
+  name: {{ include "ssh-bastion.fullname" . }}
   labels:
-    app: {{ include "ssh.name" . }}
-    chart: {{ include "ssh.chart" . }}
+    app: {{ include "ssh-bastion.name" . }}
+    chart: {{ include "ssh-bastion.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 0 }}
   selector:
     matchLabels:
-      {{ include "ssh.selector" . | indent 6 | trim }}
+      {{ include "ssh-bastion.selector" . | indent 6 | trim }}
   template:
     metadata:
       labels:
-        {{ include "ssh.selector" . | indent 8 | trim }}
+        {{ include "ssh-bastion.selector" . | indent 8 | trim }}
       {{- with .Values.podAnnotations }}
       annotations:
         {{ toYaml . | indent 8 | trim }}
@@ -39,7 +39,7 @@ spec:
           {{- end }}
         {{- end }}
           ports:
-            - name: ssh
+            - name: ssh-bastion
               containerPort: 22
         {{- with .Values.resources }}
           resources:
@@ -62,10 +62,10 @@ spec:
       volumes:
       - name: keys
         secret:
-          secretName: {{ include "ssh.fullname" . }}-authorized
+          secretName: {{ include "ssh-bastion.fullname" . }}-authorized
       - name: private
         secret:
-          secretName: {{ include "ssh.fullname" .  }}-private
+          secretName: {{ include "ssh-bastion.fullname" .  }}-private
           defaultMode: 0600
     {{- with .Values.nodeSelector }}
       nodeSelector:

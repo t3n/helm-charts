@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ssh.fullname" . }}
+  name: {{ include "ssh-bastion.fullname" . }}
   labels:
-    {{ include "ssh.labels" . | indent 4 | trim }}
+    {{ include "ssh-bastion.labels" . | indent 4 | trim }}
 {{- with .Values.service.annotations }}
   annotations:
     {{ toYaml . | indent 4 | trim }}
@@ -14,4 +14,4 @@ spec:
     - name: ssh
       port: 22
   selector:
-    {{ include "ssh.selector" . | indent 4 | trim }}
+    {{ include "ssh-bastion.selector" . | indent 4 | trim }}
