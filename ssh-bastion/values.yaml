@@ -37,10 +37,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-## Additional command line arguments to pass to ssh-bastion-daemon
-## E.g. to specify the environment to use
-# extraArgs:
-#   env: staging
-extraArgs: {}
-
