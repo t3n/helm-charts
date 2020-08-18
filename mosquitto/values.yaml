@@ -57,6 +57,14 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+podSecurityContext: {}
+  # runAsUser: 1001
+  # fsGroup: 10000
+
+securityContext: {}
+  # runAsUser: 1001
+  # fsGroup: 10000
+
 nodeSelector: {}
 
 tolerations: []
