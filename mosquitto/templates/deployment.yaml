@@ -42,7 +42,10 @@ spec:
               port: websocket
             initialDelaySeconds: 3
             periodSeconds: 3
-          securityContext: {{- toYaml .Values.securityContext | nindent 12 }}
+        {{- with .Values.securityContext }}
+          securityContext:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
         {{- with .Values.resources }}
           resources:
             {{ toYaml . | indent 12 | trim }}
