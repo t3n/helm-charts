@@ -16,7 +16,10 @@ spec:
         {{ toYaml . | indent 8 | trim }}
     {{- end }}
       serviceAccountName: {{ include "mosquitto.serviceAccountName" . }}
-      securityContext: {{- toYaml .Values.podSecurityContext | nindent 8 }}
+    {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
