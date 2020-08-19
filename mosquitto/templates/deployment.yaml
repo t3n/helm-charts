@@ -16,6 +16,10 @@ spec:
         {{ toYaml . | indent 8 | trim }}
     {{- end }}
       serviceAccountName: {{ include "mosquitto.serviceAccountName" . }}
+    {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -38,6 +42,10 @@ spec:
               port: websocket
             initialDelaySeconds: 3
             periodSeconds: 3
+        {{- with .Values.securityContext }}
+          securityContext:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
         {{- with .Values.resources }}
           resources:
             {{ toYaml . | indent 12 | trim }}
