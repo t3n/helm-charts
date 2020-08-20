@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: eclipse-mosquitto
-  tag: 1.6
+  tag: 1.6.12
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -70,6 +70,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+authentication:
+  passwordEntries: ""
+  # To use authentication with mosquitto, you can set a list of password entries to be used.  For example:
+  # passwordEntries: |
+  #   user1:$6$BKzw0RKerxV4Esbj$Uz5slWGB1TiOtYIEokEl0eR1YSEQAdKpcdRYMsLYbwjktlVzdLyGk41YCPGyMLnBePtdwPhkcm8kjGI0R9s57w==
+  #   user2:$6$b5vYuHrSLj48Ii32$NjlbnatIaUQSsNvxxTpawpav6NPyZ8QhGrdEVGtyU1rgEGjNzVGKlstRg29FV6MFTPs/ugPA8D5I5+qRcIMXSg==
+  passwordFilePath: "/etc/mosquitto/passwordfile"
 
 existingConfigMap: ""
 config: |

@@ -1,15 +1,21 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "mosquitto.fullname" . }}
   labels: {{- include "mosquitto.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "mosquitto.fullname" . }}
   selector:
     matchLabels: {{- include "mosquitto.selector" . | nindent 6 }}
   template:
     metadata:
       labels: {{- include "mosquitto.selector" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum | trunc 63 }}
+        {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
+        checksum/secret: {{ include (print .Template.BasePath "/secret.yaml") . | sha256sum | trunc 63 }}
+        {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -57,6 +63,11 @@ spec:
             - name: data
               mountPath: {{ .Values.persistence.mountPath }}
               subPath: {{ .Values.persistence.subPath }}
+            {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
+            - name: passwordfile
+              mountPath: {{ .Values.authentication.passwordFilePath }}
+              subPath: passwordfile
+            {{- end }}
       volumes:
         - name: config
           configMap:
@@ -67,6 +78,11 @@ spec:
             claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "mosquitto.fullname" . }}{{- end }}
         {{- else }}
           emptyDir: {}
+        {{- end }}
+        {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
+        - name: passwordfile
+          secret:
+            secretName: {{ include "mosquitto.fullname" . }}
         {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
