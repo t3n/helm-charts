@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "mosquitto.fullname" . }}
   labels: {{- include "mosquitto.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  serviceName: {{ include "mosquitto.fullname" . }}
+  strategy:
+    type: {{ .Values.strategyType }}
   selector:
     matchLabels: {{- include "mosquitto.selector" . | nindent 6 }}
   template:
