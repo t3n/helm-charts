@@ -2,6 +2,7 @@ apiVersion: v2
 name: unms
 version: 2.0.0
 appVersion: 0.13.3
+deprecated: True
 
 dependencies:
 - name: redis
