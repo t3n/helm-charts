@@ -1,4 +1,5 @@
 replicaCount: 1
+strategyType: Recreate
 
 image:
   repository: eclipse-mosquitto
@@ -8,8 +9,6 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
-strategyType: Recreate
 
 serviceAccount:
   # Specifies whether a service account should be created
