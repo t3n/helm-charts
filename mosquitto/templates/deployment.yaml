@@ -14,9 +14,9 @@ spec:
       labels: {{- include "mosquitto.selector" . | nindent 8 }}
       annotations:
         checksum/config: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum | trunc 63 }}
-        {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
+      {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
         checksum/secret: {{ include (print .Template.BasePath "/secret.yaml") . | sha256sum | trunc 63 }}
-        {{- end }}
+      {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -64,11 +64,11 @@ spec:
             - name: data
               mountPath: {{ .Values.persistence.mountPath }}
               subPath: {{ .Values.persistence.subPath }}
-            {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
+          {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
             - name: passwordfile
               mountPath: {{ .Values.authentication.passwordFilePath }}
               subPath: passwordfile
-            {{- end }}
+          {{- end }}
       volumes:
         - name: config
           configMap:
@@ -80,11 +80,11 @@ spec:
         {{- else }}
           emptyDir: {}
         {{- end }}
-        {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
+      {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
         - name: passwordfile
           secret:
             secretName: {{ include "mosquitto.fullname" . }}
-        {{- end }}
+      {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
         {{ toYaml . | indent 8 | trim }}
