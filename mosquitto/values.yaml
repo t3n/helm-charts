@@ -77,7 +77,7 @@ authentication:
   # To use authentication with mosquitto, you can set a list of password entries to be used.
   # reference https://mosquitto.org/man/mosquitto_passwd-1.html to generate these entries.
   # For example:
-  # passwordEntries: |
+  # passwordEntries: |-
   #   user1:$6$BKzw0RKerxV4Esbj$Uz5slWGB1TiOtYIEokEl0eR1YSEQAdKpcdRYMsLYbwjktlVzdLyGk41YCPGyMLnBePtdwPhkcm8kjGI0R9s57w==
   #   user2:$6$b5vYuHrSLj48Ii32$NjlbnatIaUQSsNvxxTpawpav6NPyZ8QhGrdEVGtyU1rgEGjNzVGKlstRg29FV6MFTPs/ugPA8D5I5+qRcIMXSg==
   passwordFilePath: "/etc/mosquitto/passwordfile"
