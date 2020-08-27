@@ -89,6 +89,10 @@ and their default values.
 | `revisionHistoryLimit`               | The number of old Replicas to keep to allow rollback. | `0`                            |
 | `service.type`                       | Type of service to create                             | `ClusterIP`                    |
 | `service.annotations`                 | Annotations of service to create                      | `{}`                           |
+| `service.clusterIP`                  | Internal cluster service IP                           | `nil`                          |
+| `service.loadBalancerIP`             | IP address to assign to load balancer (if supported)  | `nil`                          |
+| `service.loadBalancerSourceRanges`   | list of IP CIDRs allowed access to lb (if supported)  | `[]`                           |
+| `service.externalIPs`                | service external IP addresses                         | `[]`                           |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
