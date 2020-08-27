@@ -85,6 +85,7 @@ and their default values.
 | `persistence.annotations`            | Annotations for the PVC                               | `{}`                           |
 | `persistence.size`                   | Size of the persistent Snipe-IT Volume                | `2Gi`                          |
 | `replicaCount`                       | Number of Snipe-IT Pods to run                        | `1`                            |
+| `deploymentStrategy`                 | Deployment strategy	                                 | `{ "type": "RollingUpdate" }`  |
 | `revisionHistoryLimit`               | The number of old Replicas to keep to allow rollback. | `0`                            |
 | `service.type`                       | Type of service to create                             | `ClusterIP`                    |
 | `service.annotations`                 | Annotations of service to create                      | `{}`                           |
