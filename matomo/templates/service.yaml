@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "matomo.fullname" . }}
+  labels: {{- include "matomo.labels" . | nindent 4 }}
+  {{- range $key, $value := .Values.service.labels }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- with .Values.service.annotations }}
+  annotations:
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 80
+      targetPort: http
+      name: http
+  selector:
+    {{ include "matomo.selector" . | indent 4 | trim }}

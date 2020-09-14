@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "matomo.fullname" . }}
+  labels: {{- include "matomo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+{{- if eq (int .Values.replicaCount) 1 }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+{{- end }}
+  selector:
+    matchLabels: {{- include "matomo.selector" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "matomo.selector" . | nindent 8 }}
+      annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.metrics.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9913"
+      {{- end }}
+    spec:
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
+      containers:
+        - name: {{ include "matomo.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: MATOMO_DATABASE_HOST
+              value: {{ include "matomo.databaseHost" . | quote }}
+            - name: MATOMO_DATABASE_ADAPTER
+              value: {{ .Values.database.adapter | quote }}
+            - name: MATOMO_DATABASE_TABLES_PREFIX
+              value: {{ .Values.database.tables_prefix | quote }}
+            - name: MATOMO_DATABASE_DBNAME
+              value: {{ .Values.database.dbname | quote }}
+          {{- range $key, $value := .Values.extraEnvs }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ include "matomo.fullname" . }}-envs
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+        {{- with .Values.lifecycle }}
+          lifecycle:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim}}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+      affinity:
+      {{- with .Values.affinity }}
+        {{ toYaml . | indent 8 | trim }}
+      {{- end }}
+      {{- if eq .Values.antiAffinity "hard" }}
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchLabels: {{- include "matomo.selector" . | nindent 18 }}
+      {{- else }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: "kubernetes.io/hostname"
+                labelSelector:
+                  matchLabels: {{- include "matomo.selector" . | nindent 20 }}
+      {{- end }}

@@ -1,0 +1,83 @@
+replicaCount: 1
+revisionHistoryLimit: 0
+
+## PodDisruptionBudget
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
+# maxUnavailable: 1
+
+image:
+  repository: matomo
+  tag: 3.14.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  annotations: {}
+  labels: {}
+
+ingress:
+  enabled: true
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+# Lifecycle for app deployment
+# lifecycle:
+#   preStop:
+#     exec:
+#       command:
+#       - sh
+#       - -c
+#       - "sleep 20"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+antiAffinity: soft
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+metrics:
+  enabled: false
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 11
+  cpuPercentage: 100
+
+database:
+  host: mysql
+  adapter: mysql
+  tables_prefix: matomo_
+  dbname: matomo
+  username: matomo
+  password: matomo
+
+mysql:
+  enabled: true
+  mysqlUser: matomo
+  mysqlPassword: matomo
+  mysqlDatabase: matomo
