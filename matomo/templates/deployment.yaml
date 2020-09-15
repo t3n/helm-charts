@@ -36,6 +36,14 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: MATOMO_GENERAL_ENABLE_AUTO_UPDATE
+              value: "0"
+            - name: MATOMO_GENERAL_ENABLE_TRUSTED_HOST_CHECK
+              value: "0"
+          {{- if gt (int .Values.replicaCount) 1 -}}
+            - name: MATOMO_GENERAL_MULTI_SERVER_ENVIRONMENT
+              value: "1"
+          {{- end }}
             - name: MATOMO_DATABASE_HOST
               value: {{ include "matomo.databaseHost" . | quote }}
             - name: MATOMO_DATABASE_ADAPTER
@@ -44,6 +52,8 @@ spec:
               value: {{ .Values.database.tables_prefix | quote }}
             - name: MATOMO_DATABASE_DBNAME
               value: {{ .Values.database.dbname | quote }}
+            - name: MATOMO_GENERAL_SALT
+              value: {{ required "`.Values.salt` is not set." .Values.salt | quote }}
           {{- range $key, $value := .Values.extraEnvs }}
             - name: {{ $key }}
               value: {{ $value | quote }}

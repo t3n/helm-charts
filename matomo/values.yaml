@@ -15,13 +15,9 @@ service:
   annotations: {}
   labels: {}
 
-extraEnvs:
-  MATOMO_GENERAL_ENABLE_TRUSTED_HOST_CHECK: 0
-  MATOMO_GENERAL_MULTI_SERVER_ENVIRONMENT: 1
-  MATOMO_GENERAL_ENABLE_PLUGINS_ADMIN: 0
-  MATOMO_GENERAL_ENABLE_AUTO_UPDATE: 0
-  MATOMO_GENERAL_FORCE_SSL: 1
-  MATOMO_GENERAL_SALT: ""
+extraEnvs: {}
+  # MATOMO_GENERAL_ENABLE_PLUGINS_ADMIN: 0
+  # MATOMO_GENERAL_FORCE_SSL: 1
 
 ingress:
   enabled: true
@@ -76,6 +72,7 @@ autoscaling:
   maxReplicas: 11
   cpuPercentage: 100
 
+salt: ""
 database:
   host: mysql
   adapter: PDO\MYSQL
