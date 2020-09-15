@@ -6,14 +6,22 @@ revisionHistoryLimit: 0
 # maxUnavailable: 1
 
 image:
-  repository: matomo
-  tag: 3.14.0
+  repository: t3nde/matomo
+  tag: 3.14.1
   pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
   annotations: {}
   labels: {}
+
+extraEnvs:
+  MATOMO_GENERAL_ENABLE_TRUSTED_HOST_CHECK: 0
+  MATOMO_GENERAL_MULTI_SERVER_ENVIRONMENT: 1
+  MATOMO_GENERAL_ENABLE_PLUGINS_ADMIN: 0
+  MATOMO_GENERAL_ENABLE_AUTO_UPDATE: 0
+  MATOMO_GENERAL_FORCE_SSL: 1
+  MATOMO_GENERAL_SALT: ""
 
 ingress:
   enabled: true
@@ -22,7 +30,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - chart-example.local
+    - example.local
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -70,7 +78,7 @@ autoscaling:
 
 database:
   host: mysql
-  adapter: mysql
+  adapter: PDO\MYSQL
   tables_prefix: matomo_
   dbname: matomo
   username: matomo

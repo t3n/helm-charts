@@ -1,0 +1,17 @@
+{{- if eq (printf "%s" .Values.extraEnvs.MATOMO_GENERAL_SALT) "" }}
+##############################################################################
+####   ERROR: You did not provide an Matomo Salt  ####
+##############################################################################
+
+This deployment will be incomplete until you provide an Salt (this is just an example) like this:
+
+helm upgrade {{ .Release.Name }} \
+    --set extraEnvs.MATOMO_GENERAL_SALT="dlcoqqku9minz1p5m599tt74fkj2z364" t3n/snipeit
+
+{{- else -}}
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+You can now access Matomo through: http{{ if $.Values.ingress.tls }}s{{ end }}://{{ . }}{{ $.Values.ingress.path }}
+{{- end }}
+{{- end }}
+{{- end }}
