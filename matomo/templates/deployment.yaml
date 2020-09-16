@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "matomo.fullname" . }}
   labels: {{- include "matomo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
@@ -13,9 +14,11 @@ spec:
 {{- end }}
   selector:
     matchLabels: {{- include "matomo.selector" . | nindent 6 }}
+      app.kubernetes.io/component: app
   template:
     metadata:
       labels: {{- include "matomo.selector" . | nindent 8 }}
+        app.kubernetes.io/component: app
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
@@ -91,6 +94,8 @@ spec:
             - topologyKey: "kubernetes.io/hostname"
               labelSelector:
                 matchLabels: {{- include "matomo.selector" . | nindent 18 }}
+                  app.kubernetes.io/component: app
+
       {{- else }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -99,4 +104,6 @@ spec:
                 topologyKey: "kubernetes.io/hostname"
                 labelSelector:
                   matchLabels: {{- include "matomo.selector" . | nindent 20 }}
+                    app.kubernetes.io/component: app
+
       {{- end }}

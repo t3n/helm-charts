@@ -19,6 +19,10 @@ extraEnvs: {}
   # MATOMO_GENERAL_ENABLE_PLUGINS_ADMIN: 0
   # MATOMO_GENERAL_FORCE_SSL: 1
 
+archive:
+  enabled: false
+  schedule: "1 * * * *"
+
 ingress:
   enabled: true
   annotations: {}
@@ -26,7 +30,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - example.local
+    - matomo.local
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -72,7 +76,7 @@ autoscaling:
   maxReplicas: 11
   cpuPercentage: 100
 
-salt: ""
+salt: "sdjflksdjfdlkfjdl"
 database:
   host: mysql
   adapter: PDO\MYSQL
