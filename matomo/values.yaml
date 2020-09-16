@@ -76,7 +76,7 @@ autoscaling:
   maxReplicas: 11
   cpuPercentage: 100
 
-salt: "sdjflksdjfdlkfjdl"
+salt: ""
 database:
   host: mysql
   adapter: PDO\MYSQL
