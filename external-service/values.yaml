@@ -4,6 +4,8 @@ fullnameOverride: ""
 ingress:
   enabled: false
 
+type: ClusterIP
+
 # Both addresses and ports are required to install a service with the
 # corresponding endpoint.
 addresses: []
@@ -16,3 +18,6 @@ ports: []
   #       - host: localhost
   #         paths:
   #           - '/'
+
+# If type is ExternalName, externalName must be set
+externalName: ""

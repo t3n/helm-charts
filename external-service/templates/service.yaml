@@ -1,4 +1,4 @@
-{{- if and .Values.addresses .Values.ports }}
+{{- if or (eq .Values.type "ExternalName") (and .Values.addresses .Values.ports) }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,7 +6,10 @@ metadata:
   labels:
     {{ include "external-service.labels" . | indent 4 | trim }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.type }}
+{{- if eq .Values.type "ExternalName" }}
+  externalName: {{ required "`.Values.externalName` is not set." .Values.externalName}}
+{{- else}}
   ports:
 {{- range .Values.ports }}
     - port: {{ .port }}
@@ -14,4 +17,5 @@ spec:
       protocol: {{ default "TCP" .protocol }}
       name: {{ .name }}
 {{- end }}
-{{- end -}}
+{{- end }}
+{{- end }}

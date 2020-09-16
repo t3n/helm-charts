@@ -8,12 +8,12 @@ metadata:
 subsets:
   {{- range .Values.addresses }}
   - addresses:
-      - ip: {{ .ip }}
+      - ip: {{ required "IP is not set." .ip }}
   {{- end }}
     ports:
   {{- range .Values.ports }}
-      - port: {{ .port }}
+      - port: {{ required "Port is not set." .port }}
         protocol: {{ default "TCP" .protocol }}
-        name: {{ .name }}
+        name: {{ required "Port name is not set." .name }}
   {{- end }}
 {{- end -}}
