@@ -1,0 +1,53 @@
+{{- if .Values.archive.enabled -}}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "matomo.fullname" . }}-archive
+  labels: {{- include "matomo.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.archive.schedule | quote }}
+  concurrencyPolicy: {{ .Values.archive.concurrencyPolicy | default "Allow" }}
+{{- if .Values.archive.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.archive.startingDeadlineSeconds }}
+{{- end }}
+  successfulJobsHistoryLimit: {{ .Values.archive.successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ .Values.archive.failedJobsHistoryLimit | default 1 }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+        {{- if .Values.image.pullSecrets }}
+          imagePullSecrets:
+          {{- range .Values.image.pullSecrets }}
+            - name: {{ . }}
+          {{- end }}
+        {{- end }}
+          restartPolicy: Never
+          containers:
+          - name: {{ include "matomo.name" . }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            env:
+              - name: MATOMO_DATABASE_HOST
+                value: {{ include "matomo.databaseHost" . | quote }}
+              - name: MATOMO_DATABASE_ADAPTER
+                value: {{ .Values.database.adapter | quote }}
+              - name: MATOMO_DATABASE_TABLES_PREFIX
+                value: {{ .Values.database.tables_prefix | quote }}
+              - name: MATOMO_DATABASE_DBNAME
+                value: {{ .Values.database.dbname | quote }}
+              - name: MATOMO_GENERAL_SALT
+                value: {{ required "`.Values.salt` is not set." .Values.salt | quote }}
+            {{- range $key, $value := .Values.extraEnvs }}
+              - name: {{ $key }}
+                value: {{ $value | quote }}
+            {{- end }}
+            envFrom:
+              - secretRef:
+                  name: {{ include "matomo.fullname" . }}-envs
+            args: ['su', 'www-data', '-s', '/bin/sh', '-c', '/usr/local/bin/php /var/www/html/console core:archive --url={{ include "matomo.fullname" . }}']
+          {{- with .Values.resources }}
+            resources:
+              {{ toYaml . | indent 14 | trim}}
+          {{- end }}
+{{- end -}}

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "matomo.fullname" . }}
+  labels: {{- include "matomo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
+{{- with .Values.service.annotations }}
+  annotations:
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 80
+      targetPort: http
+      name: http
+  selector: {{- include "matomo.selector" . | nindent 4 }}
+    app.kubernetes.io/component: app

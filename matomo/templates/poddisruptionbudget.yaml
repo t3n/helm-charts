@@ -1,0 +1,13 @@
+{{- if gt (int .Values.replicaCount) 1 -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "matomo.fullname" . }}
+  labels: {{- include "matomo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
+spec:
+  selector:
+    matchLabels: {{- include "matomo.selector" . | nindent 6 }}
+      app.kubernetes.io/component: app
+  maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
+{{- end -}}
