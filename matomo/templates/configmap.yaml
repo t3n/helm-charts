@@ -16,7 +16,8 @@ data:
       root /var/www/html; # replace with path to your matomo instance
       index index.php;
       try_files $uri $uri/ =404;
-
+      rewrite ^/mj /matomo.js last;
+      rewrite ^/mp /matomo.php last;
       ## only allow accessing the following php files
       location ~ ^/(index|matomo|piwik|js/index|plugins/HeatmapSessionRecording/configs).php {
         # regex to split $uri to $fastcgi_script_name and $fastcgi_path
