@@ -68,6 +68,7 @@ and their default values.
 | `config.snipeit.envConfig`           | Configure Environment Values                          | `{}`                           |
 | `image.repository`                   | Image Repository                                      | `snipe/snipe-it`               |
 | `image.tag`                          | Image Tag                                             | `4.6.16`                        |
+| `image.pullPolicy`                   | Image Pull Policy                                     | `IfNotPresent`                 |
 | `ingress.enabled`                    | Whether or not to enable Ingress                      | `true`                         |
 | `ingress.annotations`                | Custom Ingress Annotations                            | `{}`                           |
 | `ingress.path`                       | Root Path for the Ingress Ressource                   | `/`                            |
@@ -85,9 +86,18 @@ and their default values.
 | `persistence.annotations`            | Annotations for the PVC                               | `{}`                           |
 | `persistence.size`                   | Size of the persistent Snipe-IT Volume                | `2Gi`                          |
 | `replicaCount`                       | Number of Snipe-IT Pods to run                        | `1`                            |
+| `deploymentStrategy`                 | Deployment strategy	                                 | `{ "type": "RollingUpdate" }`  |
 | `revisionHistoryLimit`               | The number of old Replicas to keep to allow rollback. | `0`                            |
 | `service.type`                       | Type of service to create                             | `ClusterIP`                    |
 | `service.annotations`                 | Annotations of service to create                      | `{}`                           |
+| `service.clusterIP`                  | Internal cluster service IP                           | `nil`                          |
+| `service.loadBalancerIP`             | IP address to assign to load balancer (if supported)  | `nil`                          |
+| `service.loadBalancerSourceRanges`   | list of IP CIDRs allowed access to lb (if supported)  | `[]`                           |
+| `service.externalIPs`                | service external IP addresses                         | `[]`                           |
+| `resources`                          | CPU/Memory resource requests/limits                   | `{}`                           |
+| `nodeSelector`                       | Node labels for pod assignment                        | `{}`                           |
+| `tolerations`                        | Toleration labels for pod assignment                  | `[]`                           |
+| `affinity`                           | Affinity settings for pod assignment                  | `{}`                           |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
