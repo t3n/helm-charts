@@ -35,6 +35,33 @@ spec:
       {{- end }}
     {{- end }}
       containers:
+        - name: nginx
+          image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag}}"
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: matomo.conf
+            - name: html-files
+              mountPath: /var/www/html
         - name: {{ include "matomo.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -65,8 +92,8 @@ spec:
             - secretRef:
                 name: {{ include "matomo.fullname" . }}-envs
           ports:
-            - name: http
-              containerPort: 80
+            - name: fpm
+              containerPort: 9000
               protocol: TCP
         {{- with .Values.lifecycle }}
           lifecycle:
@@ -76,6 +103,15 @@ spec:
           resources:
             {{ toYaml . | indent 12 | trim}}
         {{- end }}
+          volumeMounts:
+            - name: html-files
+              mountPath: /var/www/html
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "matomo.fullname" . }}
+        - name: html-files
+          emptyDir: {}
     {{- with .Values.nodeSelector }}
       nodeSelector:
         {{ toYaml . | indent 8 | trim }}
