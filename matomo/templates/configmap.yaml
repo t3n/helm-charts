@@ -17,7 +17,7 @@ data:
       index index.php;
       try_files $uri $uri/ =404;
       
-      ## Rewrite matomo.js and matomo.php to reduce adblocking quote
+      ## Rewrite matomo.js and matomo.php to reduce adblocking rate
       rewrite ^/mj /matomo.js last;
       rewrite ^/mp /matomo.php last;
 
