@@ -6,7 +6,12 @@ metadata:
   labels: {{- include "matomo.labels" . | nindent 4 }}
 spec:
   schedule: {{ .Values.archive.schedule | quote }}
-  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: {{ .Values.archive.concurrencyPolicy | default "Allow" }}
+{{- if .Values.archive.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.archive.startingDeadlineSeconds }}
+{{- end }}
+  successfulJobsHistoryLimit: {{ .Values.archive.successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ .Values.archive.failedJobsHistoryLimit | default 1 }}
   jobTemplate:
     spec:
       template:
