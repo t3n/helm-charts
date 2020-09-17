@@ -4,6 +4,7 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "matomo.fullname" . }}
   labels: {{- include "matomo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
 spec:
   selector:
     matchLabels: {{- include "matomo.selector" . | nindent 6 }}
