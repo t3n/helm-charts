@@ -72,7 +72,7 @@ spec:
               value: "0"
             - name: MATOMO_GENERAL_ENABLE_TRUSTED_HOST_CHECK
               value: "0"
-          {{- if gt (int .Values.replicaCount) 1 -}}
+          {{- if gt (int .Values.replicaCount) 1 }}
             - name: MATOMO_GENERAL_MULTI_SERVER_ENVIRONMENT
               value: "1"
           {{- end }}
