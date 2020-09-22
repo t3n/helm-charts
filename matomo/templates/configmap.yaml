@@ -76,3 +76,4 @@ data:
         default_type text/plain;
       }
     }
+{{ tpl (.Files.Glob "scripts/*").AsConfig . | indent 2 }}

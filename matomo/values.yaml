@@ -21,6 +21,27 @@ service:
   annotations: {}
   labels: {}
 
+persistence:
+  enabled: true
+
+  enabled: true
+  annotations: {}
+  accessMode: ReadWriteOnce
+  existingClaim: ""
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  size: 2Gi
+  
+  data:
+    mountPath: "/data"
+    subPath: ""
+
 extraEnvs: {}
   # MATOMO_GENERAL_ENABLE_PLUGINS_ADMIN: 0
   # MATOMO_GENERAL_FORCE_SSL: 1
@@ -28,6 +49,15 @@ extraEnvs: {}
 archive:
   enabled: false
   schedule: "1 * * * *"
+
+ipdb:
+  enabled: true
+  # On the first day of the months at 10pm
+  schedule: "10 0 1 * *"
+  image:
+    repository: "alpine"
+    tag: "3.12.0"
+    pullPolicy: "IfNotPresent"
 
 ingress:
   enabled: true

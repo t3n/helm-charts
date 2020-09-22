@@ -106,9 +106,17 @@ spec:
             {{ toYaml . | indent 12 | trim}}
         {{- end }}
           volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.data.mountPath }}
+              subPath: {{ .Values.persistence.data.subPath }}
             - name: html-files
               mountPath: /var/www/html
       volumes:
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "matomo.fullname" . }}{{- end }}
+        {{- end }}
         - name: config
           configMap:
             name: {{ include "matomo.fullname" . }}
