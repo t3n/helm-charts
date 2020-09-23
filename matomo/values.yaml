@@ -37,10 +37,8 @@ persistence:
   ##
   # storageClass: "-"
   size: 2Gi
-  
-  data:
-    mountPath: "/data"
-    subPath: ""
+  mountPath: "/data"
+  subPath: ""
 
 extraEnvs: {}
   # MATOMO_GENERAL_ENABLE_PLUGINS_ADMIN: 0
