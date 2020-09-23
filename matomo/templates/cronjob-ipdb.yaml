@@ -37,8 +37,8 @@ spec:
                 mountPath: /scripts
                 readOnly: true
               - name: data
-                mountPath: {{ .Values.persistence.data.mountPath }}
-                subPath: {{ .Values.persistence.data.subPath }}
+                mountPath: {{ .Values.persistence.mountPath }}
+                subPath: {{ .Values.persistence.subPath }}
           volumes:
             - name: data
             {{- if .Values.persistence.enabled }}
