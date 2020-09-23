@@ -1,0 +1,54 @@
+{{- if .Values.cronjobs.ipdb.enabled -}}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "matomo.fullname" . }}-ipdb
+  labels: {{- include "matomo.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.cronjobs.ipdb.schedule | quote }}
+  concurrencyPolicy: {{ .Values.cronjobs.ipdb.concurrencyPolicy | default "Allow" }}
+{{- if .Values.cronjobs.ipdb.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.cronjobs.ipdb.startingDeadlineSeconds }}
+{{- end }}
+  successfulJobsHistoryLimit: {{ .Values.cronjobs.ipdb.successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ .Values.cronjobs.ipdb.failedJobsHistoryLimit | default 1 }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+        {{- if .Values.image.pullSecrets }}
+          imagePullSecrets:
+          {{- range .Values.image.pullSecrets }}
+            - name: {{ . }}
+          {{- end }}
+        {{- end }}
+          restartPolicy: Never
+          containers:
+          - name: {{ include "matomo.name" . }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: [ "/bin/sh", "-c", "/scripts/update-ipdb.sh" ]
+          {{- with .Values.cronjobs.ipdb.resources }}
+            resources:
+              {{ toYaml . | indent 14 | trim}}
+          {{- end }}
+            volumeMounts:
+              - name: scripts
+                mountPath: /scripts
+                readOnly: true
+              - name: data
+                mountPath: {{ .Values.persistence.mountPath }}
+                subPath: {{ .Values.persistence.subPath }}
+          volumes:
+            - name: data
+            {{- if .Values.persistence.enabled }}
+              persistentVolumeClaim:
+                claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "matomo.fullname" . }}{{- end }}
+            {{- else }}
+              emptyDir: {}
+            {{- end }}
+            - name: scripts
+              configMap:
+                name: {{ include "matomo.fullname" . }}
+                defaultMode: 0555
+{{- end -}}
