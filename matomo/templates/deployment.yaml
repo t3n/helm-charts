@@ -86,6 +86,20 @@ spec:
               value: {{ .Values.database.dbname | quote }}
             - name: MATOMO_GENERAL_SALT
               value: {{ required "`.Values.salt` is not set." .Values.salt | quote }}
+          {{ if index .Values "redis-ha" "enabled" }}
+            - name: MATOMO_QUEUEDTRACKING_BACKEND
+              value: "redis"
+            - name: MATOMO_QUEUEDTRACKING_REDISDATABASE
+              value: "0"
+            - name: MATOMO_QUEUEDTRACKING_REDISHOST
+              value: {{ include "matomo.redis-ha.fullname" . | quote }}
+            - name: MATOMO_QUEUEDTRACKING_SENTINELMASTERNAME
+              value: {{ index .Values "redis-ha" "redis" "masterGroupName" | quote }}
+            - name: MATOMO_QUEUEDTRACKING_QUEUEENABLED
+              value: "true"
+            - name: MATOMO_QUEUEDTRACKING_notify_queue_threshold_single_queue
+              value: "10000"
+          {{ end }}
           {{- range $key, $value := .Values.extraEnvs }}
             - name: {{ $key }}
               value: {{ $value | quote }}
