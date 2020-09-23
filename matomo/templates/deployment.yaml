@@ -97,8 +97,6 @@ spec:
               value: {{ index .Values "redis-ha" "redis" "masterGroupName" | quote }}
             - name: MATOMO_QUEUEDTRACKING_QUEUEENABLED
               value: "true"
-            - name: MATOMO_QUEUEDTRACKING_notify_queue_threshold_single_queue
-              value: "10000"
           {{ end }}
           {{- range $key, $value := .Values.extraEnvs }}
             - name: {{ $key }}
