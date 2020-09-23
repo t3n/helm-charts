@@ -44,6 +44,8 @@ spec:
             {{- if .Values.persistence.enabled }}
               persistentVolumeClaim:
                 claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "matomo.fullname" . }}{{- end }}
+            {{- else }}
+              emptyDir: {}
             {{- end }}
             - name: scripts
               configMap:
