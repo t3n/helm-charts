@@ -46,14 +46,30 @@ extraEnvs: {}
   # MATOMO_GENERAL_ENABLE_PLUGINS_ADMIN: 0
   # MATOMO_GENERAL_FORCE_SSL: 1
 
-archive:
-  enabled: false
-  schedule: "1 * * * *"
+cronjobs:
 
-ipdb:
-  enabled: true
-  # On the first day of the months at 10pm
-  schedule: "10 0 1 * *"
+  archive:
+    enabled: false
+    schedule: "1 * * * *"
+    resources: {}
+      # limits:
+      #  cpu: 100m
+      #  memory: 128Mi
+      # requests:
+      #  cpu: 100m
+      #  memory: 128Mi
+
+  ipdb:
+    enabled: true
+    # On the first day of the month at 10am
+    schedule: "0 10 1 * *"
+    resources: {}
+      # limits:
+      #  cpu: 100m
+      #  memory: 128Mi
+      # requests:
+      #  cpu: 100m
+      #  memory: 128Mi
 
 ingress:
   enabled: true

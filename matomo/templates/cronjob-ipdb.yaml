@@ -1,17 +1,17 @@
-{{- if .Values.ipdb.enabled -}}
+{{- if .Values.cronjobs.ipdb.enabled -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ include "matomo.fullname" . }}-ipdb
   labels: {{- include "matomo.labels" . | nindent 4 }}
 spec:
-  schedule: {{ .Values.ipdb.schedule | quote }}
-  concurrencyPolicy: {{ .Values.ipdb.concurrencyPolicy | default "Allow" }}
-{{- if .Values.ipdb.startingDeadlineSeconds }}
-  startingDeadlineSeconds: {{ .Values.ipdb.startingDeadlineSeconds }}
+  schedule: {{ .Values.cronjobs.ipdb.schedule | quote }}
+  concurrencyPolicy: {{ .Values.cronjobs.ipdb.concurrencyPolicy | default "Allow" }}
+{{- if .Values.cronjobs.ipdb.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.cronjobs.ipdb.startingDeadlineSeconds }}
 {{- end }}
-  successfulJobsHistoryLimit: {{ .Values.ipdb.successfulJobsHistoryLimit | default 1 }}
-  failedJobsHistoryLimit: {{ .Values.ipdb.failedJobsHistoryLimit | default 1 }}
+  successfulJobsHistoryLimit: {{ .Values.cronjobs.ipdb.successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ .Values.cronjobs.ipdb.failedJobsHistoryLimit | default 1 }}
   jobTemplate:
     spec:
       template:
@@ -28,7 +28,7 @@ spec:
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             command: [ "/bin/sh", "-c", "/scripts/update-ipdb.sh" ]
-          {{- with .Values.resources }}
+          {{- with .Values.cronjobs.ipdb.resources }}
             resources:
               {{ toYaml . | indent 14 | trim}}
           {{- end }}

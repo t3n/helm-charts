@@ -1,17 +1,17 @@
-{{- if .Values.archive.enabled -}}
+{{- if .Values.cronjobs.archive.enabled -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ include "matomo.fullname" . }}-archive
   labels: {{- include "matomo.labels" . | nindent 4 }}
 spec:
-  schedule: {{ .Values.archive.schedule | quote }}
-  concurrencyPolicy: {{ .Values.archive.concurrencyPolicy | default "Allow" }}
-{{- if .Values.archive.startingDeadlineSeconds }}
-  startingDeadlineSeconds: {{ .Values.archive.startingDeadlineSeconds }}
+  schedule: {{ .Values.cronjobs.archive.schedule | quote }}
+  concurrencyPolicy: {{ .Values.cronjobs.archive.concurrencyPolicy | default "Allow" }}
+{{- if .Values.cronjobs.archive.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.cronjobs.archive.startingDeadlineSeconds }}
 {{- end }}
-  successfulJobsHistoryLimit: {{ .Values.archive.successfulJobsHistoryLimit | default 1 }}
-  failedJobsHistoryLimit: {{ .Values.archive.failedJobsHistoryLimit | default 1 }}
+  successfulJobsHistoryLimit: {{ .Values.cronjobs.archive.successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ .Values.cronjobs.archive.failedJobsHistoryLimit | default 1 }}
   jobTemplate:
     spec:
       template:
@@ -46,7 +46,7 @@ spec:
               - secretRef:
                   name: {{ include "matomo.fullname" . }}-envs
             args: ['su', 'www-data', '-s', '/bin/sh', '-c', '/usr/local/bin/php /var/www/html/console core:archive --url={{ include "matomo.fullname" . }}']
-          {{- with .Values.resources }}
+          {{- with .Values.cronjobs.arhive.resources }}
             resources:
               {{ toYaml . | indent 14 | trim}}
           {{- end }}
