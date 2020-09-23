@@ -25,8 +25,8 @@ spec:
           restartPolicy: Never
           containers:
           - name: {{ include "matomo.name" . }}
-            image: "{{ .Values.ipdb.image.repository }}:{{ .Values.ipdb.image.tag }}"
-            imagePullPolicy: {{ .Values.ipdb.image.pullPolicy }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
             command: [ "/bin/sh", "-c", "/scripts/update-ipdb.sh" ]
           {{- with .Values.resources }}
             resources:
