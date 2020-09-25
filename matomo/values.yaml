@@ -147,8 +147,3 @@ mysql:
   mysqlUser: matomo
   mysqlPassword: matomo
   mysqlDatabase: matomo
-
-redis-ha:
-  enabled: true
-  redis:
-    masterGroupName: matomo
