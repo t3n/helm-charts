@@ -80,3 +80,12 @@ Create the name of the database host to use
     {{ .Values.database.host }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a default fully qualified redis-ha name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "matomo.redis-ha.fullname" -}}
+{{- $name := default "redis-ha" (index .Values "redis-ha" "nameOverride") -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

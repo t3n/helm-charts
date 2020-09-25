@@ -23,8 +23,6 @@ service:
 
 persistence:
   enabled: true
-
-  enabled: true
   annotations: {}
   accessMode: ReadWriteOnce
   existingClaim: ""
@@ -58,7 +56,7 @@ cronjobs:
       #  memory: 128Mi
 
   ipdb:
-    enabled: true
+    enabled: false
     # On the first day of the month at 10am
     schedule: "0 10 1 * *"
     resources: {}
@@ -149,3 +147,8 @@ mysql:
   mysqlUser: matomo
   mysqlPassword: matomo
   mysqlDatabase: matomo
+
+redis-ha:
+  enabled: true
+  redis:
+    masterGroupName: matomo
