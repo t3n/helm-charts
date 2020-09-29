@@ -69,7 +69,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: MATOMO_GENERAL_ENABLE_AUTO_UPDATE
-              value: "0"
+              value: "1"
             - name: MATOMO_GENERAL_ENABLE_TRUSTED_HOST_CHECK
               value: "0"
           {{- if gt (int .Values.replicaCount) 1 }}
