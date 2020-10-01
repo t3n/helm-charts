@@ -50,4 +50,16 @@ spec:
             resources:
               {{ toYaml . | indent 14 | trim}}
           {{- end }}
+            volumeMounts:
+              - name: data
+                mountPath: {{ .Values.persistence.mountPath }}
+                subPath: {{ .Values.persistence.subPath }}
+          volumes:
+            - name: data
+            {{- if .Values.persistence.enabled }}
+              persistentVolumeClaim:
+                claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "matomo.fullname" . }}{{- end }}
+            {{- else }}
+              emptyDir: {}
+            {{- end }}
 {{- end -}}

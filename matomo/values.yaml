@@ -43,7 +43,6 @@ extraEnvs: {}
   # MATOMO_GENERAL_FORCE_SSL: 1
 
 cronjobs:
-
   archive:
     enabled: false
     schedule: "1 * * * *"
