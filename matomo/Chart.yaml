@@ -1,6 +1,6 @@
 apiVersion: v2
 name: matomo
-version: 0.3.2
+version: 0.3.3
 appVersion: 3.14.1
 
 dependencies:
