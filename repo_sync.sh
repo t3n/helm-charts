@@ -10,7 +10,7 @@ for dir in $(git diff --name-only HEAD~1 HEAD ../*/ | awk -F'/' 'NF!=1{print $1}
 	helm package "../$dir"
 done
 helm repo index --url https://storage.googleapis.com/t3n-helm-charts --merge ./index.yaml .
-gsutil -m rsync . gs://t3n-helm-charts
+gsutil -m -h "Cache-Control:private, max-age=0, no-transform" rsync . gs://t3n-helm-charts
 cd ..
 ls -lh repository
 rm repository -rf
