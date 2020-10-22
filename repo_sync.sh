@@ -2,7 +2,7 @@
 
 mkdir repository
 cd repository || exit
-gsutil -n cp gs://t3n-helm-charts/index.yaml .
+gsutil cp gs://t3n-helm-charts/index.yaml .
 cp index.yaml "$HOME/.cache/helm/repository/t3n-index.yaml"
 for dir in $(git diff --name-only HEAD~1 HEAD ../*/ | awk -F'/' 'NF!=1{print $1}' | sort -u);do
 	helm dep update "../$dir"
