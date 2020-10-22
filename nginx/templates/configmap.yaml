@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nginx.fullname" . }}
+  labels: {{- include "nginx.labels" . | nindent 4 }}
+data:
+  default.conf:
+    {{ toYaml .Values.configData | indent 4 | trim }}
+{{- range $key, $value := .Values.extraFiles }}
+  {{ $key }}:
+    {{ toYaml $value | indent 4 | trim }}
+{{- end }}
