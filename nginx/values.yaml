@@ -56,6 +56,9 @@ tolerations: []
 
 affinity: {}
 
+## Additional Environment Variables to the pod
+extraEnvs: {}
+
 ## Additional volumeMounts to the main container.
 extraVolumeMounts: {}
   # - name: config
