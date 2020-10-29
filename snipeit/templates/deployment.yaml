@@ -24,7 +24,7 @@ spec:
       initContainers:
         - name: config-data
           image: busybox
-          command: ["chown","-R","1000", "/var/www/html/storage/framework/sessions"]
+          command: ["sh", "-c", "find", "/var/www/html/storage/framework/sessions", "-not", "-user", "1000", "-exec", "chown 1000 {} \\+"]
           volumeMounts:
             - name: data
               mountPath: /var/www/html/storage/framework/sessions
