@@ -9,7 +9,7 @@ deploymentStrategy:
 
 image:
   repository: snipe/snipe-it
-  tag: v5.0.4
+  tag: v5.0.6
   pullPolicy: IfNotPresent
 
 service:
