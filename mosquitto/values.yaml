@@ -90,3 +90,15 @@ config: |
   listener 1883
   listener 9090
   protocol websockets
+
+## Additional volumes.
+extraVolumes: []
+  # - name: tls
+  #   secret:
+  #     secretName: mosquitto-certs
+
+## Additional volumeMounts to the main container.
+extraVolumeMounts: []
+  # - name: tls
+  #   mountPath: /certs
+  #   subPath: cafile
