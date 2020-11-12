@@ -93,7 +93,7 @@ spec:
           secret:
             secretName: {{ include "mosquitto.fullname" . }}
       {{- end }}
-      {{- if and .Values.authorizations.acls .Values.authorizations.aclfilePath }}
+      {{- if and .Values.authorization.acls .Values.authorization.aclfilePath }}
         - name: aclfile
           secret:
             secretName: {{ include "mosquitto.fullname" . }}
