@@ -69,6 +69,11 @@ spec:
               mountPath: {{ .Values.authentication.passwordFilePath }}
               subPath: passwordfile
           {{- end }}
+          {{- if and .Values.authorization.acls .Values.authorization.aclfilePath }}
+            - name: aclfile
+              mountPath: {{ .Values.authorization.aclfilePath }}
+              subPath: aclfile
+          {{- end }}
           {{- with .Values.extraVolumeMounts }}
             {{ toYaml . | indent 12 | trim }}
           {{- end }}
@@ -85,6 +90,11 @@ spec:
         {{- end }}
       {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
         - name: passwordfile
+          secret:
+            secretName: {{ include "mosquitto.fullname" . }}
+      {{- end }}
+      {{- if and .Values.authorizations.acls .Values.authorizations.aclfilePath }}
+        - name: aclfile
           secret:
             secretName: {{ include "mosquitto.fullname" . }}
       {{- end }}
