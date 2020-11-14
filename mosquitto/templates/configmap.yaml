@@ -9,4 +9,7 @@ data:
   {{- if and .Values.authentication.passwordEntries .Values.authentication.passwordFilePath }}
     password_file {{ .Values.authentication.passwordFilePath }}
   {{- end }}
+  {{- if and .Values.authorization.acls .Values.authorization.aclfilePath }}
+    acl_file {{ .Values.authorization.aclfilePath }}
+  {{- end }}
 {{- end }}
