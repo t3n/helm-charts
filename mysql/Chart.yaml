@@ -1,0 +1,16 @@
+apiVersion: v2
+name: mysql
+version: 1.7.0
+appVersion: 8.0.22
+description: Fast, reliable, scalable, and easy to use open-source relational database
+  system.
+keywords:
+- mysql
+- database
+- sql
+home: https://www.mysql.com/
+icon: https://www.mysql.com/common/logos/logo-mysql-170x115.png
+sources:
+- https://github.com/kubernetes/charts
+- https://github.com/docker-library/mysql
+engine: gotpl
