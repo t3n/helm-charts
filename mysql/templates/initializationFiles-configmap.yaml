@@ -1,0 +1,12 @@
+{{- if .Values.initializationFiles }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mysql.fullname" . }}-initialization
+  labels: {{- include "mysql.labels" . | nindent 4 }}
+data:
+{{- range $key, $val := .Values.initializationFiles }}
+  {{ $key }}: |-
+{{ $val | indent 4}}
+{{- end }}
+{{- end -}}
