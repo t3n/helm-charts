@@ -48,16 +48,16 @@ imagePullPolicy: IfNotPresent
 ## connect to a MySQL 8 instance.
 args: []
 
-extraVolumes: |
+extraVolumes: {}
   # - name: extras
   #   emptyDir: {}
 
-extraVolumeMounts: |
+extraVolumeMounts: {}
   # - name: extras
   #   mountPath: /usr/share/extras
   #   readOnly: true
 
-extraInitContainers: |
+extraInitContainers: {}
   # - name: do-something
   #   image: busybox
   #   command: ['do', 'something']
@@ -205,7 +205,7 @@ serviceAccount:
 ssl:
   enabled: false
   secret: mysql-ssl-certs
-  certificates:
+  certificates: {}
 #  - name: mysql-ssl-certs
 #    ca: |-
 #      -----BEGIN CERTIFICATE-----
