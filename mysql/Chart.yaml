@@ -1,6 +1,6 @@
 apiVersion: v2
 name: mysql
-version: 1.7.0
+version: 0.1.0
 appVersion: 8.0.22
 description: Fast, reliable, scalable, and easy to use open-source relational database
   system.
