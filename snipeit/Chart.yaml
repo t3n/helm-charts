@@ -1,7 +1,7 @@
 apiVersion: v2
 name: snipeit
-version: 3.0.5
-appVersion: 5.0.6
+version: 3.0.6
+appVersion: 5.0.7
 description: A free open source IT asset/license management system
 keywords:
 - snipeit
