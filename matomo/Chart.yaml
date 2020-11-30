@@ -1,10 +1,10 @@
 apiVersion: v2
 name: matomo
-version: 0.3.3
-appVersion: 3.14.1
+version: 1.0.0
+appVersion: 4.0.0
 
 dependencies:
   - name: mysql
-    version: ^1.4.0
-    repository: https://kubernetes-charts.storage.googleapis.com/
+    version: ^0.1.0
+    repository: https://storage.googleapis.com/t3n-helm-charts/
     condition: mysql.enabled
