@@ -1,7 +1,7 @@
 apiVersion: v2
 name: matomo
-version: 1.0.2
-appVersion: 4.0.4
+version: 1.0.3
+appVersion: 4.0.5
 
 dependencies:
   - name: mysql
