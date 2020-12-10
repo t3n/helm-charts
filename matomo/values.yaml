@@ -7,7 +7,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: t3nde/matomo
-  tag: 4.0.4-fpm-alpine
+  tag: 4.0.5-fpm-alpine
   pullPolicy: IfNotPresent
 
 nginx:
