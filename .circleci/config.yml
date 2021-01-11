@@ -18,7 +18,7 @@ jobs:
           tar xzfv ${HELM_TARBALL}
           export PATH=`pwd`/linux-amd64/:$PATH
           echo 'export PATH=`pwd`/linux-amd64/:$PATH' >> $BASH_ENV
-          helm repo add stable https://kubernetes-charts.storage.googleapis.com
+          helm repo add stable https://charts.helm.sh/stable
           helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
       - run: |
           ./helm_lint.sh
@@ -36,7 +36,7 @@ jobs:
           tar xzfv ${HELM_TARBALL}
           export PATH=`pwd`/linux-amd64/:$PATH
           echo 'export PATH=`pwd`/linux-amd64/:$PATH' >> $BASH_ENV
-          helm repo add stable https://kubernetes-charts.storage.googleapis.com
+          helm repo add stable https://charts.helm.sh/stable
           helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
           echo "$SERVICE_ACCOUNT_JSON" > key.json
           gcloud auth activate-service-account --key-file key.json
