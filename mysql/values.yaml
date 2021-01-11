@@ -2,7 +2,7 @@
 ## ref: https://hub.docker.com/r/library/mysql/tags/
 ##
 image: "mysql"
-imageTag: "8.0.22"
+imageTag: "5.7.32"
 
 strategy:
   type: Recreate
