@@ -45,7 +45,7 @@ spec:
             envFrom:
               - secretRef:
                   name: {{ include "matomo.fullname" . }}-envs
-            args: ['su', 'www-data', '-s', '/bin/sh', '-c', '/usr/local/bin/php /var/www/html/console core:archive --url={{ include "matomo.fullname" . }}']
+            args: ['su', 'www-data', '-s', '/bin/sh', '-c', '/usr/local/bin/php /var/www/html/console core:archive --url={{ include "matomo.fullname" . }} --concurrent-requests-per-website={{ .Values.cronjobs.archive.concurrentRequests }}']
           {{- with .Values.cronjobs.archive.resources }}
             resources:
               {{ toYaml . | indent 14 | trim}}

@@ -53,6 +53,8 @@ cronjobs:
       # requests:
       #  cpu: 100m
       #  memory: 128Mi
+    # Specifys how many requests are made by the archive command (default 3)
+    concurrentRequests: 3
 
   ipdb:
     enabled: false
