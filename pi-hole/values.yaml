@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: pihole/pihole
-  tag: v4.4
+  tag: v5.6
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
