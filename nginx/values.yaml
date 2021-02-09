@@ -7,7 +7,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: nginx
-  tag: 1.18.0
+  tag: 1.19.6
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
