@@ -1,0 +1,108 @@
+replicaCount: 1
+revisionHistoryLimit: 0
+
+## PodDisruptionBudget
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
+# maxUnavailable: 1
+
+image:
+  repository: busybox
+  tag: stable
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  annotations: {}
+  labels: {}
+  name: http
+  externalPort: 80
+  internalPort: 80
+
+ingress:
+  enabled: true
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+## Probes
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+readinessProbe:
+  enabled: false
+  path: /
+  # port: 9000
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+livenessProbe:
+  enabled: false
+  path: /
+  # port: 9000
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+## Configure resource requests and limits
+## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+podAnnotations: {}
+
+## Override docker entrypoint
+command: []
+
+## Additional command line arguments to pass to images binary
+extraArgs: {}
+
+## Additional environmental variables to pass to container
+extraEnvs: {}
+
+## Additional volumeMounts to the main container.
+extraVolumeMounts: []
+  # - name: mount
+  #   mountPath: /mnt
+
+## Additional volumes to the pod.
+extraVolumes: []
+  # - name: volume
+  #   emptyDir: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  create: false
+  name: ""
+
+secretFiles: {}
+  # gcloud:
+  #   mountPath: /etc/gcloud/key.json
+  #   subPath: key.json
+  #   files:
+  #     json.key: base64encSecret
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 11
+  cpuPercentage: 75

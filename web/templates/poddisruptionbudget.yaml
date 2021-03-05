@@ -1,0 +1,11 @@
+{{- if gt (int .Values.replicaCount) 1 -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "web.fullname" . }}
+  labels: {{- include "web.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{- include "web.selector" . | nindent 6 }}
+  maxUnavailable: {{ if .Values.maxUnavailable }}{{ .Values.maxUnavailable }}{{- else }}{{ ceil (div .Values.replicaCount 2) }}{{- end }}
+{{- end -}}
