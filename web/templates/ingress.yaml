@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "general.fullname" . }}
+{{- $fullName := include "web.fullname" . }}
 {{- $ingressPath := .Values.ingress.path }}
 {{- $serviceName := .Values.service.name }}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -9,8 +9,8 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ include "general.fullname" . }}
-  labels: {{- include "general.labels" . | nindent 4 }}
+  name: {{ include "web.fullname" . }}
+  labels: {{- include "web.labels" . | nindent 4 }}
 {{- with .Values.ingress.annotations }}
   annotations:
   {{- range $key, $value := . }}

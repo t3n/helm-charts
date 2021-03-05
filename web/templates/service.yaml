@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "general.fullname" . }}
-  labels: {{- include "general.labels" . | nindent 4 }}
+  name: {{ include "web.fullname" . }}
+  labels: {{- include "web.labels" . | nindent 4 }}
   {{- range $key, $value := .Values.service.labels }}
     {{ $key }}: {{ $value | quote }}
   {{- end }}
@@ -18,4 +18,4 @@ spec:
     - port: {{ .Values.service.externalPort }}
       targetPort: {{ .Values.service.name }}
       name: {{ .Values.service.name }}
-  selector: {{- include "general.selector" . | nindent 4 }}
+  selector: {{- include "web.selector" . | nindent 4 }}

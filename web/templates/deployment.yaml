@@ -1,17 +1,17 @@
-{{- $fullName := include "general.fullname" . }}
+{{- $fullName := include "web.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "general.fullname" . }}
-  labels: {{- include "general.labels" . | nindent 4 }}
+  name: {{ include "web.fullname" . }}
+  labels: {{- include "web.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
-    matchLabels: {{- include "general.selector" . | nindent 6 }}
+    matchLabels: {{- include "web.selector" . | nindent 6 }}
   template:
     metadata:
-      labels: {{- include "general.selector" . | nindent 8 }}
+      labels: {{- include "web.selector" . | nindent 8 }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
