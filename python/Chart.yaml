@@ -1,6 +1,7 @@
 apiVersion: v2
 name: python
 version: 2.0.2
+deprecated: true
 
 dependencies:
 - name: redis-ha
