@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "snowplow.fullname" . }}
+  labels: {{- include "snowplow.labels" . | nindent 4 }}
+data:
+  application.conf: |
+    collector {
+      interface = {{ .Values.config.snowplow.collector.interface }}
+      port = {{ .Values.config.snowplow.collector.port }}
+
+      p3p {
+        policyRef = {{ .Values.config.snowplow.p3p.policyRef }}
+        CP = {{ .Values.config.snowplow.p3p.CP }}
+      }
+
+      crossDomain {
+        enabled = {{ .Values.config.snowplow.crossDomain.enabled }}
+        domains = [ {{ .Values.config.snowplow.crossDomain.domains }} ]
+        secure = {{ .Values.config.snowplow.crossDomain.secure }}
+      }
+
+      prometheusMetrics {
+        enabled = {{ .Values.config.snowplow.prometheusMetrics.enabled }}
+        durationBucketsInSeconds = [{{ .Values.config.snowplow.prometheusMetrics.durationBucketsInSeconds }}]
+      }
+
+      cors {
+        accessControlMaxAge = {{ .Values.config.snowplow.cors.accessControlMaxAge }}
+      }
+
+      paths {
+        "/com.acme/track" = {{ .Values.config.snowplow.paths.comAcmeTrack | quote }}
+        "/com.acme/redirect" = {{ .Values.config.snowplow.paths.comAcmeRedirect | quote }}
+        "/com.acme/iglu" = {{ .Values.config.snowplow.paths.comAcmeIglu | quote }}
+      }
+
+      cookie {
+        enabled = {{ .Values.config.snowplow.cookie.enabled }}
+        expiration = {{ .Values.config.snowplow.cookie.expiration }}
+        name = {{ .Values.config.snowplow.cookie.name }}
+        domain = {{ .Values.config.snowplow.cookie.domain }}
+        secure = {{ .Values.config.snowplow.cookie.secure }}
+        httpOnly = {{ .Values.config.snowplow.cookie.httpOnly }}
+      }
+
+      doNotTrackCookie {
+        enabled = {{ .Values.config.snowplow.doNotTrackCookie.enabled }}
+        name = {{ .Values.config.snowplow.doNotTrackCookie.name }}
+        value = {{ .Values.config.snowplow.doNotTrackCookie.value }}
+      }
+      cookieBounce {
+        enabled = {{ .Values.config.snowplow.cookieBounce.enabled }}
+        name = {{ .Values.config.snowplow.cookieBounce.name }}
+        fallbackNetworkUserId = {{ .Values.config.snowplow.cookieBounce.fallbackNetworkUserId }}
+        forwardedProtocolHeader = {{ .Values.config.snowplow.cookieBounce.forwardedProtocolHeader }}
+      }
+
+      redirectMacro {
+        enabled = false
+        placeholder = "[{{ .Values.config.snowplow.redirectMacro.placeholder }}]"
+      }
+
+      rootResponse {
+        enabled = {{ .Values.config.snowplow.rootResponse.enabled }}
+        statusCode = {{ .Values.config.snowplow.rootResponse.statusCode }}
+        headers = {
+            Location = {{ .Values.config.snowplow.rootResponse.headers.location | quote }}
+            X-Custom = {{ .Values.config.snowplow.rootResponse.headers.XCustom }}
+        }
+        body = {{ .Values.config.snowplow.rootResponse.body | quote }}
+      }
+
+      streams {
+        good = {{ .Values.config.snowplow.streams.good }}
+        bad = {{ .Values.config.snowplow.streams.bad }}
+
+        useIpAddressAsPartitionKey = {{ .Values.config.snowplow.streams.useIpAddressAsPartitionKey }}
+
+        sink {
+          enabled = {{ .Values.config.snowplow.streams.sink.enabled }}
+          region = {{ .Values.config.snowplow.streams.sink.region | quote }}
+          customEndpoint = {{ .Values.config.snowplow.streams.sink.customEndpoint | quote }}
+          threadPoolSize = {{ .Values.config.snowplow.streams.sink.threadPoolSize }}
+          googleProjectId = {{ .Values.config.snowplow.streams.sink.googleProjectId | quote }}
+          backoffPolicy {
+            minBackoff = {{ .Values.config.snowplow.streams.sink.backoffPolicy.minBackoff }}
+            maxBackoff = {{ .Values.config.snowplow.streams.sink.backoffPolicy.maxBackoff }}
+            totalBackoff = {{ .Values.config.snowplow.streams.sink.backoffPolicy.totalBackoff }}
+            multiplier = {{ .Values.config.snowplow.streams.sink.backoffPolicy.multiplier }}
+          }
+        }
+
+        buffer {
+          byteLimit = {{ .Values.config.snowplow.buffer.byteLimit }}
+          recordLimit = {{ .Values.config.snowplow.buffer.recordLimit }}
+          timeLimit = {{ .Values.config.snowplow.buffer.timeLimit }}
+        }
+      }
+    }
+
+    akka {
+      loglevel = {{ .Values.config.snowplow.akka.logLevel }}
+      loggers = [{{ .Values.config.snowplow.akka.loggers | quote }}]
+
+      http.server {
+        remote-address-header = {{ .Values.config.snowplow.akka.httpServer.remoteAddressHeader }}
+        raw-request-uri-header = {{ .Values.config.snowplow.akka.httpServer.rawRequestUriHeader }}
+
+        parsing {
+          max-uri-length = {{ .Values.config.snowplow.akka.httpServer.parsing.maxUriLength }}
+          uri-parsing-mode = {{ .Values.config.snowplow.akka.httpServer.parsing.uriParsingMode }}
+        }
+      }
+    }

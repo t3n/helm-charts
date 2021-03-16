@@ -1,0 +1,151 @@
+replicaCount: 5
+revisionHistoryLimit: 0
+deploymentStrategy:
+  type: RollingUpdate
+
+## PodDisruptionBudget
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
+# maxUnavailable: 1
+
+image:
+  repository: snowplow/scala-stream-collector-pubsub
+  tag: 2.2.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+config:
+  snowplow:
+    serviceAccountPath: "/snowplow/config/credentials.json"
+    serviceAccountKey: ""
+
+    collector:
+      interface: "0.0.0.0"
+      port: "8080"
+    p3p:
+      policyRef: /w3c/p3p.xml
+      CP: "NOI DSP COR NID PSA OUR IND COM NAV STA"
+    crossDomain:
+      enabled: false
+      domains: '"*"'
+      secure: true
+    prometheusMetrics:
+      enabled: false
+      durationBucketsInSeconds: "0.1, 3, 10"
+    cors:
+      accessControlMaxAge: "5 seconds"
+    paths:
+      comAcmeTrack: "/com.snowplowanalytics.snowplow/tp2"
+      comAcmeRedirect: "/r/tp2"
+      comAcmeIglu: "/com.snowplowanalytics.iglu/v1"
+    cookie:
+      enabled: true
+      expiration: "365 days"
+      name: "_sp_cookie"
+      domain: "example.com"
+      secure: "false"
+      httpOnly: "false"
+    doNotTrackCookie:
+      enabled: false
+      name: "dnt_cookie"
+      value: "true"
+    cookieBounce:
+      enabled: false
+      name: "n3pc"
+      fallbackNetworkUserId: "00000000-0000-4000-A000-000000000000"
+      forwardedProtocolHeader: "X-Forwarded-Proto"
+    redirectMacro:
+      enabled: false
+      placeholder: TOKEN
+    rootResponse:
+      enabled: false
+      statusCode: "302"
+      headers:
+        location: "https://127.0.0.1"
+        XCustom: "something"
+      body: "302, redirecting"
+    streams:
+      good: good
+      bad: bad
+      useIpAddressAsPartitionKey: false
+      sink:
+        enabled: google-pub-sub
+        region: "none"
+        customEndpoint: "none"
+        threadPoolSize: 10
+        googleProjectId: default
+        backoffPolicy:
+          minBackoff: 1000
+          maxBackoff: 5000
+          totalBackoff: 10000
+          multiplier: 2
+    buffer:
+      byteLimit: 1
+      recordLimit: 1
+      timeLimit: 1
+    akka:
+      logLevel: DEBUG
+      loggers: "akka.event.slf4j.Slf4jLogger"
+      httpServer:
+        remoteAddressHeader: "on"
+        rawRequestUriHeader: "on"
+        parsing:
+          maxUriLength: 32768
+          uriParsingMode: relaxed
+
+
+
+## Probes
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+readinessProbe:
+  enabled: true
+  path: /health
+  port: 8080
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+livenessProbe:
+  enabled: true
+  path: /health
+  port: 8080
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+ingress:
+  enabled: true
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - example.local
+  tls: []
+  #  - secretName: example-local
+  #    hosts:
+  #      - example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
