@@ -95,8 +95,6 @@ config:
           maxUriLength: 32768
           uriParsingMode: relaxed
 
-
-
 ## Probes
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 readinessProbe:
