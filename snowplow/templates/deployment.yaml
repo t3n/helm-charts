@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "snowplow.fullname" . }}
+  labels: {{- include "snowplow.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+{{- if eq (int .Values.replicaCount) 1 }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+{{- end }}
+  selector:
+    matchLabels: {{- include "snowplow.selector" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "snowplow.selector" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum | trunc 63 }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+    spec:
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
+      containers:
+        - name: {{ include "snowplow.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["--config=/snowplow/config/application.conf"]
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: {{ .Values.config.snowplow.serviceAccountPath }}
+          {{- range $key, $value := .Values.extraEnvs }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+        {{- with .Values.lifecycle }}
+          lifecycle:
+            {{ toYaml . | indent 12 | trim }}
+        {{- end }}
+        {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ default .Values.service.name .Values.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+        {{- end }}
+        {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ default .Values.service.name .Values.livenessProbe.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+        {{- end }}
+        {{- with .Values.resources }}
+          resources:
+            {{ toYaml . | indent 12 | trim}}
+        {{- end }}
+          volumeMounts:
+            - name: secret-key
+              mountPath: {{ .Values.config.snowplow.serviceAccountPath }}
+              subPath: credentials.json
+            - name: config
+              mountPath: /snowplow/config/application.conf
+              subPath: application.conf
+      volumes:
+        - name: secret-key
+          secret:
+            secretName: {{ include "snowplow.fullname" . }}
+        - name: config
+          configMap:
+            name: {{ include "snowplow.fullname" . }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 | trim }}
+    {{- end }}
