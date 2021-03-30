@@ -134,7 +134,9 @@ autoscaling:
   maxReplicas: 11
   cpuPercentage: 100
 
-salt: ""
+# CHANGE - unique 32 character long string
+salt: "76wiocvetjpe47xzeqzm9ic4d8nx3go5"
+
 database:
   host: mysql
   adapter: PDO\MYSQL
