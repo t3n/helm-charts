@@ -19,6 +19,9 @@ spec:
   {{- range $key, $value := . }}
     - name: {{ $key }}
       port: {{ $value.port }}
+    {{- if $value.nodePort }}
+      nodePort: {{ $value.nodePort }}
+    {{- end }}
       targetPort: {{ $key }}
       protocol: {{ default "TCP" $value.protocol }}
   {{- end }}
