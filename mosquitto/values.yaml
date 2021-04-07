@@ -121,11 +121,9 @@ extraVolumeMounts: []
 
 monitoring:
   podMonitor:
-    enabled: true
-  labels:
-    team: mosquitto
+    enabled: false
   sidecar:
-    enabled: true
+    enabled: false
     port: 9234
     image:
       repository: nolte/mosquitto-exporter
