@@ -13,12 +13,11 @@ metadata:
 
 spec:
   podMetricsEndpoints:
-    - port: prometheus
+    - interval: 15s
+      port: prometheus
       path: /metrics
             {{- if .Values.monitoring.podMonitor.interval }}
       interval: {{ .Values.monitoring.podMonitor.interval }}
-            {{- else }}
-      interval: 15s
             {{- end }}
             {{- if .Values.monitoring.podMonitor.bearerTokenFile }}
       bearerTokenFile: {{ .Values.monitoring.podMonitor.bearerTokenFile }}
