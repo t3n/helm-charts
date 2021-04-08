@@ -127,6 +127,7 @@ monitoring:
   sidecar:
     enabled: false
     port: 9234
+    # nodePort: 32234
     image:
       repository: nolte/mosquitto-exporter
       tag: v0.6.3
