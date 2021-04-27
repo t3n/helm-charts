@@ -24,11 +24,11 @@ spec:
       initContainers:
         - name: config-data
           image: busybox
-          command: ["sh", "-c", "find", "/var/www/html/storage/framework/sessions", "-not", "-user", "1000", "-exec", "chown 1000 {} \\+"]
+          command: ["/bin/chown", "-R", "1000", "/var/www/html/storage/framework/sessions"]
           volumeMounts:
             - name: data
-              mountPath: /var/www/html/storage/framework/sessions
-              subPath: sessions
+              mountPath: {{ .Values.persistence.sessions.mountPath }}
+              subPath: {{ .Values.persistence.sessions.subPath }}
       containers:
         - name: {{ include "snipeit.fullname" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
