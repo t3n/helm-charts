@@ -26,4 +26,13 @@ spec:
       protocol: {{ default "TCP" $value.protocol }}
   {{- end }}
 {{- end }}
+{{- if .Values.monitoring.sidecar.enabled }}
+    - name: prometheus
+      port: {{ .Values.monitoring.sidecar.port }}
+    {{- if .Values.monitoring.sidecar.nodePort }}
+      nodePort: {{ .Values.monitoring.sidecar.nodePort }}
+    {{- end }}
+      targetPort: prometheus
+      protocol: TCP
+{{- end }}
   selector: {{- include "mosquitto.selector" . | nindent 4 }}

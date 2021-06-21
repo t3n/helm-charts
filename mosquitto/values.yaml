@@ -120,3 +120,22 @@ extraVolumeMounts: []
   # - name: tls
   #   mountPath: /certs
   #   subPath: cafile
+
+monitoring:
+  podMonitor:
+    enabled: false
+  sidecar:
+    enabled: false
+    port: 9234
+    # nodePort: 32234
+    image:
+      repository: nolte/mosquitto-exporter
+      tag: v0.6.3
+      pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 300m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
