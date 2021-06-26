@@ -19,6 +19,7 @@ serviceAccount:
 
 service:
   type: ClusterIP
+  externalTrafficPolicy: Cluster
   annotations: {}
     # metallb.universe.tf/allow-shared-ip: pi-hole
 
