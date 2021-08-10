@@ -35,6 +35,9 @@ config:
     locale: en
     envConfig: {}
 
+initcontainers:
+  image: "557680788250.dkr.ecr.eu-central-1.amazonaws.com/busybox:latest"
+
 mysql:
   ## Whether to deploy a mysql server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
   enabled: true
