@@ -91,6 +91,7 @@ ingress:
   #  - secretName: example-local
   #    hosts:
   #      - example.local
+  ingressClassName: ""
 
 mysql-backup:
   enabled: false
