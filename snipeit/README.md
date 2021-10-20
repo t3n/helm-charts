@@ -67,9 +67,10 @@ and their default values.
 | `config.snipeit.locale`              | Snipe-IT Locale                                       | `en`                           |
 | `config.snipeit.envConfig`           | Configure Environment Values                          | `{}`                           |
 | `image.repository`                   | Image Repository                                      | `snipe/snipe-it`               |
-| `image.tag`                          | Image Tag                                             | `4.6.16`                        |
+| `image.tag`                          | Image Tag                                             | `4.6.16`                       |
 | `image.pullPolicy`                   | Image Pull Policy                                     | `IfNotPresent`                 |
 | `ingress.enabled`                    | Whether or not to enable Ingress                      | `true`                         |
+| `ingress.className`                  | Ingress Class Name                                    | `""`                           |
 | `ingress.annotations`                | Custom Ingress Annotations                            | `{}`                           |
 | `ingress.path`                       | Root Path for the Ingress Ressource                   | `/`                            |
 | `ingress.hosts`                      | URL where Snipe-IT will be accessed                   | `example.local`                |
