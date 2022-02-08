@@ -3,6 +3,7 @@ fullnameOverride: ""
 
 ingress:
   enabled: false
+  annotations: {}
 
 type: ClusterIP
 
