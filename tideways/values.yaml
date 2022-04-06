@@ -1,6 +1,6 @@
 image:
-  name: quay.io/t3n/tideways
-  tag: 1.5.74
+  name: docker.io/t3nde/tideways
+  tag: 1.7.27
   pullPolicy: IfNotPresent
 
 service:
