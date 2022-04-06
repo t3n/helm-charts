@@ -1,5 +1,5 @@
 apiVersion: v2
 name: tideways
 description: tideways
-version: 1.0.0
+version: 2.0.0
 appVersion: 1.5.74
