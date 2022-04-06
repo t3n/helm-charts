@@ -35,3 +35,6 @@ apiKey: ""
 sampleRate: 60
 serviceName: default
 framework: ""
+dynamicTracepointsWeb: 1
+dynamicTracepointsCli: 1
+deprecations: 1
