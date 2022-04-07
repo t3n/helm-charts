@@ -56,3 +56,22 @@ Selector labels
 app.kubernetes.io/name: snipeit
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
+
+{{/*
+Create the name of the service account
+*/}}
+{{- define "snipeit.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (include "snipeit.fullname" .) .Values.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
+
+{{- define "snipeit.serviceAccountNameTest" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (print (include "snipeit.fullname" .) "-test") .Values.serviceAccount.nameTest }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.nameTest }}
+{{- end -}}
+{{- end -}}

@@ -99,6 +99,11 @@ and their default values.
 | `nodeSelector`                       | Node labels for pod assignment                        | `{}`                           |
 | `tolerations`                        | Toleration labels for pod assignment                  | `[]`                           |
 | `affinity`                           | Affinity settings for pod assignment                  | `{}`                           |
+| `extraContainers`                    | Sidecar containers to add to the snipeit pod          | `""`                           |
+| `serviceAccount.create`              | Create service account                                | `true`                         |
+| `serviceAccount.name`                | Service account name to use                           | ````                           |
+| `serviceAccount.annotations`         | ServiceAccount annotations                            | ``                             |
+| `serviceAccount.nameTest`            | Service account name to use for test                  | ``                             |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 

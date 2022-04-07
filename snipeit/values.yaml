@@ -114,3 +114,15 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+extraContainers: {}
+# Used to sidecar containers to add to the snipeit pod.
+#- command:
+#  - /example_command
+#  image: example:latest
+#  name: example-extracontrainer
+
+serviceAccount:
+  create: true
+  name:
+  annotations: {}
