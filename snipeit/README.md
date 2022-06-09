@@ -72,7 +72,7 @@ and their default values.
 | `ingress.enabled`                    | Whether or not to enable Ingress                      | `true`                         |
 | `ingress.className`                  | Ingress Class Name                                    | `""`                           |
 | `ingress.annotations`                | Custom Ingress Annotations                            | `{}`                           |
-| `ingress.path`                       | Root Path for the Ingress Ressource                   | `/`                            |
+| `ingress.path`                       | Root Path for the Ingress Resource                    | `/`                            |
 | `ingress.hosts`                      | URL where Snipe-IT will be accessed                   | `example.local`                |
 | `ingress.tls`                        | Configuration for SecretName and TLS-Hosts            | `[]`                           |
 | `mysql.enabled`                      | Whether or not to deploy a MySQL Deployment           | `true`                         |
@@ -90,7 +90,7 @@ and their default values.
 | `deploymentStrategy`                 | Deployment strategy	                                 | `{ "type": "RollingUpdate" }`  |
 | `revisionHistoryLimit`               | The number of old Replicas to keep to allow rollback. | `0`                            |
 | `service.type`                       | Type of service to create                             | `ClusterIP`                    |
-| `service.annotations`                 | Annotations of service to create                      | `{}`                           |
+| `service.annotations`                | Annotations of service to create                      | `{}`                           |
 | `service.clusterIP`                  | Internal cluster service IP                           | `nil`                          |
 | `service.loadBalancerIP`             | IP address to assign to load balancer (if supported)  | `nil`                          |
 | `service.loadBalancerSourceRanges`   | list of IP CIDRs allowed access to lb (if supported)  | `[]`                           |
@@ -99,6 +99,9 @@ and their default values.
 | `nodeSelector`                       | Node labels for pod assignment                        | `{}`                           |
 | `tolerations`                        | Toleration labels for pod assignment                  | `[]`                           |
 | `affinity`                           | Affinity settings for pod assignment                  | `{}`                           |
+| `podSecurityContext`                 | Deployment's pods securityContext                     | `{}`                           |
+| `securityContext`                    | Deployment's container securityContext                | `{}`                           |
+| `initContainer.securityContext`      | Deployment's initContainer securityContext            | `{}`                           |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
