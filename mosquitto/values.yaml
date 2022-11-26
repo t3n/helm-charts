@@ -10,6 +10,9 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+## Pod Annotations
+# podAnnotations: {}
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
