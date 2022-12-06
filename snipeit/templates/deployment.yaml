@@ -25,6 +25,10 @@ spec:
         - name: config-data
           image: busybox
           command: ["sh", "-c", "find {{ .Values.persistence.sessions.mountPath }} -not -user 1000 -exec chown 1000 {} \\+"]
+          {{- if .Values.initContainer.securityContext }}
+          securityContext:
+          {{- toYaml .Values.initContainer.securityContext | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: data
               mountPath: {{ .Values.persistence.sessions.mountPath }}
@@ -67,6 +71,10 @@ spec:
           resources:
             {{ toYaml . | nindent 12 }}
         {{- end }}
+          {{- if .Values.securityContext }}
+          securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: data
               mountPath: {{ .Values.persistence.www.mountPath }}
@@ -94,3 +102,7 @@ spec:
       tolerations:
         {{ toYaml . | indent 8 | trim }}
     {{- end }}
+      {{- if .Values.podSecurityContext }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext | nindent 8}}
+      {{- end }}
