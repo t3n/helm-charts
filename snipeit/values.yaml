@@ -9,8 +9,9 @@ deploymentStrategy:
 
 image:
   repository: snipe/snipe-it
-  tag: v5.3.6
   pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
 
 service:
   type: ClusterIP
