@@ -157,3 +157,4 @@ config:
       MAIL_FROM_ADDR: snipeit@example.com
       MAIL_FROM_NAME: Snipe-IT
 ```
+
