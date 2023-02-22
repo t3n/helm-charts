@@ -21,6 +21,7 @@ spec:
       annotations:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
+      serviceAccountName: {{ include "snipeit.serviceAccountName" . }}
       initContainers:
         - name: config-data
           image: busybox
@@ -74,6 +75,9 @@ spec:
             - name: data
               mountPath: {{ .Values.persistence.sessions.mountPath }}
               subPath: {{ .Values.persistence.sessions.subPath }}
+      {{- if .Values.extraContainers }}
+{{ toYaml .Values.extraContainers | indent 8}}
+      {{- end }}
       volumes:
         - name: data
         {{- if .Values.persistence.enabled }}
