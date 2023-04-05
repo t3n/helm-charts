@@ -20,6 +20,11 @@ spec:
         {{ include "snipeit.selector" . | indent 8 | trim }}
       annotations:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    {{- if .Values.extraAnnotations }}
+      {{- range $key, $value := .Values.extraAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+    {{- end }}
     spec:
       initContainers:
         - name: config-data

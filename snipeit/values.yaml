@@ -115,3 +115,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+extraAnnotations: {}
+  # Extra Annotations that will be added to the SnipeIT Pod(s)
+  # app.kubernetes.io/instance: snipeit
