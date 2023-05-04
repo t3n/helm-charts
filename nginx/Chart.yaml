@@ -1,4 +1,4 @@
 apiVersion: v2
 description: Simple nginx deployment usable for deploying proxies or small sites.
 name: nginx
-version: 0.2.0
+version: 0.2.1
