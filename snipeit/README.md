@@ -66,6 +66,7 @@ and their default values.
 | `config.snipeit.timezone`            | Snipe-IT Timezone                                     | `Europe/Berlin`                |
 | `config.snipeit.locale`              | Snipe-IT Locale                                       | `en`                           |
 | `config.snipeit.envConfig`           | Configure Environment Values                          | `{}`                           |
+| `config.externalSecrets `            | External Secrets to for db configuration              | `[]`                           |
 | `image.repository`                   | Image Repository                                      | `snipe/snipe-it`               |
 | `image.tag`                          | Image Tag                                             | `4.6.16`                       |
 | `image.pullPolicy`                   | Image Pull Policy                                     | `IfNotPresent`                 |
@@ -99,7 +100,7 @@ and their default values.
 | `nodeSelector`                       | Node labels for pod assignment                        | `{}`                           |
 | `tolerations`                        | Toleration labels for pod assignment                  | `[]`                           |
 | `affinity`                           | Affinity settings for pod assignment                  | `{}`                           |
-
+| `extraManifests`                     | Add additional manifests to deploy	                   | `[]`                           |
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```
@@ -158,3 +159,31 @@ config:
       MAIL_FROM_NAME: Snipe-IT
 ```
 
+### External Secrets
+
+To use manually created secrets for the database configuration, use the `config.externalSecret`.
+You can create a secret with the following command:
+
+```bash
+kubectl create secret generic my-db-secret \
+  --from-literal=MYSQL_USER=<your_mysql_user> \
+  --from-literal=MYSQL_DATABASE=<your_mysql_database> \
+  --from-literal=MYSQL_PASSWORD=<your_mysql_password> \
+  --from-literal=MYSQL_PORT_3306_TCP_ADDR=<your_mysql_host> \
+  --from-literal=MYSQL_PORT_3306_TCP_PORT=<your_mysql_port> \
+  --from-literal=APP_KEY=<your_app_key>
+```
+
+## Additional manifests
+It is possible to add additional manifests into a deployment, to extend the chart. One of the reason is to deploy a manifest specific to a cloud provider ( BackendConfig on GKE for example ).
+
+```yaml
+extraManifests:
+  - apiVersion: cloud.google.com/v1beta1
+    kind: BackendConfig
+    metadata:
+      name: "{{ .Release.Name }}-test"
+    spec:
+      securityPolicy:
+        name: "gcp-cloud-armor-policy-test"
+```        
