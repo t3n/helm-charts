@@ -20,6 +20,11 @@ spec:
         {{ include "snipeit.selector" . | indent 8 | trim }}
       annotations:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    {{- if .Values.extraAnnotations }}
+      {{- range $key, $value := .Values.extraAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+    {{- end }}
     spec:
       initContainers:
         - name: config-data
@@ -31,7 +36,7 @@ spec:
               subPath: {{ .Values.persistence.sessions.subPath }}
       containers:
         - name: {{ include "snipeit.fullname" . }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: APP_ENV
@@ -44,9 +49,15 @@ spec:
               value: {{ .Values.config.snipeit.timezone | quote }}
             - name: APP_LOCALE
               value: {{ .Values.config.snipeit.locale | quote }}
+
           envFrom:
             - secretRef:
                 name: {{ include "snipeit.fullname" . }}
+            {{ if .Values.config.externalSecrets }}
+            - secretRef:
+                name: {{ .Values.config.externalSecrets }}
+            {{ end }}
+
           ports:
             - name: http
               containerPort: 80

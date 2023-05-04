@@ -1,7 +1,7 @@
 apiVersion: v2
 name: snipeit
-version: 3.3.0
-appVersion: 5.3.0
+version: 3.4.1
+appVersion: v6.0.14
 description: A free open source IT asset/license management system
 keywords:
 - snipeit
@@ -10,6 +10,7 @@ keywords:
 home: https://snipeitapp.com
 icon: https://snipeitapp.com/img/logos/snipe-it-logo-xs.png
 sources:
+- https://github.com/t3n/helm-charts
 - https://github.com/snipe/snipe-it
 maintainers:
 - name: mschmidt291

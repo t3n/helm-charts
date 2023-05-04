@@ -10,6 +10,9 @@ metadata:
     {{ toYaml . | nindent 4 }}
 {{- end }}
 spec:
+{{- if .Values.service.type }}
+  type: {{ .Values.service.type }}
+{{- end}}
 {{- if .Values.service.sessionAffinity }}
   sessionAffinity: {{ .Values.service.sessionAffinity }}
 {{- end }}

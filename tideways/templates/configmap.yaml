@@ -13,3 +13,6 @@ data:
     tideways.distributed_tracing_hosts={{ include "tideways.fullname" . }}
     tideways.service={{ .Values.serviceName }}
     tideways.framework={{ .Values.framework }}
+    tideways.dynamic_tracepoints.enable_web={{ .Values.dynamicTracepointsWeb }}
+    tideways.dynamic_tracepoints.enable_cli={{ .Values.dynamicTracepointsCli }}
+    tideways.features.deprecations={{ .Values.deprecations }}
