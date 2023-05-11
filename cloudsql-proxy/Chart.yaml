@@ -1,6 +1,6 @@
 apiVersion: v2
 name: cloudsql-proxy
-version: 2.0.2
+version: 2.0.3
 appVersion: "1.16"
 description: Google Cloud SQL Proxy
 keywords:
