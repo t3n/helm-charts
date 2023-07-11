@@ -85,6 +85,9 @@ spec:
             - name: data
               mountPath: {{ .Values.persistence.sessions.mountPath }}
               subPath: {{ .Values.persistence.sessions.subPath }}
+            {{- if .Values.extraVolumeMounts }}
+              {{- toYaml .Values.extraVolumeMounts | nindent 12}}
+            {{- end }}
       volumes:
         - name: data
         {{- if .Values.persistence.enabled }}
@@ -92,6 +95,9 @@ spec:
             claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "snipeit.fullname" . }}{{- end }}
         {{- else }}
           emptyDir: {}
+        {{- end }}
+        {{- if .Values.extraVolumes }}
+          {{- toYaml .Values.extraVolumes | nindent 8}}
         {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:

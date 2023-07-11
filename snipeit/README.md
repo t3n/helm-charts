@@ -101,6 +101,8 @@ and their default values.
 | `tolerations`                        | Toleration labels for pod assignment                  | `[]`                           |
 | `affinity`                           | Affinity settings for pod assignment                  | `{}`                           |
 | `extraManifests`                     | Add additional manifests to deploy	                   | `[]`                           |
+| `extraVolumeMounts`                  | Additional volumeMounts to the container              | `[]`                           |
+| `extraVolume`                        | Additional volumes to the pod    	                   | `[]`                           |
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```
