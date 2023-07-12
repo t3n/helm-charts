@@ -130,3 +130,16 @@ extraAnnotations: {}
   # app.kubernetes.io/instance: snipeit
 extraManifests: []
 
+extraVolumeMounts: []
+  # Additional volumeMounts to the container
+  # - name: secrets-store01-inline
+  #   mountPath: /mnt/secrets-store
+
+extraVolumes: []
+  # Additional volumes to the pod
+  # - csi:
+  #   driver: secrets-store.csi.k8s.io
+  #   readOnly: true
+  #   volumeAttributes:
+  #     secretProviderClass: "secret-csi-provider"
+  #  name : secrets-store01-inline
