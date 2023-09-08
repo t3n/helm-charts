@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: zk1-pv
+  name: {{ include "mysql.fullname" . }}
 spec:
   storageClassName: "{{ .Values.persistence.storageClass }}"
   capacity:
@@ -9,4 +9,4 @@ spec:
   accessModes:
   - {{ .Values.persistence.accessMode | quote }}
   hostPath:
-    path: /mr/zk
+    path: {{ .Values.persistence.hostPath | quote }}
