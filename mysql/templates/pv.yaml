@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "mysql.fullname" . }}
+spec:
+  storageClassName: "{{ .Values.persistence.storageClass }}"
+  capacity:
+    storage: {{ .Values.persistence.size | quote }}
+  accessModes:
+  - {{ .Values.persistence.accessMode | quote }}
+  hostPath:
+    path: {{ .Values.persistence.hostPath | quote }}
