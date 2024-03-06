@@ -45,6 +45,7 @@ helm.sh/chart: {{ include "mosquitto.chart" . }}
 Selector labels
 */}}
 {{- define "mosquitto.selector" -}}
+app: mosquitto
 app.kubernetes.io/name: mosquitto
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
