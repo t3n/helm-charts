@@ -20,7 +20,8 @@ service:
 
 ingress:
   enabled: true
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   path: /
@@ -55,7 +56,8 @@ livenessProbe:
 
 ## Configure resource requests and limits
 ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-resources: {}
+resources:
+  {}
   # limits:
   #  cpu: 100m
   #  memory: 128Mi
@@ -75,12 +77,14 @@ extraArgs: {}
 extraEnvs: {}
 
 ## Additional volumeMounts to the main container.
-extraVolumeMounts: []
+extraVolumeMounts:
+  []
   # - name: mount
   #   mountPath: /mnt
 
 ## Additional volumes to the pod.
-extraVolumes: []
+extraVolumes:
+  []
   # - name: volume
   #   emptyDir: {}
 
@@ -94,12 +98,20 @@ serviceAccount:
   create: false
   name: ""
 
-secretFiles: {}
+secretFiles:
+  {}
   # gcloud:
   #   mountPath: /etc/gcloud/key.json
   #   subPath: key.json
   #   files:
   #     json.key: base64encSecret
+
+envValueFrom:
+  {}
+  # ENV_NAME:
+  #   configMapKeyRef:
+  #     name: configmap-name
+  #     key: value_key
 
 autoscaling:
   enabled: false
