@@ -109,7 +109,7 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  path: /
+  # path: /
   pathType: ImplementationSpecific
   hosts:
     - example.local
