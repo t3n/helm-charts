@@ -49,43 +49,55 @@ spec:
               value: {{ .Values.config.snipeit.timezone | quote }}
             - name: APP_LOCALE
               value: {{ .Values.config.snipeit.locale | quote }}
-{{ if and .Values.config.mysql.externalDatabase.userSecretName .Values.config.mysql.externalDatabase.userSecretKey }}
+            {{- if and .Values.config.mysql.externalDatabase.userSecretName .Values.config.mysql.externalDatabase.userSecretKey }}
             - name: MYSQL_USER
-              valueFrom: .Values.config.mysql.externalDatabase.userSecretName
-                secretKeyRef: .Values.config.mysql.externalDatabase.userSecretKey
-{{ end }}
-{{ if and .Values.config.mysql.externalDatabase.nameSecretName .Values.config.mysql.externalDatabase.nameSecretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.userSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.userSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.nameSecretName .Values.config.mysql.externalDatabase.nameSecretKey }}
             - name: MYSQL_DATABASE
-              valueFrom: .Values.config.mysql.externalDatabase.nameSecretName
-                secretKeyRef: .Values.config.mysql.externalDatabase.nameSecretKey
-{{ end }}
-{{ if and .Values.config.mysql.externalDatabase.passSecretName .Values.config.mysql.externalDatabase.passSecretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.nameSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.nameSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.passSecretName .Values.config.mysql.externalDatabase.passSecretKey }}
             - name: MYSQL_PASSWORD
-              valueFrom: .Values.config.mysql.externalDatabase.passSecretName
-                secretKeyRef: .Values.config.mysql.externalDatabase.passSecretKey
-{{ end }}
-{{ if and .Values.config.mysql.externalDatabase.portSecretName .Values.config.mysql.externalDatabase.portSecretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.passSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.passSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.portSecretName .Values.config.mysql.externalDatabase.portSecretKey }}
             - name: MYSQL_PORT_3306_TCP_ADDR
-              valueFrom: .Values.config.mysql.externalDatabase.portSecretName
-                secretKeyRef: .Values.config.mysql.externalDatabase.portSecretKey
-{{ end }}
-{{ if and .Values.config.mysql.externalDatabase.portSecretName .Values.config.mysql.externalDatabase.portSecretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.portSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.portSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.portSecretName .Values.config.mysql.externalDatabase.portSecretKey }}
             - name: MYSQL_PORT_3306_TCP_PORT
-              valueFrom: .Values.config.mysql.externalDatabase.portSecretName
-                secretKeyRef: .Values.config.mysql.externalDatabase.portSecretKey
-{{ end }}
-{{ if and .Values.config.snipeit.keySecretName .Values.config.snipeit.keySecretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.portSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.portSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.snipeit.keySecretName .Values.config.snipeit.keySecretKey }}
             - name: APP_KEY
-              valueFrom: .Values.config.snipeit.keySecretName
-                secretKeyRef: .Values.config.snipeit.keySecretKey
-{{ end }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.snipeit.keySecretName | quote }}
+                  key: {{ .Values.config.snipeit.keySecretKey | quote }}
+            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "snipeit.fullname" . }}
-            {{ if .Values.config.externalSecrets }}
+              {{ if .Values.config.externalSecrets }}
             - secretRef:
                 name: {{ .Values.config.externalSecrets }}
-            {{ end }}
+              {{ end }}
 
           ports:
             - name: http
