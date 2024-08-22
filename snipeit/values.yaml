@@ -44,8 +44,8 @@ config:
     url: http://example.local
     key: ""
     ## Setting `keySecretName` and `keySecretKey` will override key configuration"
-    keySecretName: ""
-    keySecretKey: ""
+    # keySecretName: ""
+    # keySecretKey: ""
     timezone: Europe/Berlin
     locale: en
     envConfig: {}
