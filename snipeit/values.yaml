@@ -27,16 +27,16 @@ config:
       host: mysql
       port: 3306
       ## Setting `...SecretName` and `...SecretKey` will override previous configurations"
-      userSecretName: user-example
-      userSecretKey: user-key-example
-      passSecretName: pass-example
-      passSecretKey: pass-key-example
-      hostSecretName: host-example
-      hostSecretKey: host-key-example
-      portSecretName: port-example
-      portSecretKey: port-key-example
-      nameSecretName: dbname-example
-      nameSecretKey: dbname-key-example
+      # userSecretName: user-example
+      # userSecretKey: user-key-example
+      # passSecretName: pass-example
+      # passSecretKey: pass-key-example
+      # hostSecretName: host-example
+      # hostSecretKey: host-key-example
+      # portSecretName: port-example
+      # portSecretKey: port-key-example
+      # nameSecretName: dbname-example
+      # nameSecretKey: dbname-key-example
 
   snipeit:
     env: production
