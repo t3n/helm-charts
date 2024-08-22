@@ -11,7 +11,7 @@ image:
   repository: snipe/snipe-it
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "v6.4.2"
 
 service:
   type: ClusterIP
