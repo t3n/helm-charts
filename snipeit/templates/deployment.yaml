@@ -94,10 +94,10 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "snipeit.fullname" . }}
-              {{ if .Values.config.externalSecrets }}
+            {{ if .Values.config.externalSecrets }}
             - secretRef:
                 name: {{ .Values.config.externalSecrets }}
-              {{ end }}
+            {{ end }}
 
           ports:
             - name: http
