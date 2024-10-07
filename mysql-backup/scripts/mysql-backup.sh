@@ -33,7 +33,7 @@ fi
 printf "Selected period: %s\\n" "$PERIOD"
 gcloud auth activate-service-account --key-file=/etc/gcloud/key.json
 printf "\\nStarting backing up the database to a file...\\n"
-"${MYSQLDUMPPATH}mysqldump" --quick --default-character-set="${DB_CHARSET}" --host="${DB_HOST}" --user="${DB_USER}" --password="${DB_PASS}" "${DB_NAME}" > "${TMP_PATH}${FILENAME}${DATESTAMP}.sql"
+"${MYSQLDUMPPATH}mysqldump" --quick --no-tablespaces --default-character-set="${DB_CHARSET}" --host="${DB_HOST}" --user="${DB_USER}" --password="${DB_PASS}" "${DB_NAME}" > "${TMP_PATH}${FILENAME}${DATESTAMP}.sql"
 printf "Done backing up the database to a file.\\n\\nStarting compression...\\n"
 gzip "${TMP_PATH}${FILENAME}${DATESTAMP}.sql"
 printf "Done compressing the backup file.\\n\\nRemoving old backup (2 %ss ago)...\\n" "$PERIOD"
