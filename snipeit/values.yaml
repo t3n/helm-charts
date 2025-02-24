@@ -26,12 +26,26 @@ config:
       name: db-snipeit
       host: mysql
       port: 3306
+      ## Setting `...SecretName` and `...SecretKey` will override previous configurations"
+      # userSecretName: user-example
+      # userSecretKey: user-key-example
+      # passSecretName: pass-example
+      # passSecretKey: pass-key-example
+      # hostSecretName: host-example
+      # hostSecretKey: host-key-example
+      # portSecretName: port-example
+      # portSecretKey: port-key-example
+      # nameSecretName: dbname-example
+      # nameSecretKey: dbname-key-example
 
   snipeit:
     env: production
     debug: false
     url: http://example.local
     key: ""
+    ## Setting `keySecretName` and `keySecretKey` will override key configuration"
+    # keySecretName: ""
+    # keySecretKey: ""
     timezone: Europe/Berlin
     locale: en
     envConfig: {}
@@ -43,7 +57,7 @@ config:
   ##   --from-literal=MYSQL_PORT_3306_TCP_ADDR=<your_mysql_host> \
   ##   --from-literal=MYSQL_PORT_3306_TCP_PORT=<your_mysql_port> \
   ##   --from-literal=APP_KEY=<your_app_key>
- 
+
   externalSecrets: ""
 mysql:
   ## Whether to deploy a mysql server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters

@@ -49,7 +49,48 @@ spec:
               value: {{ .Values.config.snipeit.timezone | quote }}
             - name: APP_LOCALE
               value: {{ .Values.config.snipeit.locale | quote }}
-
+            {{- if and .Values.config.mysql.externalDatabase.userSecretName .Values.config.mysql.externalDatabase.userSecretKey }}
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.userSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.userSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.nameSecretName .Values.config.mysql.externalDatabase.nameSecretKey }}
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.nameSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.nameSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.passSecretName .Values.config.mysql.externalDatabase.passSecretKey }}
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.passSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.passSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.portSecretName .Values.config.mysql.externalDatabase.portSecretKey }}
+            - name: MYSQL_PORT_3306_TCP_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.portSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.portSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.mysql.externalDatabase.portSecretName .Values.config.mysql.externalDatabase.portSecretKey }}
+            - name: MYSQL_PORT_3306_TCP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.mysql.externalDatabase.portSecretName | quote }}
+                  key: {{ .Values.config.mysql.externalDatabase.portSecretKey | quote }}
+            {{- end }}
+            {{- if and .Values.config.snipeit.keySecretName .Values.config.snipeit.keySecretKey }}
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.config.snipeit.keySecretName | quote }}
+                  key: {{ .Values.config.snipeit.keySecretKey | quote }}
+            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "snipeit.fullname" . }}
