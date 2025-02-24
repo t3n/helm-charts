@@ -76,7 +76,7 @@ and their default values.
 | `ingress.path`                       | Root Path for the Ingress Ressource                   | `/`                            |
 | `ingress.hosts`                      | URL where Snipe-IT will be accessed                   | `example.local`                |
 | `ingress.tls`                        | Configuration for SecretName and TLS-Hosts            | `[]`                           |
-| `mysql.enabled`                      | Whether or not to deploy a MySQL Deployment           | `true`                         |
+| `mysql.enabled`                      | Whether or not to deploy a MySQL Deployment           | `false`                        |
 | `mysql.mysqlUser`                    | MySQL User to create                                  | `snipeit`                      |
 | `mysql.mysqlPassword`                | MySQL Password for the User                           | `""`                           |
 | `mysql.mysqlDatabase`                | Name of MySQL Database to create                      | `db-snipeit`                   |
