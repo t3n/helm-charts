@@ -29,7 +29,7 @@ spec:
       initContainers:
         - name: config-data
           image: busybox
-          command: ["sh", "-c", "find {{ .Values.persistence.sessions.mountPath }} -not -user 1000 -exec chown 1000 {} \\+"]
+          command: ["sh", "-c", "chown -R 100:101 {{ .Values.persistence.sessions.mountPath }}"]
           volumeMounts:
             - name: data
               mountPath: {{ .Values.persistence.sessions.mountPath }}
